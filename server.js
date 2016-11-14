@@ -35,11 +35,11 @@ router.get('/', function (req, res) {
     rp(options)
         .then(function (data) {
             console.log(data);
-            
+
             for (var i = 0, len = data.entities.length; i < len; i++) {
                 switch (data.entities[i].type) {
                     case "Location":
-                        res.json({ message: row.entity });
+                        res.json({ message: data.entities[i].entity });
                         break;
                     case "Subject":
                         break;
