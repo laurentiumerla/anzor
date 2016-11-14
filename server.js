@@ -31,7 +31,7 @@ router.get('/', function (req, res) {
         LUIS_SUBSCRIPTION_KEY + '&q=cum%20e%20vremea%20in%20bucuresti&timezoneOffset=0.0',
         json: true // Automatically parses the JSON string in the response 
     };
-
+    console.log(options);
     rp(options)
         .then(function (repos) {
             console.log('User has %d repos', repos.length);
