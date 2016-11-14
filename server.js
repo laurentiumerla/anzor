@@ -26,7 +26,7 @@ var luisAdapter = new LuisAdapter(options);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
-
+    console.log(luisAdapter);
     luisAdapter.Query(query,
         function (data) {
             console.log("Luis thinks this is your intent:" + luisAdapter.GetIntent(data));
