@@ -34,6 +34,7 @@ router.get('/', function (req, res) {
     console.log(options);
     rp(options)
         .then(function (repos) {
+            console.log(repos);
             console.log('User has %d repos', repos.length);
         })
         .catch(function (err) {
