@@ -25,37 +25,40 @@ var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
-    var options = {
-        uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
-        LUIS_APP_ID + '?subscription-key=' +
-        LUIS_SUBSCRIPTION_KEY + '&q=cum%20e%20vremea%20in%20bucuresti&timezoneOffset=0.0',
-        json: true // Automatically parses the JSON string in the response 
-    };
-    console.log(options);
-    rp(options)
-        .then(function (data) {
-            console.log(data);
-
-            for (var i = 0, len = data.entities.length; i < len; i++) {
-                switch (data.entities[i].type) {
-                    case "Location":
-                        res.json({ message: data.entities[i].entity });
-                        break;
-                    case "Subject":
-                        break;
-                    default:
-                }
-            }
-
-        })
-        .catch(function (err) {
-            // API call failed... 
-            console.log(err);
-        });
-    // res.json({ message: 'hooray! welcome to our api!' });
+    res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // more routes for our API will happen here
+router.route('/acw_location')
+    .get(function (req, res) {
+        var options = {
+            uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
+            LUIS_APP_ID + '?subscription-key=' +
+            LUIS_SUBSCRIPTION_KEY + '&q=cum%20e%20vremea%20in%20bucuresti&timezoneOffset=0.0',
+            json: true // Automatically parses the JSON string in the response 
+        };
+        console.log(options);
+        rp(options)
+            .then(function (data) {
+                console.log(data);
+
+                for (var i = 0, len = data.entities.length; i < len; i++) {
+                    switch (data.entities[i].type) {
+                        case "Location":
+                            res.json({ message: data.entities[i].entity });
+                            break;
+                        case "Subject":
+                            break;
+                        default:
+                    }
+                }
+
+            })
+            .catch(function (err) {
+                // API call failed... 
+                console.log(err);
+            });
+    })
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
