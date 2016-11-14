@@ -35,13 +35,22 @@ router.get('/', function (req, res) {
     rp(options)
         .then(function (data) {
             console.log(data);
-            console.log(data.query);
+            forEach(row in data.entities) {
+                switch (row.type) {
+                    case "Location":
+                    res.json({ message: row.entity });
+                        break;
+                    case "Subject":
+                        break;
+                    default:
+                }
+            }
         })
         .catch(function (err) {
             // API call failed... 
             console.log(err);
         });
-    res.json({ message: 'hooray! welcome to our api!' });
+    // res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // more routes for our API will happen here
