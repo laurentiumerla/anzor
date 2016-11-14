@@ -11,5 +11,8 @@
     "vreme"
   ],
   "author": "Laurentiu Merla",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6"
+  }
 }
