@@ -35,16 +35,18 @@ router.get('/', function (req, res) {
     rp(options)
         .then(function (data) {
             console.log(data);
-            forEach(row in data.entities) {
-                switch (row.type) {
+            
+            for (var i = 0, len = data.entities.length; i < len; i++) {
+                switch (data.entities[i].type) {
                     case "Location":
-                    res.json({ message: row.entity });
+                        res.json({ message: row.entity });
                         break;
                     case "Subject":
                         break;
                     default:
                 }
             }
+
         })
         .catch(function (err) {
             // API call failed... 
