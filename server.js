@@ -33,9 +33,9 @@ router.get('/', function (req, res) {
     };
     console.log(options);
     rp(options)
-        .then(function (repos) {
-            console.log(repos);
-            console.log('User has %d repos', repos.length);
+        .then(function (data) {
+            console.log(data);
+            console.log(data.topScoringIntent.entities.type["Location"]);
         })
         .catch(function (err) {
             // API call failed... 
