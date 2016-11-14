@@ -35,7 +35,7 @@ router.get('/', function (req, res) {
     rp(options)
         .then(function (data) {
             console.log(data);
-            console.log(data.topScoringIntent.entities.type["Location"]);
+            console.log(data.query);
         })
         .catch(function (err) {
             // API call failed... 
