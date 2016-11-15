@@ -70,7 +70,7 @@ router.route('/q')
                                             ' si este ' + data[0].WeatherText + '!';
 
                                         var image = cfm.image;
-                                        image.attchment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+                                        image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
                                             data[0].WeatherIcon + "-s.png"
 
                                         returnjson.messages.splice(0, returnjson.messages.length);
