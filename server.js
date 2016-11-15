@@ -64,24 +64,25 @@ router.route('/q')
                                 // always return current conditions for the first key found
                                 acw.GetCurrentConditions(data[0].Key)
                                     .then(function (data) {
-                                        var message = cfm.text;
-                                        message.text = 'Sunt ' +
-                                            data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
-                                            ' si este ' + data[0].WeatherText + '!';
+                                        // var message = cfm.text;
+                                        // message.text = 'Sunt ' +
+                                        //     data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
+                                        //     ' si este ' + data[0].WeatherText + '!';
 
-                                        var image = cfm.image;
-                                        if (data[0].WeatherIcon < 10) {
-                                            image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
-                                                data[0].WeatherIcon + "-s.png";
-                                        } else {
-                                            image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
-                                                data[0].WeatherIcon + "-s.png";
-                                        }
+                                        // var image = cfm.image;
+                                        // if (data[0].WeatherIcon < 10) {
+                                        //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
+                                        //         data[0].WeatherIcon + "-s.png";
+                                        // } else {
+                                        //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+                                        //         data[0].WeatherIcon + "-s.png";
+                                        // }
 
-                                        returnjson.messages.splice(0, returnjson.messages.length);
-                                        returnjson.messages.push(message);
-                                        returnjson.messages.push(image);
-                                        res.json(returnjson);
+                                        // returnjson.messages.splice(0, returnjson.messages.length);
+                                        // returnjson.messages.push(message);
+                                        // returnjson.messages.push(image);
+                                        // res.json(returnjson);
+                                        res.json(currentConditionMessage(data, returnjson));
                                     })
                             }
                             else {
@@ -129,3 +130,39 @@ var httprp = function (__opt) {
     return rp(__opt)
 }
 
+var currentConditionMessage = function (data, _returnjson) {
+
+    var _text = 'Sunt ' +
+        data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
+        ' si este ' + data[0].WeatherText + '!';
+
+    var message = cfm.text;
+    message.text = _text;
+
+    // var image = cfm.image;
+    // if (data[0].WeatherIcon < 10) {
+    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
+    //         data[0].WeatherIcon + "-s.png";
+    // } else {
+    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+    //         data[0].WeatherIcon + "-s.png";
+    // }
+
+    var quickReply = cfm.quickReply;
+    quickreply.text = _text;
+    quickreply.quick_replies.push({
+        "title": "Hourly Forecast",
+        "block_names": ["Block1"]
+    });
+    quickreply.quick_replies.push({
+        "title": "5-day forecast",
+        "block_names": ["Block1"]
+    });
+
+    _returnjson.messages.splice(0, _returnjson.messages.length);
+    // _returnjson.messages.push(message);
+    // returnjson.messages.push(image);
+    _returnjson.messages.push(quickreply);
+
+    return _returnjson
+}

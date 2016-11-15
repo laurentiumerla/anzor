@@ -49,6 +49,19 @@ method.card2buttons = {
         }
     }
 }
+
+// button message
+method.button = {
+    "type": "web_url",
+    "url": "https://petersfancyapparel.com/classic_white_tshirt",
+    "title": "View Item"
+}
+
+method.quickReply = {
+    "text": "testRedirectInQuickReply",
+    "quick_replies": []
+}
+
 //gallery message
 method.gallery = {
     "attachment": {
