@@ -25,7 +25,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
-var acw = new ACWService;
+var acw = new ACWService(rp);
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
@@ -50,7 +50,7 @@ router.route('/q')
 
 
 
-        acw.CityLookUp(rp, "Bucuresti")
+        acw.CityLookUp("Bucuresti")
             .then(function (data) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
