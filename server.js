@@ -29,16 +29,17 @@ router.get('/', function (req, res) {
 });
 
 // more routes for our API will happen here
-router.route('/acw_location')
+router.route('/q')
     .get(function (req, res) {
-        var LUIS_EXTRACT_OPTIONS = {
-            uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
-            LUIS_APP_ID + '?subscription-key=' +
-            LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
-            json: true // Automatically parses the JSON string in the response 
-        };
-        console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
-        rp(LUIS_EXTRACT_OPTIONS)
+        // var LUIS_EXTRACT_OPTIONS = {
+        //     uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
+        //     LUIS_APP_ID + '?subscription-key=' +
+        //     LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
+        //     json: true // Automatically parses the JSON string in the response 
+        // };
+        // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
+        // rp(LUIS_EXTRACT_OPTIONS)
+        askLUIS(req.query.q)
             .then(function (data) {
                 console.log("Request RESPONSE => ", data);
 
@@ -70,3 +71,20 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+
+var askLUIS = function (query) {
+    var LUIS_EXTRACT_OPTIONS = {
+        uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
+        LUIS_APP_ID + '?subscription-key=' +
+        LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
+        json: true // Automatically parses the JSON string in the response 
+    };
+
+    return httprp(LUIS_EXTRACT_OPTIONS)
+}
+
+var httprp = function (__opt) {
+    console.log("Request CALL => ", __opt.uri);
+    return rp(__opt)
+}
