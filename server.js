@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
-var ACW = require('./app/services/accuweather');
+var ACWService = require('./app/services/accuweather');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -25,6 +25,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
+var acw = new ACWService;
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
@@ -47,7 +48,7 @@ router.route('/q')
         // text.text = "sdfdsf";
         // console.log(text);
 
-        ACW.CityLookUp(rp, "Bucuresti")
+        acw.CityLookUp(rp, "Bucuresti")
             .then(function(res){
                 console.log(res);
             })
