@@ -48,7 +48,7 @@ router.route('/q')
         // text.text = "sdfdsf";
         // console.log(text);
 
-        acw.CityLookUp(rp, "Bucuresti")
+        acw.GetCurrentConditions(rp, "Bucuresti")
             .then(function(res){
                 console.log(res);
             })
