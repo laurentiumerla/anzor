@@ -54,7 +54,7 @@ router.route('/q')
             .then(function (data) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
-                    acw.GetCurrentConditionsByKey(data[0].Key)
+                    acw.GetCurrentConditions(data[0].Key)
                         .then(function (data) {
                             console.log(data);
                         })
