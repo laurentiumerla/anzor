@@ -89,6 +89,7 @@ router.route('/q')
             .catch(function (err) {
                 // API call failed... 
                 console.log(err);
+                res.json(returnjson);
             });
     })
 
