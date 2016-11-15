@@ -37,10 +37,10 @@ router.route('/acw_location')
             LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
             json: true // Automatically parses the JSON string in the response 
         };
-        console.log(options);
+        console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
         rp(LUIS_EXTRACT_OPTIONS)
             .then(function (data) {
-                console.log(data);
+                console.log("Request RESPONSE => ", data);
 
                 for (var i = 0, len = data.entities.length; i < len; i++) {
                     switch (data.entities[i].type) {
