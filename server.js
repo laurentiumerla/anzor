@@ -48,8 +48,10 @@ router.route('/acw_location')
                             res.json({ message: data.entities[i].entity });
                             break;
                         case "Subject":
+                            res.json({ message: data.entities[i].entity });
                             break;
                         default:
+                            res.json({ message: "default" });
                     }
                 }
 
