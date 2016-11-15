@@ -26,6 +26,7 @@ var router = express.Router();              // get an instance of the express Ro
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 var acw = new ACWService(rp);
+var cfm = new CFMessage;
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
@@ -35,57 +36,53 @@ router.get('/', function (req, res) {
 // more routes for our API will happen here
 router.route('/q')
     .get(function (req, res) {
-        // var LUIS_EXTRACT_OPTIONS = {
-        //     uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
-        //     LUIS_APP_ID + '?subscription-key=' +
-        //     LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
-        //     json: true // Automatically parses the JSON string in the response 
-        // };
-        // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
-        // rp(LUIS_EXTRACT_OPTIONS)
-
-        // var text = new CFMessage;
-        // text.text = "sdfdsf";
-        // console.log(text);
-
-
-
-        acw.CityLookUp("Bucuresti")
-            .then(function (data) {
-                if (data.length > 0) {
-                    // always return current conditions for the first key found
-                    acw.GetCurrentConditions(data[0].Key)
-                        .then(function (data) {
-                            console.log(data);
-                        })
-                }
-                else {
-
-                }
-            })
-            .catch(function (err) {
-                console.log("ACW Request ERROR => ", err);
-
-            })
-
+        var location, subject;
 
         askLUIS(req.query.q)
             .then(function (data) {
-                console.log("Request RESPONSE => ", data);
-
                 for (var i = 0, len = data.entities.length; i < len; i++) {
                     switch (data.entities[i].type) {
                         case "Location":
-                            res.json({ message: data.entities[i].entity });
+                            // res.json({ message: data.entities[i].entity });
+                            location = data.entities[i].entity;
                             break;
                         case "Subject":
-                            res.json({ message: data.entities[i].entity });
+                            subject = data.entities[i].entity;
                             break;
                         default:
                             res.json({ message: "default" });
                     }
                 }
 
+                if (location) {
+                    acw.CityLookUp(location)
+                        .then(function (data) {
+                            if (data.length > 0) {
+                                // always return current conditions for the first key found
+                                acw.GetCurrentConditions(data[0].Key)
+                                    .then(function (data) {
+                                        var message = cfm.text;
+                                        message.text = 'Sunt ' + data[0].Temperature.Metric.Value +
+                                            ' ' + data[0].Temperature.Metric.Unit +
+                                            ' si este ' + data[0].WeatherText + '!';
+
+                                            var messages = {
+                                                "messages": []
+                                            }
+
+                                            messages.push(message);
+                                        res.json(messages);
+                                    })
+                            }
+                            else {
+
+                            }
+                        })
+                        .catch(function (err) {
+                            console.log("ACW Request ERROR => ", err);
+
+                        })
+                }
             })
             .catch(function (err) {
                 // API call failed... 
@@ -118,3 +115,4 @@ var httprp = function (__opt) {
     console.log("Request CALL => ", __opt.uri);
     return rp(__opt)
 }
+
