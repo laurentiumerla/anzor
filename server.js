@@ -31,7 +31,7 @@ router.get('/', function (req, res) {
 // more routes for our API will happen here
 router.route('/acw_location')
     .get(function (req, res) {
-        console.log("Request: ", req)
+        console.log("Request query: ", req.query);
         var options = {
             uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
             LUIS_APP_ID + '?subscription-key=' +
