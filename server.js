@@ -28,6 +28,8 @@ var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
 
+var messages = { "messages": [] }
+
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
@@ -62,28 +64,24 @@ router.route('/q')
                                 acw.GetCurrentConditions(data[0].Key)
                                     .then(function (data) {
                                         var message = cfm.text;
-                                        message.text = 'Sunt ' + 
-                                        data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
+                                        message.text = 'Sunt ' +
+                                            data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
                                             ' si este ' + data[0].WeatherText + '!';
 
-                                            var messages = {
-                                                "messages": []
-                                            }
-
-                                            console.log(message);
-                                            messages.messages.push(message);
-                                            console.log(messages);
+                                        messages.messages.push(message);
                                         res.json(messages);
                                     })
                             }
                             else {
-
+                                res.json(messages);
                             }
                         })
                         .catch(function (err) {
                             console.log("ACW Request ERROR => ", err);
-
+                            res.json(messages);
                         })
+                } else {
+                    res.json(messages);
                 }
             })
             .catch(function (err) {
