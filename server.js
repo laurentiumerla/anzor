@@ -149,12 +149,12 @@ var currentConditionMessage = function (data, _returnjson) {
     // }
 
     var quickReply = cfm.quickReply;
-    quickreply.text = _text;
-    quickreply.quick_replies.push({
+    quickReply.text = _text;
+    quickReply.quick_replies.push({
         "title": "Hourly Forecast",
         "block_names": ["Block1"]
     });
-    quickreply.quick_replies.push({
+    quickReply.quick_replies.push({
         "title": "5-day forecast",
         "block_names": ["Block1"]
     });
