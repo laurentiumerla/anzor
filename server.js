@@ -9,6 +9,8 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var CFMessage = require('./app/models/chatfuel/message');
+var CFVariable = require('./app/models/chatfuel/variable');
+var ACW = require('./app/services/accuweather');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -41,9 +43,17 @@ router.route('/q')
         // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
         // rp(LUIS_EXTRACT_OPTIONS)
 
-        var text = new CFMessage;
-        text.text = "sdfdsf";
-        console.log(text);
+        // var text = new CFMessage;
+        // text.text = "sdfdsf";
+        // console.log(text);
+
+        ACW.CityLookUp(rp, "Bucuresti")
+            .then(function(res){
+                console.log(res);
+            })
+            .catch(function(err){
+                console.log(err);
+            });
 
         askLUIS(req.query.q)
             .then(function (data) {
