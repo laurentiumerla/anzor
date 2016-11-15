@@ -28,11 +28,11 @@ method.GetCurrentConditions = function (_rp, _q) {
     // console.log("ACW Request CALL => ", _uri);
     // return _rp({ uri: _uri, json: true });
 
-    CityLookUp(_rp, _q)
+    method.CityLookUp(_rp, _q)
         .then(function (data) {
             if (data.length > 0) {
                 // always return current conditions for the first key found
-                return GetCurrentConditionsByKey(data[0].Key)
+                return method.GetCurrentConditionsByKey(data[0].Key)
             }
             else {
                 return null;
