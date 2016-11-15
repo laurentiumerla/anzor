@@ -150,6 +150,7 @@ var currentConditionMessage = function (data, _returnjson) {
 
     var quickReply = cfm.quickReply;
     quickReply.text = _text;
+    quickReply.quick_replies = [];
     quickReply.quick_replies.push({
         "title": "Hourly Forecast",
         "block_names": ["Block1"]
@@ -161,7 +162,7 @@ var currentConditionMessage = function (data, _returnjson) {
 
     _returnjson.messages.splice(0, _returnjson.messages.length);
     // _returnjson.messages.push(message);
-    // returnjson.messages.push(image);
+    // _returnjson.messages.push(image);
     _returnjson.messages.push(quickReply);
 
     return _returnjson;
