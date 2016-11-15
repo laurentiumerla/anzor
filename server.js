@@ -38,6 +38,7 @@ router.route('/q')
         //     json: true // Automatically parses the JSON string in the response 
         // };
         // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
+        console.log("Req => ", req);
         // rp(LUIS_EXTRACT_OPTIONS)
         askLUIS(req.query.q)
             .then(function (data) {
