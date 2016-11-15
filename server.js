@@ -48,13 +48,26 @@ router.route('/q')
         // text.text = "sdfdsf";
         // console.log(text);
 
-        acw.GetCurrentConditions(rp, "Bucuresti")
-            .then(function(res){
-                console.log(res);
+
+
+        acw.CityLookUp(rp, "Bucuresti")
+            .then(function (data) {
+                if (data.length > 0) {
+                    // always return current conditions for the first key found
+                    acw.GetCurrentConditionsByKey(data[0].Key)
+                        .then(function (data) {
+                            console.log(data);
+                        })
+                }
+                else {
+
+                }
             })
-            .catch(function(err){
-                console.log(err);
-            });
+            .catch(function (err) {
+                console.log("ACW Request ERROR => ", err);
+
+            })
+
 
         askLUIS(req.query.q)
             .then(function (data) {
