@@ -72,6 +72,7 @@ router.route('/q')
 
                                             console.log(message);
                                             messages.messages.push(message);
+                                            console.log(messages);
                                         res.json(messages);
                                     })
                             }
