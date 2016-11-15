@@ -70,6 +70,7 @@ router.route('/q')
                                                 "messages": []
                                             }
 
+                                            console.log(message);
                                             messages.messages.push(message);
                                         res.json(messages);
                                     })
