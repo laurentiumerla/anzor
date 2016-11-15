@@ -52,7 +52,7 @@ router.route('/q')
                             subject = data.entities[i].entity;
                             break;
                         default:
-                            res.json({ message: "default" });
+                            res.json(returnjson);
                     }
                 }
 
