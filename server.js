@@ -69,8 +69,13 @@ router.route('/q')
                                             data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
                                             ' si este ' + data[0].WeatherText + '!';
 
+                                        var image = cfm.image;
+                                        image.attchment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+                                            data[0].WeatherIcon + "-s.png"
+
                                         returnjson.messages.splice(0, returnjson.messages.length);
                                         returnjson.messages.push(message);
+                                        returnjson.messages.push(image);
                                         res.json(returnjson);
                                     })
                             }
