@@ -7,7 +7,7 @@ function CFMessage() {
 // text message
 method.text = function () {
     var obj = {
-        text: "message text"
+        "text": "message text"
     }
     return obj;
 }
