@@ -12,4 +12,4 @@ method.setVariables = function () {
     return obj;
 }
 
-module.exports = CFMessage;
+module.exports = CFVariable;
