@@ -31,15 +31,14 @@ router.get('/', function (req, res) {
 // more routes for our API will happen here
 router.route('/acw_location')
     .get(function (req, res) {
-        console.log("Request query: ", req.query);
-        var options = {
+        var LUIS_EXTRACT_OPTIONS = {
             uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
             LUIS_APP_ID + '?subscription-key=' +
-            LUIS_SUBSCRIPTION_KEY + '&q=cum%20e%20vremea%20in%20bucuresti&timezoneOffset=0.0',
+            LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
             json: true // Automatically parses the JSON string in the response 
         };
         console.log(options);
-        rp(options)
+        rp(LUIS_EXTRACT_OPTIONS)
             .then(function (data) {
                 console.log(data);
 
