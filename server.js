@@ -70,8 +70,13 @@ router.route('/q')
                                             ' si este ' + data[0].WeatherText + '!';
 
                                         var image = cfm.image;
-                                        image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
-                                            data[0].WeatherIcon + "-s.png"
+                                        if (data[0].WeatherIcon < 10) {
+                                            image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
+                                                data[0].WeatherIcon + "-s.png";
+                                        } else {
+                                            image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+                                                data[0].WeatherIcon + "-s.png";
+                                        }
 
                                         returnjson.messages.splice(0, returnjson.messages.length);
                                         returnjson.messages.push(message);
