@@ -17,7 +17,7 @@ method.CityLookUp = function (_rp, _q) {
 
 method.GetCurrentConditions = function (_rp, _locationKey) {
     _uri = "http://apidev.accuweather.com/currentconditions/v1/" +
-        __locationKey + ".json?language=" + method.ACCUWEATHER_LANGUAGE + "&apikey=" + method.ACCUWEATHER_API_KEY;
+        _locationKey + ".json?language=" + method.ACCUWEATHER_LANGUAGE + "&apikey=" + method.ACCUWEATHER_API_KEY;
     console.log("ACW Request CALL => ", _uri);
     return _rp({ uri: _uri, json: true });
 }
