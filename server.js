@@ -28,7 +28,7 @@ var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
 
-var returnjson = { "messages": [] }
+var returnjson = { "messages": [{ "text" : "Nu am inteles mesajul" }] }
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
@@ -39,6 +39,7 @@ router.get('/', function (req, res) {
 router.route('/q')
     .get(function (req, res) {
         var location, subject;
+        returnjson.messages.splice(0, returnjson.messages.length);
 
         askLUIS(req.query.q)
             .then(function (data) {
@@ -68,7 +69,6 @@ router.route('/q')
                                             data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
                                             ' si este ' + data[0].WeatherText + '!';
 
-                                        returnjson.messages.splice(0, returnjson.messages.length);
                                         returnjson.messages.push(message);
                                         res.json(returnjson);
                                     })
