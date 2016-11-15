@@ -136,8 +136,8 @@ var currentConditionMessage = function (data, _returnjson) {
         data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
         ' si este ' + data[0].WeatherText + '!';
 
-    var message = cfm.text;
-    message.text = _text;
+    // var message = cfm.text;
+    // message.text = _text;
 
     // var image = cfm.image;
     // if (data[0].WeatherIcon < 10) {
@@ -164,5 +164,5 @@ var currentConditionMessage = function (data, _returnjson) {
     // returnjson.messages.push(image);
     _returnjson.messages.push(quickReply);
 
-    return _returnjson
+    return _returnjson;
 }
