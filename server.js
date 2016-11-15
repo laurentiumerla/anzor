@@ -62,8 +62,8 @@ router.route('/q')
                                 acw.GetCurrentConditions(data[0].Key)
                                     .then(function (data) {
                                         var message = cfm.text;
-                                        message.text = 'Sunt ' + data[0].Temperature.Metric.Value +
-                                            ' ' + data[0].Temperature.Metric.Unit +
+                                        message.text = 'Sunt ' + 
+                                        data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
                                             ' si este ' + data[0].WeatherText + '!';
 
                                             var messages = {
