@@ -1,16 +1,18 @@
 var method = CFMessage.prototype;
 
 function CFMessage() {
-    // nothing to do here
+    
 }
 
+method.text = { "text": "message text" };
+
 // text message
-method.text = function () {
-    var obj = {
-        "text": "message text"
-    }
-    return obj;
-}
+// method.text = function () {
+//     var obj = {
+//         "text": "message text"
+//     }
+//     return obj;
+// }
 
 // video message
 method.video = function () {
