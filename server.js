@@ -8,6 +8,7 @@ var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
+var CFMessage = require('./app/models/chatfuel/message');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -39,6 +40,11 @@ router.route('/q')
         // };
         // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
         // rp(LUIS_EXTRACT_OPTIONS)
+
+        var text = CFMessage.text;
+        text.text = "sdfdsf";
+        console.log(text);
+
         askLUIS(req.query.q)
             .then(function (data) {
                 console.log("Request RESPONSE => ", data);
