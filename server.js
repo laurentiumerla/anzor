@@ -41,7 +41,7 @@ router.route('/q')
         // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
         // rp(LUIS_EXTRACT_OPTIONS)
 
-        var text = CFMessage.text;
+        var text = new CFMessage;
         text.text = "sdfdsf";
         console.log(text);
 
