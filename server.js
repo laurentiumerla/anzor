@@ -38,7 +38,6 @@ router.route('/q')
         //     json: true // Automatically parses the JSON string in the response 
         // };
         // console.log("Request CALL => ", LUIS_EXTRACT_OPTIONS.uri);
-        console.log("Req => ", req);
         // rp(LUIS_EXTRACT_OPTIONS)
         askLUIS(req.query.q)
             .then(function (data) {
@@ -78,7 +77,7 @@ var askLUIS = function (query) {
     var LUIS_EXTRACT_OPTIONS = {
         uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
         LUIS_APP_ID + '?subscription-key=' +
-        LUIS_SUBSCRIPTION_KEY + '&q=' + req.query.q + '&timezoneOffset=0.0',
+        LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
         json: true // Automatically parses the JSON string in the response 
     };
 
