@@ -162,7 +162,7 @@ var currentConditionMessage = function (data, _returnjson) {
     _returnjson.messages.splice(0, _returnjson.messages.length);
     // _returnjson.messages.push(message);
     // returnjson.messages.push(image);
-    _returnjson.messages.push(quickreply);
+    _returnjson.messages.push(quickReply);
 
     return _returnjson
 }
