@@ -25,7 +25,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
-var locationLUIS, subjectLUIS;
+var locationLUIS = [], subjectLUIS = [];
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
 
@@ -40,7 +40,7 @@ router.get('/', function (req, res) {
 router.route('/q')
     .get(function (req, res) {
 
-        locationLUIS = subjectLUIS = "";
+        locationLUIS = subjectLUIS = [];
 
         returnjson = { "set_variables": {}, "messages": [{ "text": "Nu am inteles mesajul" }] }
 
@@ -50,10 +50,12 @@ router.route('/q')
                     switch (data.entities[i].type) {
                         case "Location":
                             // res.json({ message: data.entities[i].entity });
-                            locationLUIS = data.entities[i].entity;
+                            // locationLUIS = data.entities[i].entity;
+                            locationLUIS.push(data.entities[i].entity);
                             break;
                         case "Subject":
-                            subjectLUIS = data.entities[i].entity;
+                            // subjectLUIS = data.entities[i].entity;
+                            subjectLUIS.push(data.entities[i].entity);
                             break;
                         default:
                             res.json(returnjson);
@@ -61,11 +63,12 @@ router.route('/q')
                 }
 
                 if (!locationLUIS) {
-                    locationLUIS = req.query.location;
+                    // locationLUIS = req.query.location;
+                    locationLUIS.push(req.query.location);
                 }
 
                 if (locationLUIS) {
-                    acw.CityLookUp(locationLUIS)
+                    acw.CityLookUp(locationLUIS[0])
                         .then(function (data) {
                             if (data.length > 0) {
                                 // always return current conditions for the first key found
@@ -129,10 +132,10 @@ var currentConditionMessage = function (data, _returnjson) {
     if (locationLUIS) {
         // set location variable to chatfuel
         // _returnjson.set_variables.push({ "location": "" });
-       _returnjson.set_variables.location = locationLUIS;
+       _returnjson.set_variables.location = locationLUIS[0];
     }
 
-    var _text = 'Sunt ' +
+    var _text = 'In ' + locationLUIS[0] + ' sunt ' +
         data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
         ' si este ' + data[0].WeatherText + '!';
 
