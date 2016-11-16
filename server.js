@@ -62,6 +62,7 @@ router.route('/q')
                     }
                 }
 
+                console.log("locationLUIS => ", locationLUIS);
                 if (locationLUIS.length < 1) {
                     // locationLUIS = req.query.location;
                     locationLUIS.push(req.query.location);
