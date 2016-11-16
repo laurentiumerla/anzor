@@ -193,8 +193,8 @@ var currentConditionsMessage = function (_data, _returnjson) {
         "title": "Prognoza pe 5 zile",
         "block_names": ["Typing", "ASKLUIS"]
     });
-
-    return _returnjson.messages.push(quickReply);
+    _returnjson.messages.push(quickReply);
+    return _returnjson;
 }
 
 var returnACWForecast12Hours = function (_res, _returnjson) {
