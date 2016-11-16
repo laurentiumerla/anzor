@@ -62,12 +62,12 @@ router.route('/q')
                     }
                 }
 
-                if (!locationLUIS) {
+                if (locationLUIS.length < 1) {
                     // locationLUIS = req.query.location;
                     locationLUIS.push(req.query.location);
                 }
 
-                if (locationLUIS) {
+                if (locationLUIS.length > 0) {
                     acw.CityLookUp(locationLUIS[0])
                         .then(function (data) {
                             if (data.length > 0) {
@@ -129,7 +129,7 @@ var currentConditionMessage = function (data, _returnjson) {
     //Clear the message
     _returnjson.messages.splice(0, _returnjson.messages.length);
 
-    if (locationLUIS) {
+    if (locationLUIS.length < 1) {
         // set location variable to chatfuel
         // _returnjson.set_variables.push({ "location": "" });
        _returnjson.set_variables.location = locationLUIS[0];
