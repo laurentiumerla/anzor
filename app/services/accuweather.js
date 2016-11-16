@@ -25,4 +25,14 @@ method.GetCurrentConditions = function (_locationKey) {
     return this.rp({ uri: _uri, json: true });
 }
 
+method.GetForecast12hours = function (_locationKey) {
+    _uri = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/" +
+        _locationKey + 
+        ".json?language=" + this.ACCUWEATHER_LANGUAGE + 
+        "&apikey=" + this.ACCUWEATHER_API_KEY + 
+        "&details=true&metric=true";
+    console.log("ACW Request CALL => ", _uri);
+    return this.rp({ uri: _uri, json: true });
+}
+
 module.exports = ACWService;

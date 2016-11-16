@@ -47,27 +47,9 @@ router.route('/q')
 
         askLUIS(req.query.q)
             .then(function (data) {
-                // for (var i = 0, len = data.entities.length; i < len; i++) {
-                //     switch (data.entities[i].type) {
-                //         case "Location":
-                //             // res.json({ message: data.entities[i].entity });
-                //             // locationLUIS = data.entities[i].entity;
-                //             locationLUIS.push(data.entities[i].entity);
-                //             break;
-                //         case "Subject":
-                //             // subjectLUIS = data.entities[i].entity;
-                //             subjectLUIS.push(data.entities[i].entity);
-                //             break;
-                //         default:
-                //             res.json(returnjson);
-                //     }
-                // }
-
                 extractEntitiesFromLuis(data);
 
-                if (locationLUIS.length < 1) {
-                    locationLUIS.push(req.query.location);
-                }
+                if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
 
                 if (subjectLUIS.indexOf("vremea") != -1) {
                     returnACWCurrentConditions(res, returnjson);
@@ -75,26 +57,6 @@ router.route('/q')
                 } if (subjectLUIS.indexOf("prognoza") != -1) {
 
                 }
-
-                // if (locationLUIS.length > 0) {
-                //     acw.CityLookUp(locationLUIS[0])
-                //         .then(function (data) {
-                //             if (data.length > 0) {
-                //                 // always return current conditions for the first key found
-                //                 acw.GetCurrentConditions(data[0].Key)
-                //                     .then(function (data) {
-                //                         res.json(currentConditionMessage(data, returnjson));
-                //                     })
-                //             }
-                //             else {
-                //                 res.json(returnjson);
-                //             }
-                //         })
-                //         .catch(function (err) {
-                //             console.log("ACW Request ERROR => ", err);
-                //             res.json(returnjson);
-                //         })
-                // }
             })
             .catch(function (err) {
                 // API call failed... 
@@ -124,6 +86,19 @@ var askLUIS = function (query) {
     return httprp(LUIS_EXTRACT_OPTIONS)
 }
 
+var extractEntitiesFromLuis = function (_data) {
+    for (var i = 0, len = _data.entities.length; i < len; i++) {
+        switch (_data.entities[i].type) {
+            case "Location":
+                locationLUIS.push(_data.entities[i].entity);
+                break;
+            case "Subject":
+                subjectLUIS.push(_data.entities[i].entity);
+                break;
+        }
+    }
+}
+
 var httprp = function (__opt) {
     console.log("Request CALL => ", __opt.uri);
     return rp(__opt)
@@ -133,19 +108,40 @@ var multipleLocationChoices = function (data, _returnjson) {
     return currentConditionMessage(data, _returnjson);
 }
 
-var currentConditionMessage = function (data, _returnjson) {
+var returnACWCurrentConditions = function (_res, _returnjson) {
+    if (locationLUIS.length > 0) {
+        acw.CityLookUp(locationLUIS[0])
+            .then(function (data) {
+                if (data.length > 0) {
+                    // always return current conditions for the first key found
+                    acw.GetCurrentConditions(data[0].Key)
+                        .then(function (data) { _res.json(currentConditionsMessage(data, _returnjson)); })
+                }
+                else {
+                    _res.json(_returnjson);
+                }
+            })
+            .catch(function (err) {
+                console.log("ACW Request ERROR => ", err);
+                _res.json(_returnjson);
+            })
+    } else {
+        _res.json(_returnjson);
+    }
+}
+
+var currentConditionsMessage = function (_data, _returnjson) {
 
     //Clear the message
     _returnjson.messages.splice(0, _returnjson.messages.length);
 
     if (locationLUIS.length < 1) {
         // set location variable to chatfuel
-        // _returnjson.set_variables.push({ "location": "" });
         _returnjson.set_variables.location = locationLUIS[0];
     }
 
     var _text = 'In ' + locationLUIS[0] + ' sunt ' +
-        data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
+        _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + data[0].WeatherText + '!';
 
     // var message = cfm.text;
@@ -179,6 +175,9 @@ var currentConditionMessage = function (data, _returnjson) {
     //         data[0].WeatherIcon + "-s.png";
     // }
 
+    // _returnjson.messages.push(message);
+    // _returnjson.messages.push(image);
+
     var quickReply = cfm.quickReply;
     quickReply.text = _text;
     quickReply.quick_replies = [];
@@ -191,37 +190,17 @@ var currentConditionMessage = function (data, _returnjson) {
         "block_names": ["Typing", "ASKLUIS"]
     });
 
-
-    // _returnjson.messages.push(message);
-    // _returnjson.messages.push(image);
-    _returnjson.messages.push(quickReply);
-
-    return _returnjson;
+    return _returnjson.messages.push(quickReply);
 }
 
-var extractEntitiesFromLuis = function (_data) {
-    for (var i = 0, len = _data.entities.length; i < len; i++) {
-        switch (_data.entities[i].type) {
-            case "Location":
-                locationLUIS.push(_data.entities[i].entity);
-                break;
-            case "Subject":
-                subjectLUIS.push(_data.entities[i].entity);
-                break;
-        }
-    }
-}
-
-var returnACWCurrentConditions = function (_res, _returnjson) {
+var returnACWForecast12Hours = function (_res, _returnjson) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
-                    acw.GetCurrentConditions(data[0].Key)
-                        .then(function (data) {
-                            _res.json(currentConditionMessage(data, _returnjson));
-                        })
+                    acw.GetForecast12Hours(data[0].Key)
+                        .then(function (data) { _res.json(forecast12HoursMessage(data, _returnjson)); })
                 }
                 else {
                     _res.json(_returnjson);
@@ -234,4 +213,47 @@ var returnACWCurrentConditions = function (_res, _returnjson) {
     } else {
         _res.json(_returnjson);
     }
+}
+
+var forecast12HoursMessage = function (_data, _returnjson) {
+    //Clear the message
+    _returnjson.messages.splice(0, _returnjson.messages.length);
+
+    var list = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "list",
+                "top_element_style": "compact",
+                "elements": []
+            }
+        }
+    }
+
+    for (var i = 0, len = _data.length; i < len; i++) {
+        var item = _data[i];
+        var d = new Date(item.DateTime);
+        var h = d.getHours();
+
+        var element = 
+            {
+                "title": "Classic White T-Shirt",
+                "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                "subtitle": "100% Cotton, 200% Comfortable"
+            };
+
+        element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value + item.Temperature.Unit;
+        element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
+        element.subtitle = item.IconPhrase;
+
+        list.attachment.payload.elements.push(element);
+    }
+
+    return _returnjson.messages.push(list);
+}
+
+var returnACWForecast5Days = function (_res, _returnjson) {
+}
+
+var forecast5DaysMessage = function (_data, _returnjson) {
 }
