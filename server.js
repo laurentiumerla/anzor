@@ -29,7 +29,7 @@ var locationLUIS, subjectLUIS;
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
 
-var returnjson = { "messages": [{ "text": "Nu am inteles mesajul" }] }
+var returnjson = { "set_variables": {}, "messages": [{ "text": "Nu am inteles mesajul" }] }
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
@@ -42,7 +42,7 @@ router.route('/q')
 
         locationLUIS = subjectLUIS = "";
 
-        returnjson = { "messages": [{ "text": "Nu am inteles mesajul" }] }
+        returnjson = { "set_variables": {}, "messages": [{ "text": "Nu am inteles mesajul" }] }
 
         askLUIS(req.query.q)
             .then(function (data) {
@@ -132,7 +132,8 @@ var currentConditionMessage = function (data, _returnjson) {
             _returnjson.set_variables.splice(0, _returnjson.set_variables.length);
         }
 
-        _returnjson.push({ "set_variables": { "location": locationLUIS }});
+        _returnjson.set_variables.push({ "location": "" });
+       _returnjson.set_variables.location = locationLUIS;
     }
 
     var _text = 'Sunt ' +
