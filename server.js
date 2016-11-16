@@ -55,7 +55,11 @@ router.route('/q')
                     returnACWCurrentConditions(res, returnjson);
 
                 } if (subjectLUIS.indexOf("prognoza") != -1) {
-
+                    if (subjectLUIS.indexOf("zile") != -1) {
+                        returnACWForecast12Hours(res, returnjson);
+                    } else if (subjectLUIS.indexOf("ore") != -1) {
+                        returnACWForecast5Days(res, returnjson);
+                    }
                 }
             })
             .catch(function (err) {
@@ -235,7 +239,7 @@ var forecast12HoursMessage = function (_data, _returnjson) {
         var d = new Date(item.DateTime);
         var h = d.getHours();
 
-        var element = 
+        var element =
             {
                 "title": "Classic White T-Shirt",
                 "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
