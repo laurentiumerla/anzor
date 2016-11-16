@@ -148,7 +148,7 @@ var currentConditionsMessage = function (_data, _returnjson) {
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + _data[0].WeatherText + '!';
 
-    console.log_(_text);
+    console.log(_text);
 
     // var message = cfm.text;
     // message.text = 'Sunt ' +
