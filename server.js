@@ -25,6 +25,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
+var locationLUIS, subjectLUIS;
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
 
@@ -38,7 +39,9 @@ router.get('/', function (req, res) {
 // more routes for our API will happen here
 router.route('/q')
     .get(function (req, res) {
-        var location, subject;
+
+        locationLUIS = subjectLUIS = "";
+
         returnjson = { "messages": [{ "text": "Nu am inteles mesajul" }] }
 
         askLUIS(req.query.q)
@@ -47,41 +50,27 @@ router.route('/q')
                     switch (data.entities[i].type) {
                         case "Location":
                             // res.json({ message: data.entities[i].entity });
-                            location = data.entities[i].entity;
+                            locationLUIS = data.entities[i].entity;
                             break;
                         case "Subject":
-                            subject = data.entities[i].entity;
+                            subjectLUIS = data.entities[i].entity;
                             break;
                         default:
                             res.json(returnjson);
                     }
                 }
 
-                if (location) {
-                    acw.CityLookUp(location)
+                if (!locationLUIS) {
+                    locationLUIS = req.query.location;
+                }
+
+                if (locationLUIS) {
+                    acw.CityLookUp(locationLUIS)
                         .then(function (data) {
                             if (data.length > 0) {
                                 // always return current conditions for the first key found
                                 acw.GetCurrentConditions(data[0].Key)
                                     .then(function (data) {
-                                        // var message = cfm.text;
-                                        // message.text = 'Sunt ' +
-                                        //     data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
-                                        //     ' si este ' + data[0].WeatherText + '!';
-
-                                        // var image = cfm.image;
-                                        // if (data[0].WeatherIcon < 10) {
-                                        //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
-                                        //         data[0].WeatherIcon + "-s.png";
-                                        // } else {
-                                        //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
-                                        //         data[0].WeatherIcon + "-s.png";
-                                        // }
-
-                                        // returnjson.messages.splice(0, returnjson.messages.length);
-                                        // returnjson.messages.push(message);
-                                        // returnjson.messages.push(image);
-                                        // res.json(returnjson);
                                         res.json(currentConditionMessage(data, returnjson));
                                     })
                             }
@@ -93,8 +82,6 @@ router.route('/q')
                             console.log("ACW Request ERROR => ", err);
                             res.json(returnjson);
                         })
-                } else {
-                    res.json(returnjson);
                 }
             })
             .catch(function (err) {
@@ -130,11 +117,46 @@ var httprp = function (__opt) {
     return rp(__opt)
 }
 
+var multipleLocationChoices = function (data, _returnjson) {
+    return currentConditionMessage(data, _returnjson);
+}
+
 var currentConditionMessage = function (data, _returnjson) {
+
+    //Clear the message
+    _returnjson.messages.splice(0, _returnjson.messages.length);
+
+    if (locationLUIS) {
+        // set location variable to chatfuel
+        if (_returnjson.set_variables) {
+            _returnjson.set_variables.splice(0, _returnjson.set_variables.length);
+        }
+
+        _returnjson.push({ "set_variables": { "location": locationLUIS }});
+    }
 
     var _text = 'Sunt ' +
         data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
         ' si este ' + data[0].WeatherText + '!';
+
+    // var message = cfm.text;
+    // message.text = 'Sunt ' +
+    //     data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
+    //     ' si este ' + data[0].WeatherText + '!';
+
+    // var image = cfm.image;
+    // if (data[0].WeatherIcon < 10) {
+    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
+    //         data[0].WeatherIcon + "-s.png";
+    // } else {
+    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
+    //         data[0].WeatherIcon + "-s.png";
+    // }
+
+    // returnjson.messages.splice(0, returnjson.messages.length);
+    // returnjson.messages.push(message);
+    // returnjson.messages.push(image);
+    // res.json(returnjson);
 
     // var message = cfm.text;
     // message.text = _text;
@@ -152,15 +174,15 @@ var currentConditionMessage = function (data, _returnjson) {
     quickReply.text = _text;
     quickReply.quick_replies = [];
     quickReply.quick_replies.push({
-        "title": "Hourly Forecast",
-        "block_names": ["Block1"]
+        "title": "Prognoza pe ore",
+        "block_names": ["Typing", "ASKLUIS"]
     });
     quickReply.quick_replies.push({
-        "title": "5-day forecast",
-        "block_names": ["Block1"]
+        "title": "Prognoza pe 5 zile",
+        "block_names": ["Typing", "ASKLUIS"]
     });
 
-    _returnjson.messages.splice(0, _returnjson.messages.length);
+
     // _returnjson.messages.push(message);
     // _returnjson.messages.push(image);
     _returnjson.messages.push(quickReply);

@@ -107,5 +107,4 @@ method.gallery = {
         }
     }
 }
-
 module.exports = CFMessage;
