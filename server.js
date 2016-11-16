@@ -47,47 +47,54 @@ router.route('/q')
 
         askLUIS(req.query.q)
             .then(function (data) {
-                for (var i = 0, len = data.entities.length; i < len; i++) {
-                    switch (data.entities[i].type) {
-                        case "Location":
-                            // res.json({ message: data.entities[i].entity });
-                            // locationLUIS = data.entities[i].entity;
-                            locationLUIS.push(data.entities[i].entity);
-                            break;
-                        case "Subject":
-                            // subjectLUIS = data.entities[i].entity;
-                            subjectLUIS.push(data.entities[i].entity);
-                            break;
-                        default:
-                            res.json(returnjson);
-                    }
-                }
+                // for (var i = 0, len = data.entities.length; i < len; i++) {
+                //     switch (data.entities[i].type) {
+                //         case "Location":
+                //             // res.json({ message: data.entities[i].entity });
+                //             // locationLUIS = data.entities[i].entity;
+                //             locationLUIS.push(data.entities[i].entity);
+                //             break;
+                //         case "Subject":
+                //             // subjectLUIS = data.entities[i].entity;
+                //             subjectLUIS.push(data.entities[i].entity);
+                //             break;
+                //         default:
+                //             res.json(returnjson);
+                //     }
+                // }
 
-                console.log("locationLUIS => ", locationLUIS);
+                extractEntitiesFromLuis(data);
+
                 if (locationLUIS.length < 1) {
-                    // locationLUIS = req.query.location;
                     locationLUIS.push(req.query.location);
                 }
 
-                if (locationLUIS.length > 0) {
-                    acw.CityLookUp(locationLUIS[0])
-                        .then(function (data) {
-                            if (data.length > 0) {
-                                // always return current conditions for the first key found
-                                acw.GetCurrentConditions(data[0].Key)
-                                    .then(function (data) {
-                                        res.json(currentConditionMessage(data, returnjson));
-                                    })
-                            }
-                            else {
-                                res.json(returnjson);
-                            }
-                        })
-                        .catch(function (err) {
-                            console.log("ACW Request ERROR => ", err);
-                            res.json(returnjson);
-                        })
+                if (subjectLUIS.indexOf("vremea") != -1) {
+                    returnACWCurrentConditions(res, returnjson);
+
+                } if (subjectLUIS.indexOf("prognoza") != -1) {
+
                 }
+
+                // if (locationLUIS.length > 0) {
+                //     acw.CityLookUp(locationLUIS[0])
+                //         .then(function (data) {
+                //             if (data.length > 0) {
+                //                 // always return current conditions for the first key found
+                //                 acw.GetCurrentConditions(data[0].Key)
+                //                     .then(function (data) {
+                //                         res.json(currentConditionMessage(data, returnjson));
+                //                     })
+                //             }
+                //             else {
+                //                 res.json(returnjson);
+                //             }
+                //         })
+                //         .catch(function (err) {
+                //             console.log("ACW Request ERROR => ", err);
+                //             res.json(returnjson);
+                //         })
+                // }
             })
             .catch(function (err) {
                 // API call failed... 
@@ -134,7 +141,7 @@ var currentConditionMessage = function (data, _returnjson) {
     if (locationLUIS.length < 1) {
         // set location variable to chatfuel
         // _returnjson.set_variables.push({ "location": "" });
-       _returnjson.set_variables.location = locationLUIS[0];
+        _returnjson.set_variables.location = locationLUIS[0];
     }
 
     var _text = 'In ' + locationLUIS[0] + ' sunt ' +
@@ -190,4 +197,41 @@ var currentConditionMessage = function (data, _returnjson) {
     _returnjson.messages.push(quickReply);
 
     return _returnjson;
+}
+
+var extractEntitiesFromLuis = function (_data) {
+    for (var i = 0, len = _data.entities.length; i < len; i++) {
+        switch (_data.entities[i].type) {
+            case "Location":
+                locationLUIS.push(_data.entities[i].entity);
+                break;
+            case "Subject":
+                subjectLUIS.push(_data.entities[i].entity);
+                break;
+        }
+    }
+}
+
+var returnACWCurrentConditions = function (_res, _returnjson) {
+    if (locationLUIS.length > 0) {
+        acw.CityLookUp(locationLUIS[0])
+            .then(function (data) {
+                if (data.length > 0) {
+                    // always return current conditions for the first key found
+                    acw.GetCurrentConditions(data[0].Key)
+                        .then(function (data) {
+                            _res.json(currentConditionMessage(data, _returnjson));
+                        })
+                }
+                else {
+                    _res.json(_returnjson);
+                }
+            })
+            .catch(function (err) {
+                console.log("ACW Request ERROR => ", err);
+                _res.json(_returnjson);
+            })
+    } else {
+        _res.json(_returnjson);
+    }
 }
