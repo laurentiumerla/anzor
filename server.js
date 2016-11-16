@@ -55,9 +55,9 @@ router.route('/q')
                     returnACWCurrentConditions(res, returnjson);
 
                 } if (subjectLUIS.indexOf("prognoza") != -1) {
-                    if (subjectLUIS.indexOf("zile") != -1) {
+                    if (subjectLUIS.indexOf("ore") != -1) {
                         returnACWForecast12Hours(res, returnjson);
-                    } else if (subjectLUIS.indexOf("ore") != -1) {
+                    } else if (subjectLUIS.indexOf("zile") != -1) {
                         returnACWForecast5Days(res, returnjson);
                     }
                 }
@@ -147,8 +147,6 @@ var currentConditionsMessage = function (_data, _returnjson) {
     var _text = 'In ' + locationLUIS[0] + ' sunt ' +
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + _data[0].WeatherText + '!';
-
-    console.log(_text);
 
     // var message = cfm.text;
     // message.text = 'Sunt ' +
