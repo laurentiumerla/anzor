@@ -40,7 +40,8 @@ router.get('/', function (req, res) {
 router.route('/q')
     .get(function (req, res) {
 
-        locationLUIS = subjectLUIS = [];
+        locationLUIS = [];
+        subjectLUIS = [];
 
         returnjson = { "set_variables": {}, "messages": [{ "text": "Nu am inteles mesajul" }] }
 
