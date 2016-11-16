@@ -128,10 +128,6 @@ var currentConditionMessage = function (data, _returnjson) {
 
     if (locationLUIS) {
         // set location variable to chatfuel
-        if (_returnjson.set_variables) {
-            _returnjson.set_variables.splice(0, _returnjson.set_variables.length);
-        }
-
         _returnjson.set_variables.push({ "location": "" });
        _returnjson.set_variables.location = locationLUIS;
     }
