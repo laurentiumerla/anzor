@@ -146,7 +146,7 @@ var currentConditionsMessage = function (_data, _returnjson) {
 
     var _text = 'In ' + locationLUIS[0] + ' sunt ' +
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
-        ' si este ' + data[0].WeatherText + '!';
+        ' si este ' + _data[0].WeatherText + '!';
 
     // var message = cfm.text;
     // message.text = 'Sunt ' +
