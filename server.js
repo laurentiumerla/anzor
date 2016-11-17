@@ -142,9 +142,9 @@ var extractEntitiesFromLuis = function (_data) {
     }
 }
 
-var httprp = function (__opt) {
-    console.log("Request CALL => ", __opt.uri);
-    return rp(__opt)
+var httprp = function (_opt) {
+    console.log("Request CALL => ", _opt.uri);
+    return rp(_opt);
 }
 
 var multipleLocationChoices = function (data, _returnjson) {
