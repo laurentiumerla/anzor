@@ -231,11 +231,14 @@ var currentConditionsMessage = function (_data, _senderID) {
     var quickReply = cfm.quickReply;
     message.quick_replies.push({
         "content_type": "text",
-        "title": "Prognoza pe ore"
+        "title": "Prognoza pe ore",
+        "payload":"PROGNOZA_PE_ORE"
     });
     message.quick_replies.push({
         "content_type": "text",
-        "title": "Prognoza pe 5 zile"
+        "title": "Prognoza pe 5 zile",
+        "payload": "PROGNOZA_PE_ZILE"
+        
     });
 
     // return _returnjson;
