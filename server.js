@@ -390,7 +390,7 @@ function sendTextMessage(recipientId, messageText) {
             text: messageText
         }
     };
-
+    console.log(messageData);
     callSendAPI(messageData);
 }
 
