@@ -96,7 +96,7 @@ app.get('/webhook/', function (req, res) {
     //     res.send(req.query['hub.challenge'])
     // }
     // res.send('Error, wrong token')
-
+    console.log(req);
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
         console.log("Validating webhook");
