@@ -249,7 +249,7 @@ var forecastHoursMessage = function (_data, _senderID) {
         var d = new Date(item.DateTime);
         var h = d.getHours();
 
-        if (i > 4) { break }
+        if (i > 3) { break }
 
         var element =
             {
