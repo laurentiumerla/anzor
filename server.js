@@ -249,6 +249,8 @@ var forecastHoursMessage = function (_data, _senderID) {
         var d = new Date(item.DateTime);
         var h = d.getHours();
 
+        if (i > 4) { return }
+
         var element =
             {
                 "title": "Classic White T-Shirt",
