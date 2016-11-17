@@ -185,7 +185,7 @@ var multipleLocationChoices = function (data, _returnjson) {
 //     }
 // }
 
-function currentConditionsMessage (_data, _senderID) {
+function currentConditionsMessage(_data, _senderID) {
 
     var message = { "text": "", "quick_replies": [] }
 
@@ -195,15 +195,15 @@ function currentConditionsMessage (_data, _senderID) {
     message.quick_replies.push({
         "content_type": "text",
         "title": "Prognoza pe ore",
-        "payload":"PROGNOZA_PE_ORE"
+        "payload": "PROGNOZA_PE_ORE"
     });
     message.quick_replies.push({
         "content_type": "text",
         "title": "Prognoza pe 5 zile",
         "payload": "PROGNOZA_PE_ZILE"
-        
+
     });
-    
+
     sendGenericMessage(_senderID, message);
 }
 
@@ -303,7 +303,7 @@ function receivedMessage(event) {
                 case (subjectLUIS.indexOf("prognoza") != -1):
                     switch (true) {
                         case (subjectLUIS.indexOf("ore") != -1):
-                            returnACWForecast12Hours(res, returnjson);
+                            ACWForecast12Hours(senderID);
                             break;
                         case (subjectLUIS.indexOf("zile") != -1):
                             returnACWForecast5Days(res, returnjson);
@@ -356,7 +356,7 @@ function sendTextMessage(recipientId, messageText) {
             text: messageText
         }
     };
-    
+
     callSendAPI(messageData);
 }
 
@@ -383,7 +383,7 @@ function callSendAPI(messageData) {
     });
 }
 
-function ACWCurrentConditions (_senderID) {
+function ACWCurrentConditions(_senderID) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
@@ -405,7 +405,7 @@ function ACWCurrentConditions (_senderID) {
     }
 }
 
-function ACWForecast12Hours (_senderID) {
+function ACWForecast12Hours(_senderID) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
