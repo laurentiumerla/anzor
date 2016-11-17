@@ -40,27 +40,39 @@ router.get('/', function (req, res) {
 router.route('/q')
     .get(function (req, res) {
 
-        locationLUIS = [];
-        subjectLUIS = [];
-
         returnjson = { "set_variables": {}, "messages": [{ "text": "Nu am inteles mesajul" }] }
 
         askLUIS(req.query.q)
             .then(function (data) {
-                extractEntitiesFromLuis(data);
+                extractEntitiesFromLuis(data); //locationLUIS subjectLUIS
 
                 if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
 
-                if (subjectLUIS.indexOf("vremea") != -1) {
-                    returnACWCurrentConditions(res, returnjson);
-
-                } if (subjectLUIS.indexOf("prognoza") != -1) {
-                    if (subjectLUIS.indexOf("ore") != -1) {
-                        returnACWForecast12Hours(res, returnjson);
-                    } else if (subjectLUIS.indexOf("zile") != -1) {
-                        returnACWForecast5Days(res, returnjson);
-                    }
+                switch (true) {
+                    case (subjectLUIS.indexOf("vremea") != -1):
+                        returnACWCurrentConditions(res, returnjson);
+                        break;
+                    case (subjectLUIS.indexOf("prognoza") != -1):
+                        switch (true) {
+                            case (subjectLUIS.indexOf("ore") != -1):
+                                returnACWForecast12Hours(res, returnjson);
+                                break;
+                            case (subjectLUIS.indexOf("zile") != -1):
+                                returnACWForecast5Days(res, returnjson);
+                                break;
+                        }
+                        break;
                 }
+
+                // if (subjectLUIS.indexOf("vremea") != -1) { returnACWCurrentConditions(res, returnjson); }
+
+                // if (subjectLUIS.indexOf("prognoza") != -1) {
+                //     if (subjectLUIS.indexOf("ore") != -1) {
+                //         returnACWForecast12Hours(res, returnjson);
+                //     } else if (subjectLUIS.indexOf("zile") != -1) {
+                //         returnACWForecast5Days(res, returnjson);
+                //     }
+                // }
             })
             .catch(function (err) {
                 // API call failed... 
@@ -91,6 +103,8 @@ var askLUIS = function (query) {
 }
 
 var extractEntitiesFromLuis = function (_data) {
+    locationLUIS = [];
+    subjectLUIS = [];
     for (var i = 0, len = _data.entities.length; i < len; i++) {
         switch (_data.entities[i].type) {
             case "Location":
