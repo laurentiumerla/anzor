@@ -332,7 +332,7 @@ function receivedMessage(event) {
 
             switch (true) {
                 case (subjectLUIS.indexOf("vremea") != -1):
-                    returnACWCurrentConditions(res, returnjson, senderID);
+                    ACWCurrentConditions(senderID);
                     break;
                 // case (subjectLUIS.indexOf("prognoza") != -1):
                 //     switch (true) {
@@ -416,7 +416,7 @@ function callSendAPI(messageData) {
     });
 }
 
-var ACWCurrentConditions = function (_senderID) {
+function ACWCurrentConditions (_senderID) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
