@@ -255,6 +255,8 @@ var forecastHoursMessage = function (_data, _returnjson) {
         var d = new Date(item.DateTime);
         var h = d.getHours();
 
+        console.log(item);
+
         var element =
             {
                 "title": "Classic White T-Shirt",
