@@ -239,7 +239,7 @@ var currentConditionsMessage = function (_data, _senderID) {
     });
 
     // return _returnjson;
-    sendGenericMessage(senderID, message);
+    sendGenericMessage(_senderID, message);
 }
 
 var returnACWForecast12Hours = function (_res, _returnjson) {
