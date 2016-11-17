@@ -48,6 +48,8 @@ router.route('/q')
 
                 if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
 
+                console.log(subjectLUIS);
+
                 switch (true) {
                     case (subjectLUIS.indexOf("vremea") != -1):
                         returnACWCurrentConditions(res, returnjson);
