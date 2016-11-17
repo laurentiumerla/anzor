@@ -270,8 +270,8 @@ var forecastHoursMessage = function (_data, _returnjson) {
 
         list.attachment.payload.elements.push(element);
     }
-
-    return _returnjson.messages.push(list);
+    _returnjson.messages.push(list);
+    return _returnjson;
 }
 
 var returnACWForecast5Days = function (_res, _returnjson) {
