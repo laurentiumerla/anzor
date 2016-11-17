@@ -93,33 +93,33 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook', function (req, res) {
-  var data = req.body;
+    var data = req.body;
 
-  // Make sure this is a page subscription
-  if (data.object === 'page') {
+    // Make sure this is a page subscription
+    if (data.object === 'page') {
 
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach(function(entry) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
+        // Iterate over each entry - there may be multiple if batched
+        data.entry.forEach(function (entry) {
+            var pageID = entry.id;
+            var timeOfEvent = entry.time;
 
-      // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          receivedMessage(event);
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
+            // Iterate over each messaging event
+            entry.messaging.forEach(function (event) {
+                if (event.message) {
+                    receivedMessage(event);
+                } else {
+                    console.log("Webhook received unknown event: ", event);
+                }
+            });
+        });
 
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
-    res.sendStatus(200);
-  }
+        // Assume all went well.
+        //
+        // You must send back a 200, within 20 seconds, to let us know
+        // you've successfully received the callback. Otherwise, the request
+        // will time out and we will keep trying to resend.
+        res.sendStatus(200);
+    }
 });
 
 // START THE SERVER
@@ -163,14 +163,14 @@ var multipleLocationChoices = function (data, _returnjson) {
     return currentConditionMessage(data, _returnjson);
 }
 
-var returnACWCurrentConditions = function (_res, _returnjson) {
+var returnACWCurrentConditions = function (_res, _returnjson, _senderID) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
                     acw.GetCurrentConditions(data[0].Key)
-                        .then(function (data) { _res.json(currentConditionsMessage(data, _returnjson)); })
+                        .then(function (data) { _res.json(currentConditionsMessage(data, _returnjson, _senderID)); })
                 }
                 else {
                     _res.json(_returnjson);
@@ -185,10 +185,12 @@ var returnACWCurrentConditions = function (_res, _returnjson) {
     }
 }
 
-var currentConditionsMessage = function (_data, _returnjson) {
+var currentConditionsMessage = function (_data, _returnjson, _senderID) {
 
     //Clear the message
     _returnjson.messages.splice(0, _returnjson.messages.length);
+
+    _returnjson = { "text": "" }
 
     if (locationLUIS.length < 1) {
         // set location variable to chatfuel
@@ -211,7 +213,8 @@ var currentConditionsMessage = function (_data, _returnjson) {
         "block_names": ["Typing", "ASKLUIS"]
     });
     _returnjson.messages.push(quickReply);
-    return _returnjson;
+    // return _returnjson;
+    sendGenericMessage(senderID, _returnjson);
 }
 
 var returnACWForecast12Hours = function (_res, _returnjson) {
@@ -280,72 +283,110 @@ var forecast5DaysMessage = function (_data, _returnjson) {
 }
 
 function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+    console.log("Received message for user %d and page %d at %d with message:",
+        senderID, recipientID, timeOfMessage);
+    console.log(JSON.stringify(message));
 
-  var messageId = message.mid;
+    var messageId = message.mid;
 
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
+    var messageText = message.text;
+    var messageAttachments = message.attachments;
 
-  if (messageText) {
+    askLUIS(messageText)
+        .then(function (data) {
+            extractEntitiesFromLuis(data); //locationLUIS subjectLUIS
 
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the example. Otherwise, just echo the text we received.
-    switch (messageText) {
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
+            if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
 
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
-  }
+            console.log(subjectLUIS);
+
+            switch (true) {
+                case (subjectLUIS.indexOf("vremea") != -1):
+                    returnACWCurrentConditions(res, returnjson, senderID);
+                    break;
+                case (subjectLUIS.indexOf("prognoza") != -1):
+                    switch (true) {
+                        case (subjectLUIS.indexOf("ore") != -1):
+                            returnACWForecast12Hours(res, returnjson);
+                            break;
+                        case (subjectLUIS.indexOf("zile") != -1):
+                            returnACWForecast5Days(res, returnjson);
+                            break;
+                    }
+                    break;
+            }
+        })
+        .catch(function (err) {
+            // API call failed... 
+            console.log(err);
+            res.json(returnjson);
+        });
+
+    // if (messageText) {
+
+    //     // If we receive a text message, check to see if it matches a keyword
+    //     // and send back the example. Otherwise, just echo the text we received.
+    //     switch (messageText) {
+    //         case 'generic':
+    //             sendGenericMessage(senderID);
+    //             break;
+
+    //         default:
+    //             sendTextMessage(senderID, messageText);
+    //     }
+    // } else if (messageAttachments) {
+    //     sendTextMessage(senderID, "Message with attachment received");
+    // }
 }
 
 function sendGenericMessage(recipientId, messageText) {
-  // To be expanded in later sections
+    // To be expanded in later sections
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: messageText
+    };
+
+    callSendAPI(messageData);
 }
 
 function sendTextMessage(recipientId, messageText) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: messageText
+        }
+    };
 
-  callSendAPI(messageData);
+    callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {
-  request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: FACEBOOK_PAGE_ACCESS_TOKEN },
-    method: 'POST',
-    json: messageData
+    request({
+        uri: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: FACEBOOK_PAGE_ACCESS_TOKEN },
+        method: 'POST',
+        json: messageData
 
-  }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var recipientId = body.recipient_id;
+            var messageId = body.message_id;
 
-      console.log("Successfully sent generic message with id %s to recipient %s", 
-        messageId, recipientId);
-    } else {
-      console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
-    }
-  });  
+            console.log("Successfully sent generic message with id %s to recipient %s",
+                messageId, recipientId);
+        } else {
+            console.error("Unable to send message.");
+            console.error(response);
+            console.error(error);
+        }
+    });
 }
