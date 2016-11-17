@@ -8,6 +8,7 @@ var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
+var request = require('request');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
 var ACWService = require('./app/services/accuweather');
