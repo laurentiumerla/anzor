@@ -220,7 +220,7 @@ var returnACWForecast12Hours = function (_res, _returnjson) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
                     acw.GetForecastHours(data[0].Key)
-                        .then(function (data) { _res.json(forecast12HoursMessage(data, _returnjson)); })
+                        .then(function (data) { _res.json(forecastHoursMessage(data, _returnjson)); })
                 }
                 else {
                     _res.json(_returnjson);
@@ -235,7 +235,7 @@ var returnACWForecast12Hours = function (_res, _returnjson) {
     }
 }
 
-var forecast12HoursMessage = function (_data, _returnjson) {
+var forecastHoursMessage = function (_data, _returnjson) {
     //Clear the message
     _returnjson.messages.splice(0, _returnjson.messages.length);
 
