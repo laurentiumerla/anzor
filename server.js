@@ -87,6 +87,14 @@ router.route('/q')
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
+// for Facebook verification
+app.get('/webhook/', function (req, res) {
+    if (req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
+        res.send(req.query['hub.challenge'])
+    }
+    res.send('Error, wrong token')
+})
+
 // START THE SERVER
 // =============================================================================
 app.listen(port);
@@ -254,8 +262,6 @@ var forecastHoursMessage = function (_data, _returnjson) {
         var item = _data[i];
         var d = new Date(item.DateTime);
         var h = d.getHours();
-
-        console.log(item);
 
         var element =
             {
