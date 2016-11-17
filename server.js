@@ -38,8 +38,6 @@ router.get('/', function (req, res) {
 
 // more routes for our API will happen here
 
-
-
 router.route('/q')
     .get(function (req, res) {
 
@@ -92,11 +90,6 @@ app.use('/api', router);
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
-    // if (req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
-    //     res.send(req.query['hub.challenge'])
-    // }
-    // res.send('Error, wrong token')
-    console.log(req);
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
         console.log("Validating webhook");
@@ -109,6 +102,36 @@ app.get('/webhook/', function (req, res) {
         res.sendStatus(403);
     }
 })
+
+app.post('/webhook', function (req, res) {
+  var data = req.body;
+
+  // Make sure this is a page subscription
+  if (data.object === 'page') {
+
+    // Iterate over each entry - there may be multiple if batched
+    data.entry.forEach(function(entry) {
+      var pageID = entry.id;
+      var timeOfEvent = entry.time;
+
+      // Iterate over each messaging event
+      entry.messaging.forEach(function(event) {
+        if (event.message) {
+          receivedMessage(event);
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
+
+    // Assume all went well.
+    //
+    // You must send back a 200, within 20 seconds, to let us know
+    // you've successfully received the callback. Otherwise, the request
+    // will time out and we will keep trying to resend.
+    res.sendStatus(200);
+  }
+});
 
 // START THE SERVER
 // =============================================================================
@@ -302,35 +325,35 @@ var forecast5DaysMessage = function (_data, _returnjson) {
 }
 
 
-var webhookProcess = function (_req, _res) {
-    var data = _req.body;
+app.post('/webhook', function (req, res) {
+  var data = req.body;
 
-    // Make sure this is a page subscription
-    if (data.object === 'page') {
+  // Make sure this is a page subscription
+  if (data.object === 'page') {
 
-        // Iterate over each entry - there may be multiple if batched
-        data.entry.forEach(function (entry) {
-            var pageID = entry.id;
-            var timeOfEvent = entry.time;
+    // Iterate over each entry - there may be multiple if batched
+    data.entry.forEach(function(entry) {
+      var pageID = entry.id;
+      var timeOfEvent = entry.time;
 
-            // Iterate over each messaging event
-            entry.messaging.forEach(function (event) {
-                if (event.message) {
-                    receivedMessage(event);
-                } else {
-                    console.log("Webhook received unknown event: ", event);
-                }
-            }); 
-        });
+      // Iterate over each messaging event
+      entry.messaging.forEach(function(event) {
+        if (event.message) {
+          receivedMessage(event);
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+      });
+    });
 
-        // Assume all went well.
-        //
-        // You must send back a 200, within 20 seconds, to let us know
-        // you've successfully received the callback. Otherwise, the request
-        // will time out and we will keep trying to resend.
-        _res.sendStatus(200);
-    }
-}
+    // Assume all went well.
+    //
+    // You must send back a 200, within 20 seconds, to let us know
+    // you've successfully received the callback. Otherwise, the request
+    // will time out and we will keep trying to resend.
+    res.sendStatus(200);
+  }
+});
 
 var receivedMessage = function (event) {
   // Putting a stub for now, we'll expand it in the following steps
