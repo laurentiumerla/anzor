@@ -25,6 +25,8 @@ var router = express.Router();              // get an instance of the express Ro
 
 var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
 var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
+var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
+var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
 var locationLUIS = [], subjectLUIS = [];
 var acw = new ACWService(rp);
 var cfm = new CFMessage;
@@ -37,7 +39,6 @@ router.get('/', function (req, res) {
 });
 
 // more routes for our API will happen here
-
 router.route('/q')
     .get(function (req, res) {
 
@@ -66,16 +67,6 @@ router.route('/q')
                         }
                         break;
                 }
-
-                // if (subjectLUIS.indexOf("vremea") != -1) { returnACWCurrentConditions(res, returnjson); }
-
-                // if (subjectLUIS.indexOf("prognoza") != -1) {
-                //     if (subjectLUIS.indexOf("ore") != -1) {
-                //         returnACWForecast12Hours(res, returnjson);
-                //     } else if (subjectLUIS.indexOf("zile") != -1) {
-                //         returnACWForecast5Days(res, returnjson);
-                //     }
-                // }
             })
             .catch(function (err) {
                 // API call failed... 
@@ -91,12 +82,9 @@ app.use('/api', router);
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
-        req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
+        req.query['hub.verify_token'] === FACEBOOK_VERIFY_TOKEN) {
         console.log("Validating webhook");
         res.status(200).send(req.query['hub.challenge']);
-
-        webhookProcess(req, res);
-
     } else {
         console.error("Failed validation. Make sure the validation tokens match.");
         res.sendStatus(403);
@@ -210,40 +198,6 @@ var currentConditionsMessage = function (_data, _returnjson) {
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + _data[0].WeatherText + '!';
 
-    // var message = cfm.text;
-    // message.text = 'Sunt ' +
-    //     data[0].Temperature.Metric.Value + data[0].Temperature.Metric.Unit +
-    //     ' si este ' + data[0].WeatherText + '!';
-
-    // var image = cfm.image;
-    // if (data[0].WeatherIcon < 10) {
-    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
-    //         data[0].WeatherIcon + "-s.png";
-    // } else {
-    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
-    //         data[0].WeatherIcon + "-s.png";
-    // }
-
-    // returnjson.messages.splice(0, returnjson.messages.length);
-    // returnjson.messages.push(message);
-    // returnjson.messages.push(image);
-    // res.json(returnjson);
-
-    // var message = cfm.text;
-    // message.text = _text;
-
-    // var image = cfm.image;
-    // if (data[0].WeatherIcon < 10) {
-    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/0" +
-    //         data[0].WeatherIcon + "-s.png";
-    // } else {
-    //     image.attachment.payload.url = "http://developer.accuweather.com/sites/default/files/" +
-    //         data[0].WeatherIcon + "-s.png";
-    // }
-
-    // _returnjson.messages.push(message);
-    // _returnjson.messages.push(image);
-
     var quickReply = cfm.quickReply;
     quickReply.text = _text;
     quickReply.quick_replies = [];
@@ -324,38 +278,73 @@ var returnACWForecast5Days = function (_res, _returnjson) {
 var forecast5DaysMessage = function (_data, _returnjson) {
 }
 
+function receivedMessage(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+  var message = event.message;
 
-app.post('/webhook', function (req, res) {
-  var data = req.body;
+  console.log("Received message for user %d and page %d at %d with message:", 
+    senderID, recipientID, timeOfMessage);
+  console.log(JSON.stringify(message));
 
-  // Make sure this is a page subscription
-  if (data.object === 'page') {
+  var messageId = message.mid;
 
-    // Iterate over each entry - there may be multiple if batched
-    data.entry.forEach(function(entry) {
-      var pageID = entry.id;
-      var timeOfEvent = entry.time;
+  var messageText = message.text;
+  var messageAttachments = message.attachments;
 
-      // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
-        if (event.message) {
-          receivedMessage(event);
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
-      });
-    });
+  if (messageText) {
 
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
-    res.sendStatus(200);
+    // If we receive a text message, check to see if it matches a keyword
+    // and send back the example. Otherwise, just echo the text we received.
+    switch (messageText) {
+      case 'generic':
+        sendGenericMessage(senderID);
+        break;
+
+      default:
+        sendTextMessage(senderID, messageText);
+    }
+  } else if (messageAttachments) {
+    sendTextMessage(senderID, "Message with attachment received");
   }
-});
+}
 
-var receivedMessage = function (event) {
-  // Putting a stub for now, we'll expand it in the following steps
-  console.log("Message data: ", event.message);
+function sendGenericMessage(recipientId, messageText) {
+  // To be expanded in later sections
+}
+
+function sendTextMessage(recipientId, messageText) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
+function callSendAPI(messageData) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: FACEBOOK_PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+
+      console.log("Successfully sent generic message with id %s to recipient %s", 
+        messageId, recipientId);
+    } else {
+      console.error("Unable to send message.");
+      console.error(response);
+      console.error(error);
+    }
+  });  
 }
