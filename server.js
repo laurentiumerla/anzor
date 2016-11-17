@@ -37,6 +37,16 @@ router.get('/', function (req, res) {
 });
 
 // more routes for our API will happen here
+
+// for Facebook verification
+router.get('/webhook/', function (req, res) {
+    if (req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
+        res.send(req.query['hub.challenge'])
+    }
+    res.send('Error, wrong token')
+})
+
+
 router.route('/q')
     .get(function (req, res) {
 
@@ -86,14 +96,6 @@ router.route('/q')
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
-
-// for Facebook verification
-app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'AnzorWeatherApp2016') {
-        res.send(req.query['hub.challenge'])
-    }
-    res.send('Error, wrong token')
-})
 
 // START THE SERVER
 // =============================================================================
