@@ -185,36 +185,61 @@ var returnACWCurrentConditions = function (_res, _returnjson, _senderID) {
     }
 }
 
-var currentConditionsMessage = function (_data, _returnjson, _senderID) {
+// var currentConditionsMessage = function (_data, _returnjson, _senderID) {
+var currentConditionsMessage = function (_data, _senderID) {
 
     //Clear the message
-    _returnjson.messages.splice(0, _returnjson.messages.length);
+    // _returnjson.messages.splice(0, _returnjson.messages.length);
 
-    _returnjson = { "text": "" }
+    // _returnjson = { "text": "" }
 
-    if (locationLUIS.length < 1) {
-        // set location variable to chatfuel
-        _returnjson.set_variables.location = locationLUIS[0];
-    }
+    // if (locationLUIS.length < 1) {
+    //     // set location variable to chatfuel
+    //     _returnjson.set_variables.location = locationLUIS[0];
+    // }
+
+    // var _text = 'In ' + locationLUIS[0] + ' sunt ' +
+    //     _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
+    //     ' si este ' + _data[0].WeatherText + '!';
+
+    // var quickReply = cfm.quickReply;
+    // quickReply.text = _text;
+    // quickReply.quick_replies = [];
+    // quickReply.quick_replies.push({
+    //     "title": "Prognoza pe ore",
+    //     "block_names": ["Typing", "ASKLUIS"]
+    // });
+    // quickReply.quick_replies.push({
+    //     "title": "Prognoza pe 5 zile",
+    //     "block_names": ["Typing", "ASKLUIS"]
+    // });
+    // _returnjson.messages.push(quickReply);
+
+    // if (locationLUIS.length < 1) {
+    //     // set location variable to chatfuel
+    //     _returnjson.set_variables.location = locationLUIS[0];
+    // }
+
+    var message = { "text": "", "quick_replies": [] }
 
     var _text = 'In ' + locationLUIS[0] + ' sunt ' +
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + _data[0].WeatherText + '!';
 
+    message.text = _text;
+
     var quickReply = cfm.quickReply;
-    quickReply.text = _text;
-    quickReply.quick_replies = [];
-    quickReply.quick_replies.push({
-        "title": "Prognoza pe ore",
-        "block_names": ["Typing", "ASKLUIS"]
+    message.quick_replies.push({
+        "content_type": "text",
+        "title": "Prognoza pe ore"
     });
-    quickReply.quick_replies.push({
-        "title": "Prognoza pe 5 zile",
-        "block_names": ["Typing", "ASKLUIS"]
+    message.quick_replies.push({
+        "content_type": "text",
+        "title": "Prognoza pe 5 zile"
     });
-    _returnjson.messages.push(quickReply);
+
     // return _returnjson;
-    sendGenericMessage(senderID, _returnjson);
+    sendGenericMessage(senderID, message);
 }
 
 var returnACWForecast12Hours = function (_res, _returnjson) {
@@ -309,22 +334,22 @@ function receivedMessage(event) {
                 case (subjectLUIS.indexOf("vremea") != -1):
                     returnACWCurrentConditions(res, returnjson, senderID);
                     break;
-                case (subjectLUIS.indexOf("prognoza") != -1):
-                    switch (true) {
-                        case (subjectLUIS.indexOf("ore") != -1):
-                            returnACWForecast12Hours(res, returnjson);
-                            break;
-                        case (subjectLUIS.indexOf("zile") != -1):
-                            returnACWForecast5Days(res, returnjson);
-                            break;
-                    }
-                    break;
+                // case (subjectLUIS.indexOf("prognoza") != -1):
+                //     switch (true) {
+                //         case (subjectLUIS.indexOf("ore") != -1):
+                //             returnACWForecast12Hours(res, returnjson);
+                //             break;
+                //         case (subjectLUIS.indexOf("zile") != -1):
+                //             returnACWForecast5Days(res, returnjson);
+                //             break;
+                //     }
+                //     break;
             }
         })
         .catch(function (err) {
             // API call failed... 
             console.log(err);
-            res.json(returnjson);
+            // res.json(returnjson);
         });
 
     // if (messageText) {
@@ -389,4 +414,26 @@ function callSendAPI(messageData) {
             console.error(error);
         }
     });
+}
+
+var ACWCurrentConditions = function (_senderID) {
+    if (locationLUIS.length > 0) {
+        acw.CityLookUp(locationLUIS[0])
+            .then(function (data) {
+                if (data.length > 0) {
+                    // always return current conditions for the first key found
+                    acw.GetCurrentConditions(data[0].Key)
+                        .then(function (data) { currentConditionsMessage(data, _senderID); })
+                }
+                else {
+                    // _res.json(_returnjson);
+                }
+            })
+            .catch(function (err) {
+                // console.log("ACW Request ERROR => ", err);
+                // _res.json(_returnjson);
+            })
+    } else {
+        // _res.json(_returnjson);
+    }
 }
