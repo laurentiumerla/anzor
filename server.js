@@ -390,11 +390,12 @@ function sendTextMessage(recipientId, messageText) {
             text: messageText
         }
     };
-    console.log(messageData);
+    
     callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {
+    console.log(messageData);
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: FACEBOOK_PAGE_ACCESS_TOKEN },
