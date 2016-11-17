@@ -259,7 +259,12 @@ var forecastHoursMessage = function (_data, _senderID) {
             };
 
         element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value + item.Temperature.Unit;
-        element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
+        if (item.WeatherIcon < 10) {
+            element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
+        } else {
+            element.image_url = "http://developer.accuweather.com/sites/default/files/" + item.WeatherIcon + "-s.png";
+        }
+
         element.subtitle = item.IconPhrase;
 
         list.attachment.payload.elements.push(element);
