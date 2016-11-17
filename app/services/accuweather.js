@@ -25,7 +25,7 @@ method.GetCurrentConditions = function (_locationKey) {
     return this.rp({ uri: _uri, json: true });
 }
 
-method.GetForecast12hours = function (_locationKey) {
+method.GetForecastHours = function (_locationKey) {
     _uri = "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/" +
         _locationKey + 
         ".json?language=" + this.ACCUWEATHER_LANGUAGE + 

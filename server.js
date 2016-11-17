@@ -219,7 +219,7 @@ var returnACWForecast12Hours = function (_res, _returnjson) {
             .then(function (data) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
-                    acw.GetForecast12Hours(data[0].Key)
+                    acw.GetForecastHours(data[0].Key)
                         .then(function (data) { _res.json(forecast12HoursMessage(data, _returnjson)); })
                 }
                 else {
