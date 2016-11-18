@@ -35,4 +35,14 @@ method.GetForecastHours = function (_locationKey) {
     return this.rp({ uri: _uri, json: true });
 }
 
+method.GetForecastDays = function (_locationKey) {
+    _uri = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" +
+        _locationKey + 
+        ".json?language=" + this.ACCUWEATHER_LANGUAGE + 
+        "&apikey=" + this.ACCUWEATHER_API_KEY + 
+        "&details=true&metric=true";
+    console.log("ACW Request CALL => ", _uri);
+    return this.rp({ uri: _uri, json: true });
+}
+
 module.exports = ACWService;
