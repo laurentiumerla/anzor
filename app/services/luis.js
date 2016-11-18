@@ -8,7 +8,7 @@ function LUISService(_rp) {
     this.LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 }
 
-method.SetData = function(_data){
+method.SetData = function (_data) {
     this.data = _data;
 }
 
@@ -64,8 +64,8 @@ method.GetEntities = function (_entityType) {
                 entityList.push(this.data.entities[i].entity);
                 break;
         }
-        return entityList;
     }
+    return entityList;
 }
 
 module.exports = LUISService;
