@@ -79,7 +79,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
                 "subtitle": "100% Cotton, 200% Comfortable"
             };
 
-        element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value "°";// + item.Temperature.Unit;
+        element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value + "°";// + item.Temperature.Unit;
         if (item.WeatherIcon < 10) {
             element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
         } else {
