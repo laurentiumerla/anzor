@@ -266,6 +266,7 @@ function receivedMessage(event) {
 
             // console.log(subjectLUIS);
             luis.SetData(data);
+            console.log(data);
 
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
