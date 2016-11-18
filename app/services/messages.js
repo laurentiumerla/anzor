@@ -47,7 +47,8 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
 
     list.attachment.payload.elements.push(
         {
-            "title": "Prognoza pe ore in " + _location
+            "title": "Prognoza pe ore in " + _location,
+            "subtitle" : "sub"
         }
     );
 
