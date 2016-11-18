@@ -27,7 +27,7 @@ method.CurrentConditionsMessage = function (_data, _senderID, _location) {
     return message;
 }
 
-method.ForecastHoursMessage = function (_data, _senderID) {
+method.ForecastHoursMessage = function (_data, _senderID, _location) {
 
     var listArray = [];
     // var addListToArray = false;
@@ -38,11 +38,18 @@ method.ForecastHoursMessage = function (_data, _senderID) {
             "type": "template",
             "payload": {
                 "template_type": "list",
-                "top_element_style": "compact",
-                "elements": []
+                // "top_element_style": "compact",
+                "elements": [],
+                "buttons": []
             }
         }
     }
+
+    list.attachment.payload.elements.push(
+        {
+            "title": "Prognoza pe ore in " + _location
+        }
+    );
 
     for (var i = 0, len = _data.length; i < len; i++) {
         var item = _data[i];
@@ -50,7 +57,7 @@ method.ForecastHoursMessage = function (_data, _senderID) {
         var h = d.getHours();
         counter++;
 
-        if (counter > 4) {
+        if (counter > 3) {
             break;
         }
 
@@ -73,7 +80,15 @@ method.ForecastHoursMessage = function (_data, _senderID) {
         list.attachment.payload.elements.push(element);
     }
 
-    listArray.push(list);
+    // listArray.push(list);
+
+    list.attachment.payload.buttons.push(
+        {
+            "title": "Mai mult",
+            "type": "postback",
+            "payload": "payload"
+        }
+    );
 
     return list;
     // return listArray;
