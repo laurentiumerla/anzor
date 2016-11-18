@@ -16,7 +16,7 @@ method.AskLUIS = function (query) {
         json: true // Automatically parses the JSON string in the response 
     };
 
-    return httprp(LUIS_EXTRACT_OPTIONS)
+    return Httprp(LUIS_EXTRACT_OPTIONS);
 }
 
 method.Httprp = function (_opt) {
