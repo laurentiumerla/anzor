@@ -128,7 +128,7 @@ function receivedMessage(event) {
                 case (subjectLUIS.indexOf("prognoza") != -1):
                     switch (true) {
                         case (subjectLUIS.indexOf("ore") != -1):
-                            ACWForecast12Hours(senderID);
+                            ACWForecast12Hours(senderID, 0);
                             break;
                         case (subjectLUIS.indexOf("zile") != -1):
                             // returnACWForecast5Days(res, returnjson);
@@ -214,7 +214,7 @@ function ACWCurrentConditions(_senderID) {
     }
 }
 
-function ACWForecast12Hours(_senderID) {
+function ACWForecast12Hours(_senderID, _fromCounter) {
     if (locationLUIS.length > 0) {
         acw.CityLookUp(locationLUIS[0])
             .then(function (data) {
@@ -222,7 +222,7 @@ function ACWForecast12Hours(_senderID) {
                     // always return current conditions for the first key found
                     acw.GetForecastHours(data[0].Key)
                         .then(function (data) {
-                            sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, locationLUIS[0]));
+                            sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, locationLUIS[0], _fromCounter));
                         })
                 }
                 else {

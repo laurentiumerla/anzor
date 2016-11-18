@@ -62,7 +62,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     );
 
 // Always display 3 items => _fromCounter + 3
-    for (var i = 0, len = _data.length; i < len; i++) {
+    for (var i = _fromCounter, len = _data.length; i < len; i++) {
         var item = _data[i];
         var d = new Date(item.DateTime);
         var h = d.getHours();
@@ -89,6 +89,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
         element.subtitle = item.IconPhrase;
 
         list.attachment.payload.elements.push(element);
+        _fromCounter++;
     }
 
     // listArray.push(list);
