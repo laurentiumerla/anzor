@@ -94,7 +94,7 @@ function receivedPayload(event) {
     var timeOfMessage = event.timestamp;
     var payload = event.postback.payload;
 
-    console.log("Received message for user %d and page %d at %d with message:",
+    console.log("Received payload for user %d and page %d at %d with message:",
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(payload));
 
