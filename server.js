@@ -26,8 +26,6 @@ var port = process.env.PORT || 8080;        // set our port
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-// var LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
-// var LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
 var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
 var locationLUIS = [], subjectLUIS = [];
@@ -90,159 +88,6 @@ app.post('/webhook', function (req, res) {
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
-
-// function askLUIS (query) {
-//     var LUIS_EXTRACT_OPTIONS = {
-//         uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
-//         LUIS_APP_ID + '?subscription-key=' +
-//         LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
-//         json: true // Automatically parses the JSON string in the response 
-//     };
-
-//     return httprp(LUIS_EXTRACT_OPTIONS)
-// }
-
-// var extractEntitiesFromLuis = function (_data) {
-//     locationLUIS = [];
-//     subjectLUIS = [];
-//     for (var i = 0, len = _data.entities.length; i < len; i++) {
-//         switch (_data.entities[i].type) {
-//             case "Location":
-//                 locationLUIS.push(_data.entities[i].entity);
-//                 break;
-//             case "Subject":
-//                 subjectLUIS.push(_data.entities[i].entity);
-//                 break;
-//         }
-//     }
-// }
-
-// function httprp (_opt) {
-//     console.log("Request CALL => ", _opt.uri);
-//     return rp(_opt);
-// }
-
-// var multipleLocationChoices = function (data, _returnjson) {
-//     return currentConditionMessage(data, _returnjson);
-// }
-
-// var returnACWCurrentConditions = function (_res, _returnjson, _senderID) {
-//     if (locationLUIS.length > 0) {
-//         acw.CityLookUp(locationLUIS[0])
-//             .then(function (data) {
-//                 if (data.length > 0) {
-//                     // always return current conditions for the first key found
-//                     acw.GetCurrentConditions(data[0].Key)
-//                         .then(function (data) { _res.json(currentConditionsMessage(data, _returnjson, _senderID)); })
-//                 }
-//                 else {
-//                     _res.json(_returnjson);
-//                 }
-//             })
-//             .catch(function (err) {
-//                 console.log("ACW Request ERROR => ", err);
-//                 _res.json(_returnjson);
-//             })
-//     } else {
-//         _res.json(_returnjson);
-//     }
-// }
-
-// function currentConditionsMessage(_data, _senderID) {
-
-//     var message = { "text": "", "quick_replies": [] }
-
-//     message.text = 'In ' + locationLUIS[0] + ' sunt ' +
-//         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
-//         ' si este ' + _data[0].WeatherText + '!';
-//     message.quick_replies.push({
-//         "content_type": "text",
-//         "title": "Prognoza pe ore",
-//         "payload": "PROGNOZA_PE_ORE"
-//     });
-//     message.quick_replies.push({
-//         "content_type": "text",
-//         "title": "Prognoza pe 5 zile",
-//         "payload": "PROGNOZA_PE_ZILE"
-
-//     });
-
-//     sendGenericMessage(_senderID, message);
-// }
-
-// var returnACWForecast12Hours = function (_res, _returnjson) {
-//     if (locationLUIS.length > 0) {
-//         acw.CityLookUp(locationLUIS[0])
-//             .then(function (data) {
-//                 if (data.length > 0) {
-//                     // always return current conditions for the first key found
-//                     acw.GetForecastHours(data[0].Key)
-//                         .then(function (data) { _res.json(forecastHoursMessage(data, _returnjson)); })
-//                 }
-//                 else {
-//                     _res.json(_returnjson);
-//                 }
-//             })
-//             .catch(function (err) {
-//                 console.log("ACW Request ERROR => ", err);
-//                 _res.json(_returnjson);
-//             })
-//     } else {
-//         _res.json(_returnjson);
-//     }
-// }
-
-// var forecastHoursMessage = function (_data, _senderID) {
-//     //Clear the message
-//     // _returnjson.messages.splice(0, _returnjson.messages.length);
-
-//     var list = {
-//         "attachment": {
-//             "type": "template",
-//             "payload": {
-//                 "template_type": "list",
-//                 "top_element_style": "compact",
-//                 "elements": []
-//             }
-//         }
-//     }
-
-//     for (var i = 0, len = _data.length; i < len; i++) {
-//         var item = _data[i];
-//         var d = new Date(item.DateTime);
-//         var h = d.getHours();
-
-//         if (i > 3) { break }
-
-//         var element =
-//             {
-//                 "title": "Classic White T-Shirt",
-//                 "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-//                 "subtitle": "100% Cotton, 200% Comfortable"
-//             };
-
-//         element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value + item.Temperature.Unit;
-//         if (item.WeatherIcon < 10) {
-//             element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
-//         } else {
-//             element.image_url = "http://developer.accuweather.com/sites/default/files/" + item.WeatherIcon + "-s.png";
-//         }
-
-//         element.subtitle = item.IconPhrase;
-
-//         list.attachment.payload.elements.push(element);
-//     }
-//     // _returnjson.messages.push(list);
-//     // return _returnjson;
-//     sendGenericMessage(_senderID, list);
-// }
-
-// var returnACWForecast5Days = function (_res, _returnjson) {
-// }
-
-// var forecast5DaysMessage = function (_data, _returnjson) {
-// }
-
 function receivedMessage(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -260,19 +105,9 @@ function receivedMessage(event) {
 
     luis.AskLUIS(messageText)
         .then(function (data) {
-            // luis.ExtractEntitiesFromLuis(data); //locationLUIS subjectLUIS
-
-            // if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
-
-            // console.log(subjectLUIS);
             luis.SetData(data);
-            console.log(data);
-
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
-
-            console.log("Subjects: ", subjectLUIS);
-            console.log("Locations: ", locationLUIS);
 
             switch (true) {
                 case (subjectLUIS.indexOf("vremea") != -1):
