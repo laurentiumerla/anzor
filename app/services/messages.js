@@ -31,6 +31,7 @@ method.ForecastHoursMessage = function (_data, _senderID) {
 
     var listArray = [];
     // var addListToArray = false;
+    var counter = 0;
 
     var list = {
         "attachment": {
@@ -47,8 +48,10 @@ method.ForecastHoursMessage = function (_data, _senderID) {
         var item = _data[i];
         var d = new Date(item.DateTime);
         var h = d.getHours();
+        counter++;
 
-        if (i > 3) {
+        if (counter > 4) {
+            counter = 0;
             // break;
             listArray.push(list);
 
