@@ -375,7 +375,7 @@ function ACWForecast12Hours(_senderID) {
                     // always return current conditions for the first key found
                     acw.GetForecastHours(data[0].Key)
                         .then(function (data) {
-                            sendGenericMessage(_senderID, botmsg.forecastHoursMessage(data, _senderID));
+                            sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID));
                         })
                 }
                 else {
