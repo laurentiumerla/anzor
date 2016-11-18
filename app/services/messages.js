@@ -45,10 +45,18 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
         }
     }
 
+    var mainItem_image_url = "";
+    if (_data.WeatherIcon < 10) {
+        mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
+    } else {
+        mainItem_image_url = "http://developer.accuweather.com/sites/default/files/" + _data.WeatherIcon + "-s.png";
+    }
+
     list.attachment.payload.elements.push(
         {
             "title": "Prognoza pe ore in " + _location,
-            "subtitle" : "sub"
+            "image_url": mainItem_image_url,
+            "subtitle": _data.IconPhrase,
         }
     );
 
