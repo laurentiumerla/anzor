@@ -145,7 +145,8 @@ function sendGenericMessage(recipientId, messageText) {
         recipient: {
             id: recipientId
         },
-        message: [{text : "11111" }, {text: "222222"}]
+        message: {text : "11111" },
+        message: {text : "22222"}
     };
 
     callSendAPI(messageData);
