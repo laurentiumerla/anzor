@@ -123,12 +123,12 @@ function receivedMessage(event) {
 
             switch (true) {
                 case (subjectLUIS.indexOf("vremea") != -1):
-                    ACWCurrentConditions(senderID);
+                    ACWCurrentConditions(senderID, locationLUIS[0]);
                     break;
                 case (subjectLUIS.indexOf("prognoza") != -1):
                     switch (true) {
                         case (subjectLUIS.indexOf("ore") != -1):
-                            ACWForecast12Hours(senderID, 0);
+                            ACWForecast12Hours(senderID, locationLUIS[0], 0);
                             break;
                         case (subjectLUIS.indexOf("zile") != -1):
                             // returnACWForecast5Days(res, returnjson);
@@ -192,46 +192,38 @@ function callSendAPI(messageData) {
     });
 }
 
-function ACWCurrentConditions(_senderID) {
-    if (locationLUIS.length > 0) {
-        acw.CityLookUp(locationLUIS[0])
-            .then(function (data) {
-                if (data.length > 0) {
-                    // always return current conditions for the first key found
-                    acw.GetCurrentConditions(data[0].Key)
-                        .then(function (data) {
-                            sendGenericMessage(_senderID, botmsg.CurrentConditionsMessage(data, _senderID, locationLUIS[0]));
-                        })
-                }
-                else {
-                }
-            })
-            .catch(function (err) {
-                console.log("ACW Request ERROR => ", err);
-            })
-    } else {
-        console.log("No locations found by LUIS");
-    }
+function ACWCurrentConditions(_senderID, _location) {
+    acw.CityLookUp(_location)
+        .then(function (data) {
+            if (data.length > 0) {
+                // always return current conditions for the first key found
+                acw.GetCurrentConditions(data[0].Key)
+                    .then(function (data) {
+                        sendGenericMessage(_senderID, botmsg.CurrentConditionsMessage(data, _senderID, _location));
+                    })
+            }
+            else {
+            }
+        })
+        .catch(function (err) {
+            console.log("ACW Request ERROR => ", err);
+        })
 }
 
-function ACWForecast12Hours(_senderID, _fromCounter) {
-    if (locationLUIS.length > 0) {
-        acw.CityLookUp(locationLUIS[0])
-            .then(function (data) {
-                if (data.length > 0) {
-                    // always return current conditions for the first key found
-                    acw.GetForecastHours(data[0].Key)
-                        .then(function (data) {
-                            sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, locationLUIS[0], _fromCounter));
-                        })
-                }
-                else {
-                }
-            })
-            .catch(function (err) {
-                console.log("ACW Request ERROR => ", err);
-            })
-    } else {
-        console.log("No locations found by LUIS");
-    }
+function ACWForecast12Hours(_senderID, _location, _fromCounter) {
+    acw.CityLookUp(_location)
+        .then(function (data) {
+            if (data.length > 0) {
+                // always return current conditions for the first key found
+                acw.GetForecastHours(data[0].Key)
+                    .then(function (data) {
+                        sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, _location, _fromCounter));
+                    })
+            }
+            else {
+            }
+        })
+        .catch(function (err) {
+            console.log("ACW Request ERROR => ", err);
+        })
 }
