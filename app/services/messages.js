@@ -27,7 +27,7 @@ method.CurrentConditionsMessage = function (_data, _senderID, _location) {
     return message;
 }
 
-method.ForecastHoursMessage = function (_data, _senderID, _location) {
+method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounter) {
 
     var listArray = [];
     // var addListToArray = false;
@@ -45,6 +45,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
         }
     }
 
+//  Main header Item
     var mainItem_image_url = "";
     if (_data.WeatherIcon < 10) {
         mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
@@ -60,6 +61,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
         }
     );
 
+// Always display 3 items => _fromCounter + 3
     for (var i = 0, len = _data.length; i < len; i++) {
         var item = _data[i];
         var d = new Date(item.DateTime);
@@ -77,7 +79,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
                 "subtitle": "100% Cotton, 200% Comfortable"
             };
 
-        element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value + item.Temperature.Unit;
+        element.title = "La ora " + h.toString() + ":00 vor fi " + item.Temperature.Value "°";// + item.Temperature.Unit;
         if (item.WeatherIcon < 10) {
             element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.WeatherIcon + "-s.png";
         } else {

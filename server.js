@@ -88,6 +88,17 @@ app.post('/webhook', function (req, res) {
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
+function receivedPayload(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfMessage = event.timestamp;
+    var payload = event.payload;
+
+    console.log(payload);
+
+
+}
+
 function receivedMessage(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
