@@ -352,7 +352,9 @@ function ACWCurrentConditions(_senderID) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
                     acw.GetCurrentConditions(data[0].Key)
-                        .then(function (data) { botmsg.CurrentConditionsMessage(data, _senderID, locationLUIS[0]); })
+                        .then(function (data) {
+                            sendGenericMessage(_senderID, botmsg.CurrentConditionsMessage(data, _senderID, locationLUIS[0]));
+                        })
                 }
                 else {
                 }
@@ -372,7 +374,9 @@ function ACWForecast12Hours(_senderID) {
                 if (data.length > 0) {
                     // always return current conditions for the first key found
                     acw.GetForecastHours(data[0].Key)
-                        .then(function (data) { botmsg.forecastHoursMessage(data, _senderID); })
+                        .then(function (data) {
+                            sendGenericMessage(_senderID, botmsg.forecastHoursMessage(data, _senderID));
+                        })
                 }
                 else {
                 }
