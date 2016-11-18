@@ -138,7 +138,8 @@ function sendGenericMessage(recipientId, messageText) {
         recipient: {
             id: recipientId
         },
-        message: messageText
+        message: [messageText, "dsfdsf"]
+
     };
 
     callSendAPI(messageData);
