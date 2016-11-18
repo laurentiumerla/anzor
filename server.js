@@ -145,8 +145,52 @@ function sendGenericMessage(recipientId, messageText) {
         recipient: {
             id: recipientId
         },
-        message: {text : "11111" },
-        message: {text : "22222"}
+        "message": {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": "Welcome to Peter\'s Hats",
+                            "item_url": "https://petersfancybrownhats.com",
+                            "image_url": "https://petersfancybrownhats.com/company_image.png",
+                            "subtitle": "We\'ve got the right hat for everyone.",
+                            "buttons": [
+                                {
+                                    "type": "web_url",
+                                    "url": "https://petersfancybrownhats.com",
+                                    "title": "View Website"
+                                },
+                                {
+                                    "type": "postback",
+                                    "title": "Start Chatting",
+                                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Welcome to Peter\'s Hats",
+                            "item_url": "https://petersfancybrownhats.com",
+                            "image_url": "https://petersfancybrownhats.com/company_image.png",
+                            "subtitle": "We\'ve got the right hat for everyone.",
+                            "buttons": [
+                                {
+                                    "type": "web_url",
+                                    "url": "https://petersfancybrownhats.com",
+                                    "title": "View Website"
+                                },
+                                {
+                                    "type": "postback",
+                                    "title": "Start Chatting",
+                                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
     };
 
     callSendAPI(messageData);
