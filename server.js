@@ -265,7 +265,7 @@ function receivedMessage(event) {
             // if (locationLUIS.length < 1) { locationLUIS.push(req.query.location); }
 
             // console.log(subjectLUIS);
-
+            luis.setData(data);
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
 

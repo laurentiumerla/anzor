@@ -8,6 +8,10 @@ function LUISService(_rp) {
     this.LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
 }
 
+method.SetData = function(_data){
+    this.data = _data;
+}
+
 method.AskLUIS = function (query) {
     var LUIS_EXTRACT_OPTIONS = {
         uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
@@ -16,12 +20,12 @@ method.AskLUIS = function (query) {
         json: true // Automatically parses the JSON string in the response 
     };
 
-    return Httprp(LUIS_EXTRACT_OPTIONS);
+    return this.Httprp(LUIS_EXTRACT_OPTIONS);
 }
 
 method.Httprp = function (_opt) {
     console.log("Request CALL => ", _opt.uri);
-    return rp(_opt);
+    return this.rp(_opt);
 }
 
 method.ExtractEntitiesFromLuis = function (_data) {
