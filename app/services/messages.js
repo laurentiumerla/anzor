@@ -51,7 +51,7 @@ method.ForecastHoursMessage = function (_data, _senderID) {
         counter++;
 
         if (counter > 4) {
-            counter = 0;
+            counter = 1;
             // break;
             listArray.push(list);
 
