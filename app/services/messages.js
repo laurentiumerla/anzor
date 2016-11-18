@@ -29,6 +29,9 @@ method.CurrentConditionsMessage = function (_data, _senderID, _location) {
 
 method.ForecastHoursMessage = function (_data, _senderID) {
 
+    var listArray = [];
+    // var addListToArray = false;
+
     var list = {
         "attachment": {
             "type": "template",
@@ -45,7 +48,21 @@ method.ForecastHoursMessage = function (_data, _senderID) {
         var d = new Date(item.DateTime);
         var h = d.getHours();
 
-        if (i > 3) { break }
+        if (i > 3) {
+            // break;
+            listArray.push(list);
+
+            list = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+                        "top_element_style": "compact",
+                        "elements": []
+                    }
+                }
+            }
+        }
 
         var element =
             {
@@ -65,8 +82,11 @@ method.ForecastHoursMessage = function (_data, _senderID) {
 
         list.attachment.payload.elements.push(element);
     }
-    
-    return list;
+
+    listArray.push(list);
+
+    // return list;
+    return listArray
 }
 
 module.exports = BotMessage;
