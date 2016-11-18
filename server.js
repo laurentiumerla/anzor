@@ -99,7 +99,14 @@ function receivedPayload(event) {
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(payload));
 
-    console.log(p.FORECASTHOURS_MORE);
+    if (payload.indexOf('FORECASTHOURSMORE_') > -1) {
+        var fromCounter = payload.split("_")[1];
+        var location = payload.split("_")[2];
+        fromCounter++;
+
+        // Call function to get more information about the product
+        ACWForecast12Hours(senderID, location, fromCounter);
+    }
 
 }
 
