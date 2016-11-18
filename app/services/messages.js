@@ -97,10 +97,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
         {
             "title": "Mai mult",
             "type": "postback",
-            "payload": {
-                "FORECASTHOURS_MORE": "true",
-                "FORECASTHOURS_COUNTER": _fromCounter
-            }
+            "payload": "FORECASTHOURS_MORE:" + _fromCounter
         }
     );
 
