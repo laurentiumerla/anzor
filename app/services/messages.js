@@ -5,11 +5,11 @@ function BotMessage() {
     // nothing to do here
 }
 
-method.CurrentConditionsMessage = function (_data, _senderID) {
+method.CurrentConditionsMessage = function (_data, _senderID, _location) {
 
     var message = { "text": "", "quick_replies": [] }
 
-    message.text = 'In ' + locationLUIS[0] + ' sunt ' +
+    message.text = 'In ' + _location + ' sunt ' +
         _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
         ' si este ' + _data[0].WeatherText + '!';
     message.quick_replies.push({
