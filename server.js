@@ -279,7 +279,7 @@ function receivedMessage(event) {
                             ACWForecast12Hours(senderID);
                             break;
                         case (subjectLUIS.indexOf("zile") != -1):
-                            returnACWForecast5Days(res, returnjson);
+                            // returnACWForecast5Days(res, returnjson);
                             break;
                     }
                     break;
@@ -350,15 +350,13 @@ function ACWCurrentConditions(_senderID) {
                         .then(function (data) { botmsg.CurrentConditionsMessage(data, _senderID); })
                 }
                 else {
-                    // _res.json(_returnjson);
                 }
             })
             .catch(function (err) {
                 console.log("ACW Request ERROR => ", err);
-                // _res.json(_returnjson);
             })
     } else {
-        // _res.json(_returnjson);
+        console.log("No locations found by LUIS");
     }
 }
 
@@ -372,14 +370,12 @@ function ACWForecast12Hours(_senderID) {
                         .then(function (data) { botmsg.forecastHoursMessage(data, _senderID); })
                 }
                 else {
-                    // _res.json(_returnjson);
                 }
             })
             .catch(function (err) {
                 console.log("ACW Request ERROR => ", err);
-                // _res.json(_returnjson);
             })
     } else {
-        // _res.json(_returnjson);
+        console.log("No locations found by LUIS");
     }
 }
