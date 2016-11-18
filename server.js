@@ -98,6 +98,8 @@ function receivedPayload(event) {
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(payload));
 
+    console.log(payload.FORECASTHOURS_MORE);
+
 }
 
 function receivedMessage(event) {
