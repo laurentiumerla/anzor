@@ -45,7 +45,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
         }
     }
 
-//  Main header Item
+    //  Main header Item
     var mainItem_image_url = "";
     if (_data.WeatherIcon < 10) {
         mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
@@ -61,7 +61,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
         }
     );
 
-// Always display 3 items => _fromCounter + 3
+    // Always display 3 items => _fromCounter + 3
     for (var i = _fromCounter, len = _data.length; i < len; i++) {
         var item = _data[i];
         var d = new Date(item.DateTime);
@@ -94,13 +94,15 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
 
     // listArray.push(list);
 
-    list.attachment.payload.buttons.push(
-        {
-            "title": "Mai mult",
-            "type": "postback",
-            "payload": "FORECASTHOURSMORE_" + _fromCounter.toString() + "_" + _location
-        }
-    );
+    if (_fromCounter < _data.length) {
+        list.attachment.payload.buttons.push(
+            {
+                "title": "Mai mult",
+                "type": "postback",
+                "payload": "FORECASTHOURSMORE_" + _fromCounter.toString() + "_" + _location
+            }
+        );
+    }
 
     return list;
     // return listArray;
