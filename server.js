@@ -266,8 +266,12 @@ function receivedMessage(event) {
 
             // console.log(subjectLUIS);
             luis.SetData(data);
+
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
+
+            console.log("Subjects: ", subjectLUIS);
+            console.log("Locations: ", locationLUIS);
 
             switch (true) {
                 case (subjectLUIS.indexOf("vremea") != -1):
