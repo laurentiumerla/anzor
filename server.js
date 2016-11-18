@@ -134,12 +134,18 @@ function receivedMessage(event) {
 
 function sendGenericMessage(recipientId, messageText) {
     // To be expanded in later sections
+    // var messageData = {
+    //     recipient: {
+    //         id: recipientId
+    //     },
+    //     message: messageText
+    // };
+
     var messageData = {
         recipient: {
             id: recipientId
         },
-        message: [messageText, "dsfdsf"]
-
+        message: [{text : "11111" }, {text: "222222"}]
     };
 
     callSendAPI(messageData);
