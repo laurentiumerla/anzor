@@ -38,7 +38,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location) {
             "type": "template",
             "payload": {
                 "template_type": "list",
-                // "top_element_style": "compact",
+                "top_element_style": "compact",
                 "elements": [],
                 "buttons": []
             }
