@@ -11,8 +11,8 @@ function LUISService(_rp) {
 method.AskLUIS = function (query) {
     var LUIS_EXTRACT_OPTIONS = {
         uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
-        LUIS_APP_ID + '?subscription-key=' +
-        LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
+        this.LUIS_APP_ID + '?subscription-key=' +
+        this.LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
         json: true // Automatically parses the JSON string in the response 
     };
 
