@@ -35,11 +35,16 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
     if (_pageId) { values.pageId = _pageId; }
     if (_location) { values.location = _location; }
 
-    // firebase.database().ref('users/' + _userId).set({
-    //     name: _name,
-    //     pageId: _pageId,
-    //     location: _location
-    // });
+    if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
+}
+
+method.WriteUserLocation = function (_userId, _location) {
+    var values = {};
+
+    if (!_userId) { console.log("Please specify userId to WriteUserLocation") }
+
+    if (_location) { values.location = _location; }
+
     if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
 }
 
@@ -51,10 +56,6 @@ method.WriteUserMessage = function (_userId, _message, _timestamp) {
     if (_message) { values._message = _message; }
     if (_timestamp) { values._timestamp = _timestamp; }
 
-    // firebase.database().ref('users/' + _userId + /messages/).set({
-    //     message: _message,
-    //     timestamp: _timestamp
-    // });
     if (values) { this.fbs.database().ref('users/' + _userId + /messages/).set(values); }
 }
 

@@ -218,6 +218,9 @@ function ProcessGetHelp(_senderID, _location) {
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {
+
+    firebase.WriteUserLocation(_senderID, _location);
+
     switch (true) {
         case (_subjectList.indexOf("vremea") != -1):
             ACWCurrentConditions(_senderID, _location);
