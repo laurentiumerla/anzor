@@ -35,7 +35,7 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
     if (_pageId) { values.pageId = _pageId; }
     if (_location) { values.location = _location; }
 
-    if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
+    if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
 }
 
 method.WriteUserLocation = function (_userId, _location) {
@@ -49,7 +49,7 @@ method.WriteUserLocation = function (_userId, _location) {
         var location = snapshot.val().location;
         if (email) {
             if (_location) { values.location = _location; }
-            if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
+            if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
         }
     })
 }
@@ -70,21 +70,27 @@ method.WriteUserMessage = function (_userId, _message, _timestamp) {
 
     if (!_userId) { console.log("Please specify userId to WriteUserMessage") }
 
-    if (_message) { values._message = _message; }
-    if (_timestamp) { values._timestamp = _timestamp; }
+    if (_message) { values.message = _message; }
+    if (_timestamp) { values.timestamp = _timestamp; }
 
-    if (values) { this.fbs.database().ref('users/' + _userId + /messages/ + guid()).set(values); }
+    // Get a key for a new Post.
+    var newMessageKey = firebase.database().ref('users/' + _userId).child('messages').push().key;
+
+    var updates = {};
+    updates['/messages/' + newMessageKey] = values;
+
+    if (values) { this.fbs.database().ref().update(updates); }
 }
 
 function guid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
 
 function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
 }
 
 module.exports = FirebaseService;
