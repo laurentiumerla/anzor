@@ -1,6 +1,6 @@
 var firebase = require('firebase');
 
-var method = LUISService.prototype;
+var method = FirebaseService.prototype;
 
 //Constructor
 function FirebaseService(_rp) {
@@ -14,6 +14,7 @@ function FirebaseService(_rp) {
         messagingSenderId: "287523288248"
     });
 
+    console.log("Firebase Service Initialized.");
     console.log(fbs);
 }
 

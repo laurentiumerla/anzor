@@ -6,6 +6,8 @@ function ACWService(_rp) {
     this.rp = _rp;
     this.ACCUWEATHER_API_KEY = "vDabIeXm9GRdW0d0VQ0aYXFacUUJH7KL";
     this.ACCUWEATHER_LANGUAGE = "ro";
+
+    console.log("Accuweather Service Initialized.");
 }
 
 method.CityLookUp = function (_q) {

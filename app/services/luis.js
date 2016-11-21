@@ -6,6 +6,8 @@ function LUISService(_rp) {
     this.rp = _rp;
     this.LUIS_APP_ID = "cf83bf53-8b33-4d24-8e19-133749db68da";
     this.LUIS_SUBSCRIPTION_KEY = "293077c0e3be4f6390b9e3870637905d";
+
+    console.log("LUIS Service Initialized.");
 }
 
 method.SetData = function (_data) {
