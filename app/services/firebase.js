@@ -29,7 +29,7 @@ function FirebaseService(_rp) {
 method.WriteUserData = function (_userId, _pageId, _name, _location) {
     var values = {};
 
-    if (!_userId) { console.log("Please specify userId to writeUserMessage") }
+    if (!_userId) { console.log("Please specify userId to WriteUserData") }
 
     if (_name) { values.name = _name; }
     if (_pageId) { values.pageId = _pageId; }
@@ -46,7 +46,7 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
 method.WriteUserMessage = function (_userId, _message, _timestamp) {
     var values = {};
 
-    if (!_userId) { console.log("Please specify userId to writeUserMessage") }
+    if (!_userId) { console.log("Please specify userId to WriteUserMessage") }
 
     if (_message) { values._message = _message; }
     if (_timestamp) { values._timestamp = _timestamp; }
