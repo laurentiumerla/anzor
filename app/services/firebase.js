@@ -49,8 +49,10 @@ method.WriteUserLocation = function (_userId, _location) {
         var location = snapshot.val().location;
         console.log("Snapshot: ", location);
         if (!location) {
-            console.log("Location not found then update Firebase");
+            console.log("Location not found then update Firebase with", _location);
             if (_location) { values.location = _location; }
+            console.log("Values: ", values);
+            console.log("UserId: ", _userId);
             if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
         }
     })
