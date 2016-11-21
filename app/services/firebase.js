@@ -33,11 +33,11 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
     //     pageId: _pageId,
     //     location: _location
     // });
-    if (values) { firebase.database().ref('users/' + _userId).set(values); }
+    if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
 }
 
 method.WriteUserMessage = function (_userId, _message, _timestamp) {
-    var values;
+    var values = {};
 
     if (!_userId) { console.log("Please specify userId to writeUserMessage") }
 
@@ -48,7 +48,7 @@ method.WriteUserMessage = function (_userId, _message, _timestamp) {
     //     message: _message,
     //     timestamp: _timestamp
     // });
-    if (values) { firebase.database().ref('users/' + _userId + /messages/).set(values); }
+    if (values) { this.fbs.database().ref('users/' + _userId + /messages/).set(values); }
 }
 
 module.exports = FirebaseService;
