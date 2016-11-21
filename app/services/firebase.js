@@ -16,6 +16,13 @@ function FirebaseService(_rp) {
 
     this.db = this.fbs.database();
 
+    this.fbs.auth().signInAnonymously().catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error);
+    });
+
     console.log("Firebase Service Initialized.");
 }
 
