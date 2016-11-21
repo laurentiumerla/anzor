@@ -47,7 +47,7 @@ method.WriteUserLocation = function (_userId, _location) {
 
     userRef.once('value').then(function (snapshot) {
         var location = snapshot.val().location;
-        if (email) {
+        if (!location) {
             if (_location) { values.location = _location; }
             if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
         }
