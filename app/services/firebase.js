@@ -62,7 +62,10 @@ method.ReadUserData = function (_userId) {
 
     var userRef = firebase.database().ref('/users/' + _userId);
 
+    console.log("userRef:", userRef);
+
     userRef.once('value').then(function (snapshot) {
+        console.log("snapshot:", snapshot)
         return snapshot.val();
     })
 }
