@@ -131,7 +131,7 @@ function receivedMessage(event) {
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
 
-            var intent = luis.GetIntentFirst;
+            var intent = luis.GetIntentFirst();
 
             console.log(intent);
 
