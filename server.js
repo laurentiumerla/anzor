@@ -219,7 +219,7 @@ function ProcessGetHelp() {
 //    • Oprește notificările!
 //    • Schimbă setările
 
-    sendTextMessage(message);
+    sendTextMessage(senderID, message);
 }
 
 function ProcessGetWeather() {
