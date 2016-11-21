@@ -28,7 +28,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
 var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
-var locationLUIS = [], subjectLUIS = [];
+var locationLUIS = [], subjectLUIS = [], intent;
 var acw = new ACWService(rp);
 var luis = new LUISService(rp);
 var cfm = new CFMessage;
@@ -101,13 +101,31 @@ function receivedPayload(event) {
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(payload));
 
-    if (payload.indexOf('FORECASTHOURSMORE_') > -1) {
-        var fromCounter = payload.split("_")[1];
-        var location = payload.split("_")[2];
+    switch (true) {
+        case (payload.indexOf('FORECASTHOURSMORE_') = ! -1):
+            var fromCounter = payload.split("_")[1];
+            var location = payload.split("_")[2];
 
-        // Call function to get more information about the product
-        ACWForecast12Hours(senderID, location, fromCounter);
+            // Call function to get more information about the product
+            ACWForecast12Hours(senderID, location, fromCounter);
+            break;
+
+        case (payload.indexOf('FORECASTDAYSMORE_') = ! -1):
+            var fromCounter = payload.split("_")[1];
+            var location = payload.split("_")[2];
+
+            // Call function to get more information about the product
+            ACWForecast5Days(senderID, location, fromCounter);
+            break;
     }
+
+    // if (payload.indexOf('FORECASTHOURSMORE_') > -1) {
+    //     var fromCounter = payload.split("_")[1];
+    //     var location = payload.split("_")[2];
+
+    //     // Call function to get more information about the product
+    //     ACWForecast12Hours(senderID, location, fromCounter);
+    // }
 
 }
 
@@ -124,18 +142,13 @@ function receivedMessage(event) {
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(message));
 
-
-
     // Process message with LUIS
     luis.AskLUIS(messageText)
         .then(function (data) {
             luis.SetData(data);
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
-
-            var intent = luis.GetIntentFirst();
-
-            console.log(intent);
+            intent = luis.GetIntentFirst();
 
             switch (intent.intent) {
                 case ("GetHelp"):
@@ -145,22 +158,6 @@ function receivedMessage(event) {
                     ProcessGetWeather();
                     break;
             }
-
-            // switch (true) {
-            //     case (subjectLUIS.indexOf("vremea") != -1):
-            //         ACWCurrentConditions(senderID, locationLUIS[0]);
-            //         break;
-            //     case (subjectLUIS.indexOf("prognoza") != -1):
-            //         switch (true) {
-            //             case (subjectLUIS.indexOf("ore") != -1):
-            //                 ACWForecast12Hours(senderID, locationLUIS[0], 0);
-            //                 break;
-            //             case (subjectLUIS.indexOf("zile") != -1):
-            //                 // returnACWForecast5Days(res, returnjson);
-            //                 break;
-            //         }
-            //         break;
-            // }
         })
         .catch(function (err) {
             // API call failed... 
@@ -232,7 +229,7 @@ function ProcessGetWeather() {
                     ACWForecast12Hours(senderID, locationLUIS[0], 0);
                     break;
                 case (subjectLUIS.indexOf("zile") != -1):
-                    // returnACWForecast5Days(res, returnjson);
+                    ACWForecast5Days(senderID, locationLUIS[0], 0);
                     break;
             }
             break;
@@ -265,6 +262,24 @@ function ACWForecast12Hours(_senderID, _location, _fromCounter) {
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
                         sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, _location, _fromCounter));
+                    })
+            }
+            else {
+            }
+        })
+        .catch(function (err) {
+            console.log("ACW Request ERROR => ", err);
+        })
+}
+
+function ACWForecast5Days(_senderID, _location, _fromCounter) {
+    acw.CityLookUp(_location)
+        .then(function (data) {
+            if (data.length > 0) {
+                // always return current conditions for the first key found
+                acw.GetForecastDays(data[0].Key)
+                    .then(function (data) {
+                        sendGenericMessage(_senderID, botmsg.ForecastDaysMessage(data, _senderID, _location, _fromCounter));
                     })
             }
             else {

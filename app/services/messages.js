@@ -38,6 +38,84 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
             "type": "template",
             "payload": {
                 "template_type": "list",
+                "top_element_style": "compact",
+                "elements": [],
+                "buttons": []
+            }
+        }
+    }
+
+    //  Main header Item
+    // var mainItem_image_url = "";
+    // if (_data.WeatherIcon < 10) {
+    //     mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
+    // } else {
+    //     mainItem_image_url = "http://developer.accuweather.com/sites/default/files/" + _data.WeatherIcon + "-s.png";
+    // }
+
+    // list.attachment.payload.elements.push(
+    //     {
+    //         "title": "Prognoza pe ore in " + _location,
+    //         "image_url": mainItem_image_url,
+    //         "subtitle": _data.IconPhrase,
+    //     }
+    // );
+
+    // Always display 4 items => _fromCounter + 4
+    for (var i = _fromCounter, len = _data.DailyForecasts.length; i < len; i++) {
+        var item = _data.DailyForecasts[i];
+        var d = new Date(item.DateTime);
+        var h = d.getHours();
+        counter++;
+
+        if (counter > 4) {
+            break;
+        }
+
+        var element =
+            {
+                "title": "Classic White T-Shirt",
+                "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                "subtitle": "100% Cotton, 200% Comfortable"
+            };
+
+        element.title = d.getDate().toString() + "/" + d.getMonth().toString() + "/" + d.getYear().toString() + "  " + item.Temperature.Minimum.Value + "°/" + item.Temperature.Maximum.Value + "°";// + item.Temperature.Unit;
+        if (item.WeatherIcon < 10) {
+            element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.Day.Icon + "-s.png";
+        } else {
+            element.image_url = "http://developer.accuweather.com/sites/default/files/" + item.Day.Icon + "-s.png";
+        }
+
+        element.subtitle = item.Day.IconPhrase;
+
+        list.attachment.payload.elements.push(element);
+        _fromCounter++;
+    }
+
+    if (_fromCounter < _data.DailyForecasts.length) {
+        list.attachment.payload.buttons.push(
+            {
+                "title": "Mai mult",
+                "type": "postback",
+                "payload": "FORECASTDAYSMORE_" + _fromCounter.toString() + "_" + _location
+            }
+        );
+    }
+
+    return list;
+}
+
+method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter) {
+
+    var listArray = [];
+    // var addListToArray = false;
+    var counter = 0;
+
+    var list = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "list",
                 // "top_element_style": "compact",
                 "elements": [],
                 "buttons": []
@@ -92,7 +170,6 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
         _fromCounter++;
     }
 
-    // listArray.push(list);
     console.log("FromCounter/DataLength: ", _fromCounter, "/", _data.length);
     if (_fromCounter < _data.length) {
         list.attachment.payload.buttons.push(
@@ -105,7 +182,6 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     }
 
     return list;
-    // return listArray;
 }
 
 module.exports = BotMessage;
