@@ -17,7 +17,6 @@ function FirebaseService(_rp) {
     this.db = firebase.database();
 
     console.log("Firebase Service Initialized.");
-    console.log(this.fbs);
 }
 
 method.WriteUserData = function (_userId, _pageId, _name, _location) {
