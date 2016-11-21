@@ -218,8 +218,15 @@ function ProcessGetHelp(_senderID, _location) {
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {
+    if (!_location) {
+        //get user location
+        _location = firebase.ReadUserData(_senderID).location;
+    }
+    else {
+        firebase.WriteUserLocation(_senderID, _location);
+    }
 
-    firebase.WriteUserLocation(_senderID, _location);
+
 
     switch (true) {
         case (_subjectList.indexOf("vremea") != -1):

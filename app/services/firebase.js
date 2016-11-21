@@ -51,23 +51,7 @@ method.WriteUserLocation = function (_userId, _location) {
         if (!location) {
             console.log("Location not found then update Firebase with", _location);
             if (_location) { values.location = _location; }
-            console.log("Values: ", values);
-            console.log("UserId: ", _userId);
-
-            var updates = {};
-            updates['/users/' + _userId] = values;
-
-            if (values) {
-                console.log("Updates: ", updates);
-                userRef.update(values)
-                    .then(function (res) {
-                        console.log("Firebase Response: ", res);
-                    })
-                    .catch(function (err) {
-                        console.log("Firebase Error: ", err);
-                    })
-                    ;
-            }
+            if (values) { userRef.update(values); }
         }
     })
 }
