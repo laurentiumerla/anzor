@@ -93,7 +93,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     }
 
     // listArray.push(list);
-
+    console.log("FromCounter/DataLength: ", _formCounter, "/", _data.length);
     if (_fromCounter < _data.length) {
         list.attachment.payload.buttons.push(
             {
