@@ -20,7 +20,7 @@ function FirebaseService(_rp) {
 }
 
 method.WriteUserData = function (_userId, _pageId, _name, _location) {
-    var values;
+    var values = {};
 
     if (!_userId) { console.log("Please specify userId to writeUserMessage") }
 
