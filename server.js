@@ -219,17 +219,7 @@ function ProcessGetHelp() {
         "     • Schimbă setările"
         ;
 
-    // Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:
-
-    //    • Vremea
-    //    • Ninge in Bucuresti?
-    //    • Am nevoie de o umbrelă azi?
-    //    • Care este prognoza pentru urmatoarele 5 zile?
-    //    • Oprește notificările!
-    //    • Schimbă setările
-
     sendTextMessage(senderID, message);
-    // console.log(botmsg.HelpGenericMessage());
     sendGenericMessage(senderID, botmsg.HelpGenericMessage());
 }
 

@@ -192,38 +192,44 @@ method.HelpGenericMessage = function () {
                 "template_type": "generic",
                 "elements": [
                     {
-                        "title": "Welcome to Peter\'s Hats",
-                        // "item_url": "https://petersfancybrownhats.com",
-                        // "image_url": "https://petersfancybrownhats.com/company_image.png",
-                        "subtitle": "We\'ve got the right hat for everyone.",
+                        "title": "Vremea",
+                        "subtitle": "Prognoza făcută doar pentru tine.",
                         "buttons": [
                             {
-                                "type": "web_url",
-                                "url": "https://petersfancybrownhats.com",
-                                "title": "View Website"
+                                "type": "postback",
+                                "title": "Vremea",
+                                "payload": "GETWEATHER_Bucuresti"
                             },
                             {
                                 "type": "postback",
-                                "title": "Start Chatting",
-                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                "title": "Prognoza pe ore",
+                                "payload": "FORECASTHOURSMORE_0_Bucuresti"
+                            },
+                            {
+                                "type": "postback",
+                                "title": "Prognoza pe 5 zile",
+                                "payload": "FORECASTDAYSMORE_0_Bucuresti"
                             }
                         ]
                     },
                     {
-                        "title": "Welcome to Peter\'s Hats",
-                        // "item_url": "https://petersfancybrownhats.com",
-                        // "image_url": "https://petersfancybrownhats.com/company_image.png",
-                        "subtitle": "We\'ve got the right hat for everyone.",
+                        "title": "Setări",
+                        "subtitle": "Adaugă locația, modifică notificările și alte lucruri.",
                         "buttons": [
                             {
-                                "type": "web_url",
-                                "url": "https://petersfancybrownhats.com",
-                                "title": "View Website"
+                                "type": "postback",
+                                "title": "Locație",
+                                "payload": "SETTINGSLOCATION"
                             },
                             {
                                 "type": "postback",
-                                "title": "Start Chatting",
-                                "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                                "title": "Notificări",
+                                "payload": "SETTINGSNOTIFICATIONS"
+                            },
+                            {
+                                "type": "postback",
+                                "title": "Toate setările",
+                                "payload": "SETTINGSALL"
                             }
                         ]
                     }
