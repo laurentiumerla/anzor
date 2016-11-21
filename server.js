@@ -34,6 +34,8 @@ var luis = new LUISService(rp);
 var cfm = new CFMessage;
 var botmsg = new BotMessage;
 
+var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments;
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
@@ -89,10 +91,10 @@ app.listen(port);
 console.log('Magic happens on port ' + port);
 
 function receivedPayload(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfMessage = event.timestamp;
-    var payload = event.postback.payload;
+    senderID = event.sender.id;
+    recipientID = event.recipient.id;
+    timeOfMessage = event.timestamp;
+    payload = event.postback.payload;
     // var p = JSON.parse(payload);
 
     console.log("Received payload for user %d and page %d at %d with message:",
@@ -110,19 +112,19 @@ function receivedPayload(event) {
 }
 
 function receivedMessage(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfMessage = event.timestamp;
-    var message = event.message;
+    senderID = event.sender.id;
+    recipientID = event.recipient.id;
+    timeOfMessage = event.timestamp;
+    message = event.message;
+    messageId = message.mid;
+    messageText = message.text;
+    messageAttachments = message.attachments;
 
     console.log("Received message for user %d and page %d at %d with message:",
         senderID, recipientID, timeOfMessage);
     console.log(JSON.stringify(message));
 
-    var messageId = message.mid;
 
-    var messageText = message.text;
-    var messageAttachments = message.attachments;
 
     // Process message with LUIS
     luis.AskLUIS(messageText)
