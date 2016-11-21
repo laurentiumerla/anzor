@@ -27,7 +27,7 @@ method.CurrentConditionsMessage = function (_data, _senderID, _location) {
     return message;
 }
 
-method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounter) {
+method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter) {
 
     var listArray = [];
     // var addListToArray = false;
@@ -105,7 +105,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     return list;
 }
 
-method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter) {
+method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounter) {
 
     var listArray = [];
     // var addListToArray = false;
