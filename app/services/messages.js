@@ -64,7 +64,7 @@ method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter
     // Always display 4 items => _fromCounter + 4
     for (var i = _fromCounter, len = _data.DailyForecasts.length; i < len; i++) {
         var item = _data.DailyForecasts[i];
-        var d = new Date(item.DateTime);
+        var d = new Date(item.Date);
         var h = d.getHours();
         counter++;
 
@@ -80,7 +80,7 @@ method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter
             };
 
         element.title = d.getDate().toString() + "/" + d.getMonth().toString() + "/" + d.getYear().toString() + "  " + item.Temperature.Minimum.Value + "°/" + item.Temperature.Maximum.Value + "°";// + item.Temperature.Unit;
-        if (item.WeatherIcon < 10) {
+        if (item.Day.Icon < 10) {
             element.image_url = "http://developer.accuweather.com/sites/default/files/0" + item.Day.Icon + "-s.png";
         } else {
             element.image_url = "http://developer.accuweather.com/sites/default/files/" + item.Day.Icon + "-s.png";
