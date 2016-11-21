@@ -43,9 +43,15 @@ method.WriteUserLocation = function (_userId, _location) {
 
     if (!_userId) { console.log("Please specify userId to WriteUserLocation") }
 
-    if (_location) { values.location = _location; }
+    var userRef = firebase.database().ref('/users/' + _userId);
 
-    if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
+     userRef.once('value').then(function(snapshot) {
+         var location = snapshot.val().location;
+          if (email) {
+              if (_location) { values.location = _location; }
+              if (values) { this.fbs.database().ref('users/' + _userId).set(values); }
+          }
+     })
 }
 
 method.WriteUserMessage = function (_userId, _message, _timestamp) {
