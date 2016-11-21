@@ -46,6 +46,7 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
 method.WriteUserMessage = function (_userId, _message, _timestamp) {
     var values = {};
 
+    console.log(_userId);
     if (!_userId) { console.log("Please specify userId to WriteUserMessage") }
 
     if (_message) { values._message = _message; }
