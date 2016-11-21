@@ -220,7 +220,9 @@ function ProcessGetHelp(_senderID, _location) {
 function ProcessGetWeather(_senderID, _subjectList, _location) {
     if (!_location) {
         //get user location
-        _location = firebase.ReadUserData(_senderID).location;
+        snapshot = firebase.ReadUserData(_senderID);
+        console.log(snapshot.location);
+        _location = snapshot.location;
     }
     else {
         firebase.WriteUserLocation(_senderID, _location);

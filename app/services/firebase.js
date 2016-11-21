@@ -65,7 +65,7 @@ method.ReadUserData = function (_userId) {
     console.log("userRef:", userRef);
 
     userRef.once('value').then(function (snapshot) {
-        console.log("snapshot:", snapshot)
+        console.log("snapshot:", snapshot.val());
         return snapshot.val();
     })
 }
