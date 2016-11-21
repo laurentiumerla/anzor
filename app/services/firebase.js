@@ -15,7 +15,7 @@ function FirebaseService(_rp) {
     });
 
     console.log("Firebase Service Initialized.");
-    console.log(fbs);
+    console.log(this.fbs);
 }
 
 module.exports = FirebaseService;
