@@ -28,7 +28,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
 var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
-var locationLUIS = [], subjectLUIS = [], intent;
+// var locationLUIS = [], subjectLUIS = [], intent;
 var acw = new ACWService(rp);
 var luis = new LUISService(rp);
 var cfm = new CFMessage;
@@ -139,16 +139,16 @@ function receivedMessage(event) {
     luis.AskLUIS(messageText.substring(0, 100))
         .then(function (data) {
             luis.SetData(data);
-            subjectLUIS = luis.GetEntities("Subject");
-            locationLUIS = luis.GetEntities("Location");
-            intent = luis.GetIntentFirst();
+            // subjectLUIS = luis.GetEntities("Subject");
+            // locationLUIS = luis.GetEntities("Location");
+            // intent = luis.GetIntentFirst();
 
-            switch (intent.intent) {
+            switch (luis.GetIntentFirst().intent) {
                 case ("GetHelp"):
                     ProcessGetHelp(senderID, "Bucuresti");
                     break;
                 case ("GetWeather"):
-                    ProcessGetWeather(senderID, subjectLUIS, locationLUIS[0]);
+                    ProcessGetWeather(senderID, luis.GetEntities("Subject"), luis.GetEntities("Location")[0]);
                     break;
             }
         })
