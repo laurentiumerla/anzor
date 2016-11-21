@@ -10,6 +10,7 @@ function LUISService(_rp) {
 
 method.SetData = function (_data) {
     this.data = _data;
+    console.log("LUIS data updated.");
 }
 
 method.AskLUIS = function (query) {
@@ -28,25 +29,12 @@ method.Httprp = function (_opt) {
     return this.rp(_opt);
 }
 
-method.ExtractEntitiesFromLuis = function (_data) {
-    this.data = _data;
-
-    locationLUIS = [];
-    subjectLUIS = [];
-
-    for (var i = 0, len = this.data.entities.length; i < len; i++) {
-        switch (this.data.entities[i].type) {
-            case "Location":
-                locationLUIS.push(this.data.entities[i].entity);
-                break;
-            case "Subject":
-                subjectLUIS.push(this.data.entities[i].entity);
-                break;
-        }
-    }
-}
-
 method.GetIntentFirst = function () {
+    if (!this.data) {
+        console.log("LUIS data is empty.");
+        return;
+    }
+
     var intent = [];
     if (this.data.topScoringIntent) {
         intent = this.data.topScoringIntent;
@@ -57,12 +45,22 @@ method.GetIntentFirst = function () {
 }
 
 method.GetIntents = function (_entityType) {
+    if (!this.data) {
+        console.log("LUIS data is empty.");
+        return;
+    }
+
     var intentList = [];
     intentList = this.data.intents;
     return intentList;
 }
 
 method.GetEntityFirst = function (_entityType) {
+    if (!this.data) {
+        console.log("LUIS data is empty.");
+        return;
+    }
+
     var entity = [];
     for (var i = 0, len = this.data.entities.length; i < len; i++) {
         if (this.data.entities[i].type = _entityType) {
@@ -73,6 +71,11 @@ method.GetEntityFirst = function (_entityType) {
 }
 
 method.GetEntities = function (_entityType) {
+    if (!this.data) {
+        console.log("LUIS data is empty.");
+        return;
+    }
+
     var entityList = [];
     for (var i = 0, len = this.data.entities.length; i < len; i++) {
         switch (this.data.entities[i].type) {

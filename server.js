@@ -15,6 +15,8 @@ var ACWService = require('./app/services/accuweather');
 var LUISService = require('./app/services/luis');
 var BotMessage = require('./app/services/messages');
 
+var FirebaseService = require('./app/services/firebase');
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,13 +28,16 @@ var port = process.env.PORT || 8080;        // set our port
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
+//Facebooks tokens
 var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
 var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
-// var locationLUIS = [], subjectLUIS = [], intent;
+
+//Services
 var acw = new ACWService(rp);
 var luis = new LUISService(rp);
 var cfm = new CFMessage;
 var botmsg = new BotMessage;
+var firebase = new FirebaseService(rp);
 
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments;
 
@@ -122,33 +127,30 @@ function receivedPayload(event) {
     }
 }
 
-function receivedMessage(event) {
-    senderID = event.sender.id;
-    recipientID = event.recipient.id;
-    timeOfMessage = event.timestamp;
-    message = event.message;
+function receivedMessage(_event) {
+    senderID = _event.sender.id;
+    recipientID = _event.recipient.id;
+    timeOfMessage = _event.timestamp;
+    message = _event.message;
     messageId = message.mid;
     messageText = message.text;
     messageAttachments = message.attachments;
 
     console.log("Received message for user %d and page %d at %d with message:",
-        senderID, recipientID, timeOfMessage);
-    console.log(JSON.stringify(message));
+        _event.sender.id, _event.recipient.id, _event.timestamp);
+    console.log(JSON.stringify(_event.message));
 
     // Process message with LUIS
-    luis.AskLUIS(messageText.substring(0, 100))
+    luis.AskLUIS(_event.message.text.substring(0, 100))
         .then(function (data) {
             luis.SetData(data);
-            // subjectLUIS = luis.GetEntities("Subject");
-            // locationLUIS = luis.GetEntities("Location");
-            // intent = luis.GetIntentFirst();
-
             switch (luis.GetIntentFirst().intent) {
                 case ("GetHelp"):
-                    ProcessGetHelp(senderID, "Bucuresti");
+                    ProcessGetHelp(_event.sender.id, "Bucuresti");
                     break;
+
                 case ("GetWeather"):
-                    ProcessGetWeather(senderID, luis.GetEntities("Subject"), luis.GetEntities("Location")[0]);
+                    ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0]);
                     break;
             }
         })
@@ -159,25 +161,25 @@ function receivedMessage(event) {
 
 }
 
-function sendGenericMessage(recipientId, messageText) {
+function sendGenericMessage(_recipientId, _messageText) {
     // To be expanded in later sections
     var messageData = {
         recipient: {
-            id: recipientId
+            id: _recipientId
         },
-        message: messageText
+        message: _messageText
     };
 
     callSendAPI(messageData);
 }
 
-function sendTextMessage(recipientId, messageText) {
+function sendTextMessage(_recipientId, _messageText) {
     var messageData = {
         recipient: {
-            id: recipientId
+            id: _recipientId
         },
         message: {
-            text: messageText
+            text: _messageText
         }
     };
 
