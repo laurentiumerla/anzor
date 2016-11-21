@@ -184,7 +184,20 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     return list;
 }
 
-method.HelpGenericMessage = function () {
+method.HelpTextMessage = function () {
+    var text = "Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:\n\n" +
+        "     • Vremea\n" +
+        "     • Ninge in Bucuresti?\n" +
+        "     • Am nevoie de o umbrelă azi?\n" +
+        "     • Care este prognoza pentru urmatoarele 5 zile?\n" +
+        "     • Oprește notificările!\n" +
+        "     • Schimbă setările"
+        ;
+
+    return text;
+}
+
+method.HelpGenericMessage = function (_location) {
     var genericMessage = {
         "attachment": {
             "type": "template",
@@ -198,17 +211,17 @@ method.HelpGenericMessage = function () {
                             {
                                 "type": "postback",
                                 "title": "Vremea",
-                                "payload": "GETWEATHER_Bucuresti"
+                                "payload": "GETWEATHER_" + _location
                             },
                             {
                                 "type": "postback",
                                 "title": "Prognoza pe ore",
-                                "payload": "FORECASTHOURSMORE_0_Bucuresti"
+                                "payload": "FORECASTHOURSMORE_0_" + _location
                             },
                             {
                                 "type": "postback",
                                 "title": "Prognoza pe 5 zile",
-                                "payload": "FORECASTDAYSMORE_0_Bucuresti"
+                                "payload": "FORECASTDAYSMORE_0_" + _location
                             }
                         ]
                     },

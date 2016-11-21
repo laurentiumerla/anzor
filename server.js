@@ -145,10 +145,10 @@ function receivedMessage(event) {
 
             switch (intent.intent) {
                 case ("GetHelp"):
-                    ProcessGetHelp();
+                    ProcessGetHelp(senderID, "Bucuresti");
                     break;
                 case ("GetWeather"):
-                    ProcessGetWeather();
+                    ProcessGetWeather(senderID, subjectLUIS, locationLUIS[0]);
                     break;
             }
         })
@@ -207,34 +207,23 @@ function callSendAPI(messageData) {
     });
 }
 
-function ProcessGetHelp() {
-    var message = "";
-
-    message = "Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:\n\n" +
-        "     • Vremea\n" +
-        "     • Ninge in Bucuresti?\n" +
-        "     • Am nevoie de o umbrelă azi?\n" +
-        "     • Care este prognoza pentru urmatoarele 5 zile?\n" +
-        "     • Oprește notificările!\n" +
-        "     • Schimbă setările"
-        ;
-
-    sendTextMessage(senderID, message);
-    sendGenericMessage(senderID, botmsg.HelpGenericMessage());
+function ProcessGetHelp(_senderID, _location) {
+    sendTextMessage(_senderID, botmsg.HelpTextMessage());
+    sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
 }
 
-function ProcessGetWeather() {
+function ProcessGetWeather(_senderID, _subjectList, _location) {
     switch (true) {
-        case (subjectLUIS.indexOf("vremea") != -1):
-            ACWCurrentConditions(senderID, locationLUIS[0]);
+        case (_subjectList.indexOf("vremea") != -1):
+            ACWCurrentConditions(_senderID, _location);
             break;
-        case (subjectLUIS.indexOf("prognoza") != -1):
+        case (_subjectList.indexOf("prognoza") != -1):
             switch (true) {
-                case (subjectLUIS.indexOf("ore") != -1):
-                    ACWForecast12Hours(senderID, locationLUIS[0], 0);
+                case (_subjectList.indexOf("ore") != -1):
+                    ACWForecast12Hours(_senderID, _location, 0);
                     break;
-                case (subjectLUIS.indexOf("zile") != -1):
-                    ACWForecast5Days(senderID, locationLUIS[0], 0);
+                case (_subjectList.indexOf("zile") != -1):
+                    ACWForecast5Days(_senderID, _location, 0);
                     break;
             }
             break;
