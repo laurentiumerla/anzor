@@ -49,7 +49,9 @@ method.ExtractEntitiesFromLuis = function (_data) {
 method.GetIntentFirst = function () {
     var intent = [];
 
-    if (this.data.intents.length > 0) {
+    if (this.data.topScoringIntent) {
+        intent = this.data.topScoringIntent;
+    } else if (this.data.intents.length > 0) {
         intent = this.data.intents[0];
     }
     return intent;
