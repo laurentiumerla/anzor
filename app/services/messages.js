@@ -193,8 +193,8 @@ method.HelpGenericMessage = function () {
                 "elements": [
                     {
                         "title": "Welcome to Peter\'s Hats",
-                        "item_url": "https://petersfancybrownhats.com",
-                        "image_url": "https://petersfancybrownhats.com/company_image.png",
+                        // "item_url": "https://petersfancybrownhats.com",
+                        // "image_url": "https://petersfancybrownhats.com/company_image.png",
                         "subtitle": "We\'ve got the right hat for everyone.",
                         "buttons": [
                             {
@@ -211,8 +211,8 @@ method.HelpGenericMessage = function () {
                     },
                     {
                         "title": "Welcome to Peter\'s Hats",
-                        "item_url": "https://petersfancybrownhats.com",
-                        "image_url": "https://petersfancybrownhats.com/company_image.png",
+                        // "item_url": "https://petersfancybrownhats.com",
+                        // "image_url": "https://petersfancybrownhats.com/company_image.png",
                         "subtitle": "We\'ve got the right hat for everyone.",
                         "buttons": [
                             {
