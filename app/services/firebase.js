@@ -57,7 +57,17 @@ method.WriteUserLocation = function (_userId, _location) {
             var updates = {};
             updates['/users/' + _userId] = values;
 
-            if (values) { this.fbs.database().ref().update(updates); }
+            if (values) {
+                console.log("Updates: ", updates);
+                this.fbs.database().ref().update(updates)
+                    .then(function (res) {
+                        console.log("Firebase Response: ", res);
+                    })
+                    .catch(function (err) {
+                        console.log("Firebase Error: ", err);
+                    })
+                    ;
+            }
         }
     })
 }
