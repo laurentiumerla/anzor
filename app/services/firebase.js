@@ -53,7 +53,11 @@ method.WriteUserLocation = function (_userId, _location) {
             if (_location) { values.location = _location; }
             console.log("Values: ", values);
             console.log("UserId: ", _userId);
-            if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
+
+            var updates = {};
+            updates['/users/' + _userId] = values;
+
+            if (values) { this.fbs.database().ref().update(updates); }
         }
     })
 }
