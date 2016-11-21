@@ -220,31 +220,64 @@ function ProcessGetHelp(_senderID, _location) {
 function ProcessGetWeather(_senderID, _subjectList, _location) {
     if (!_location) {
         //get user location
-        snapshot = firebase.ReadUserData(_senderID);
-        console.log(snapshot.location);
-        _location = snapshot.location;
+        snapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
+            _location = snapshot.val();
+
+            switch (true) {
+                case (_subjectList.indexOf("vremea") != -1):
+                    ACWCurrentConditions(_senderID, _location);
+                    break;
+                case (_subjectList.indexOf("prognoza") != -1):
+                    switch (true) {
+                        case (_subjectList.indexOf("ore") != -1):
+                            ACWForecast12Hours(_senderID, _location, 0);
+                            break;
+                        case (_subjectList.indexOf("zile") != -1):
+                            ACWForecast5Days(_senderID, _location, 0);
+                            break;
+                    }
+                    break;
+            }
+
+        });
     }
     else {
         firebase.WriteUserLocation(_senderID, _location);
+
+        switch (true) {
+            case (_subjectList.indexOf("vremea") != -1):
+                ACWCurrentConditions(_senderID, _location);
+                break;
+            case (_subjectList.indexOf("prognoza") != -1):
+                switch (true) {
+                    case (_subjectList.indexOf("ore") != -1):
+                        ACWForecast12Hours(_senderID, _location, 0);
+                        break;
+                    case (_subjectList.indexOf("zile") != -1):
+                        ACWForecast5Days(_senderID, _location, 0);
+                        break;
+                }
+                break;
+        }
     }
 
 
 
-    switch (true) {
-        case (_subjectList.indexOf("vremea") != -1):
-            ACWCurrentConditions(_senderID, _location);
-            break;
-        case (_subjectList.indexOf("prognoza") != -1):
-            switch (true) {
-                case (_subjectList.indexOf("ore") != -1):
-                    ACWForecast12Hours(_senderID, _location, 0);
-                    break;
-                case (_subjectList.indexOf("zile") != -1):
-                    ACWForecast5Days(_senderID, _location, 0);
-                    break;
-            }
-            break;
-    }
+    // switch (true) {
+    //     case (_subjectList.indexOf("vremea") != -1):
+    //         ACWCurrentConditions(_senderID, _location);
+    //         break;
+    //     case (_subjectList.indexOf("prognoza") != -1):
+    //         switch (true) {
+    //             case (_subjectList.indexOf("ore") != -1):
+    //                 ACWForecast12Hours(_senderID, _location, 0);
+    //                 break;
+    //             case (_subjectList.indexOf("zile") != -1):
+    //                 ACWForecast5Days(_senderID, _location, 0);
+    //                 break;
+    //         }
+    //         break;
+    // }
 }
 
 function ACWCurrentConditions(_senderID, _location) {
