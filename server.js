@@ -208,16 +208,23 @@ function callSendAPI(messageData) {
 function ProcessGetHelp() {
     var message = "";
 
-    message = "<b>qqq</b>dsffd\n\nsdfdsfs";
+    message = "Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:\n\n" +
+        "     • Vremea\n" +
+        "     • Ninge in Bucuresti?\n" +
+        "     • Am nevoie de o umbrelă azi?\n" +
+        "     • Care este prognoza pentru urmatoarele 5 zile?\n" +
+        "     • Oprește notificările!\n" +
+        "     • Schimbă setările"
+        ;
 
-// Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:
+    // Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:
 
-//    • Vremea
-//    • Ninge in Bucuresti?
-//    • Am nevoie de o umbrelă azi?
-//    • Care este prognoza pentru urmatoarele 5 zile?
-//    • Oprește notificările!
-//    • Schimbă setările
+    //    • Vremea
+    //    • Ninge in Bucuresti?
+    //    • Am nevoie de o umbrelă azi?
+    //    • Care este prognoza pentru urmatoarele 5 zile?
+    //    • Oprește notificările!
+    //    • Schimbă setările
 
     sendTextMessage(senderID, message);
 }
