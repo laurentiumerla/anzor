@@ -133,6 +133,8 @@ function receivedMessage(event) {
 
             var intent = luis.GetIntentFirst;
 
+            console.log(intent);
+
             switch (intent.intent) {
                 case ("GetHelp"):
                     ProcessGetHelp();
@@ -214,7 +216,7 @@ function callSendAPI(messageData) {
 }
 
 function ProcessGetHelp() {
-    
+
 }
 
 function ProcessGetWeather() {
