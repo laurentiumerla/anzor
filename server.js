@@ -229,8 +229,8 @@ function ProcessGetHelp() {
     //    • Schimbă setările
 
     // sendTextMessage(senderID, message);
-    console.log(botmsg.HelpGenericMessage());
-    // sendGenericMessage(senderID, botmsg.HelpGenericMessage());
+    // console.log(botmsg.HelpGenericMessage());
+    sendGenericMessage(senderID, botmsg.HelpGenericMessage());
 }
 
 function ProcessGetWeather() {
