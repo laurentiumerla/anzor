@@ -14,7 +14,7 @@ function FirebaseService(_rp) {
         messagingSenderId: "287523288248"
     });
 
-    this.db = firebase.database();
+    this.db = this.fbs.database();
 
     console.log("Firebase Service Initialized.");
 }
