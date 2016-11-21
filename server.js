@@ -118,15 +118,6 @@ function receivedPayload(event) {
             ACWForecast5Days(senderID, location, fromCounter);
             break;
     }
-
-    // if (payload.indexOf('FORECASTHOURSMORE_') > -1) {
-    //     var fromCounter = payload.split("_")[1];
-    //     var location = payload.split("_")[2];
-
-    //     // Call function to get more information about the product
-    //     ACWForecast12Hours(senderID, location, fromCounter);
-    // }
-
 }
 
 function receivedMessage(event) {
@@ -215,7 +206,20 @@ function callSendAPI(messageData) {
 }
 
 function ProcessGetHelp() {
+    var message = "";
 
+    message = "<b>qqq</b>dsffd</br>sdfdsf";
+
+// Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:
+
+//    • Vremea
+//    • Ninge in Bucuresti?
+//    • Am nevoie de o umbrelă azi?
+//    • Care este prognoza pentru urmatoarele 5 zile?
+//    • Oprește notificările!
+//    • Schimbă setările
+
+    sendTextMessage(message);
 }
 
 function ProcessGetWeather() {
