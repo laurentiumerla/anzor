@@ -231,6 +231,8 @@ method.HelpGenericMessage = function () {
             }
         }
     }
+
+    return genericMessage;
 }
 
 module.exports = BotMessage;
