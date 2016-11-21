@@ -46,6 +46,21 @@ method.ExtractEntitiesFromLuis = function (_data) {
     }
 }
 
+method.GetIntentFirst = function () {
+    var intent = [];
+
+    if (this.data.intents.length > 0) {
+        intent = this.data.intents[0];
+    }
+    return intent;
+}
+
+method.GetIntents = function (_entityType) {
+    var intentList = [];
+    intentList = this.data.intents;
+    return intentList;
+}
+
 method.GetEntityFirst = function (_entityType) {
     var entity = [];
     for (var i = 0, len = this.data.entities.length; i < len; i++) {

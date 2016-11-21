@@ -124,27 +124,39 @@ function receivedMessage(event) {
     var messageText = message.text;
     var messageAttachments = message.attachments;
 
+    // Process message with LUIS
     luis.AskLUIS(messageText)
         .then(function (data) {
             luis.SetData(data);
             subjectLUIS = luis.GetEntities("Subject");
             locationLUIS = luis.GetEntities("Location");
 
-            switch (true) {
-                case (subjectLUIS.indexOf("vremea") != -1):
-                    ACWCurrentConditions(senderID, locationLUIS[0]);
+            var intent = luis.GetIntentFirst;
+
+            switch (intent.intent) {
+                case ("GetHelp"):
+                    ProcessGetHelp();
                     break;
-                case (subjectLUIS.indexOf("prognoza") != -1):
-                    switch (true) {
-                        case (subjectLUIS.indexOf("ore") != -1):
-                            ACWForecast12Hours(senderID, locationLUIS[0], 0);
-                            break;
-                        case (subjectLUIS.indexOf("zile") != -1):
-                            // returnACWForecast5Days(res, returnjson);
-                            break;
-                    }
+                case ("GetWeather"):
+                    ProcessGetWeather();
                     break;
             }
+
+            // switch (true) {
+            //     case (subjectLUIS.indexOf("vremea") != -1):
+            //         ACWCurrentConditions(senderID, locationLUIS[0]);
+            //         break;
+            //     case (subjectLUIS.indexOf("prognoza") != -1):
+            //         switch (true) {
+            //             case (subjectLUIS.indexOf("ore") != -1):
+            //                 ACWForecast12Hours(senderID, locationLUIS[0], 0);
+            //                 break;
+            //             case (subjectLUIS.indexOf("zile") != -1):
+            //                 // returnACWForecast5Days(res, returnjson);
+            //                 break;
+            //         }
+            //         break;
+            // }
         })
         .catch(function (err) {
             // API call failed... 
@@ -199,6 +211,28 @@ function callSendAPI(messageData) {
             console.error(error);
         }
     });
+}
+
+function ProcessGetHelp() {
+    
+}
+
+function ProcessGetWeather() {
+    switch (true) {
+        case (subjectLUIS.indexOf("vremea") != -1):
+            ACWCurrentConditions(senderID, locationLUIS[0]);
+            break;
+        case (subjectLUIS.indexOf("prognoza") != -1):
+            switch (true) {
+                case (subjectLUIS.indexOf("ore") != -1):
+                    ACWForecast12Hours(senderID, locationLUIS[0], 0);
+                    break;
+                case (subjectLUIS.indexOf("zile") != -1):
+                    // returnACWForecast5Days(res, returnjson);
+                    break;
+            }
+            break;
+    }
 }
 
 function ACWCurrentConditions(_senderID, _location) {
