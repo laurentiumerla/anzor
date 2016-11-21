@@ -208,7 +208,7 @@ function callSendAPI(messageData) {
 function ProcessGetHelp() {
     var message = "";
 
-    message = "<b>qqq</b>dsffd</br>sdfdsf";
+    message = "<b>qqq</b>dsffd</br>sdfdsfs";
 
 // Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:
 
