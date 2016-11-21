@@ -141,7 +141,8 @@ function receivedMessage(_event) {
     console.log(JSON.stringify(_event.message));
 
     firebase.WriteUserData(_event.sender.id, _event.recipient.id);
-    firebase.WriteUserMessage();
+    console.log("User ID is ", _event.sender.id);
+    firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp);
 
     // Process message with LUIS
     luis.AskLUIS(_event.message.text.substring(0, 100))
