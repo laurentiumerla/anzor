@@ -79,7 +79,7 @@ method.WriteUserMessage = function (_userId, _message, _timestamp) {
     var updates = {};
     updates['/messages/' + newMessageKey] = values;
 
-    if (values) { this.fbs.database().ref().update(updates); }
+    if (values) { this.fbs.database().ref('users/' + _userId).update(updates); }
 }
 
 function guid() {
