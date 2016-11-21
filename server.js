@@ -102,7 +102,7 @@ function receivedPayload(event) {
     console.log(JSON.stringify(payload));
 
     switch (true) {
-        case (payload.indexOf('FORECASTHOURSMORE_') =! -1):
+        case (payload.indexOf('FORECASTHOURSMORE_') != -1):
             var fromCounter = payload.split("_")[1];
             var location = payload.split("_")[2];
 
@@ -110,7 +110,7 @@ function receivedPayload(event) {
             ACWForecast12Hours(senderID, location, fromCounter);
             break;
 
-        case (payload.indexOf('FORECASTDAYSMORE_') =! -1):
+        case (payload.indexOf('FORECASTDAYSMORE_') != -1):
             var fromCounter = payload.split("_")[1];
             var location = payload.split("_")[2];
 
