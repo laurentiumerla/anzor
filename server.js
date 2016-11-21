@@ -136,7 +136,7 @@ function receivedMessage(event) {
     console.log(JSON.stringify(message));
 
     // Process message with LUIS
-    luis.AskLUIS(messageText)
+    luis.AskLUIS(messageText.substring(0, 100))
         .then(function (data) {
             luis.SetData(data);
             subjectLUIS = luis.GetEntities("Subject");
