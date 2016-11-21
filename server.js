@@ -140,6 +140,9 @@ function receivedMessage(_event) {
         _event.sender.id, _event.recipient.id, _event.timestamp);
     console.log(JSON.stringify(_event.message));
 
+    firebase.WriteUserData(_event.sender.id, _event.recipient.id);
+    firebase.WriteUserMessage();
+
     // Process message with LUIS
     luis.AskLUIS(_event.message.text.substring(0, 100))
         .then(function (data) {
