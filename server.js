@@ -228,7 +228,7 @@ function ProcessGetHelp() {
     //    • Oprește notificările!
     //    • Schimbă setările
 
-    // sendTextMessage(senderID, message);
+    sendTextMessage(senderID, message);
     // console.log(botmsg.HelpGenericMessage());
     sendGenericMessage(senderID, botmsg.HelpGenericMessage());
 }
