@@ -42,13 +42,6 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
-places.photo({
-    maxwidth: 400,
-    photoreference: 'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU'
-}).then((res) => {
-    console.log(res.header)
-})
-
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
@@ -341,14 +334,13 @@ function ACWCurrentConditions(_senderID, _location) {
 }
 
 function ACWForecast12Hours(_senderID, _location, _fromCounter) {
-
-
     acw.CityLookUp(_location)
         .then(function (data) {
             if (data.length > 0) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
+                        console.log('qqqqqq')
                         places.textSearch({ query: _location }).then((res) => {
                             var location = res.body.results[0]
                             sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
