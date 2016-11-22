@@ -166,7 +166,7 @@ function receivedPayload(event) {
             ProcessGetWeather(senderID, [], location)
             break
 
-        case (payload.indexOf('CHANGELOCATION_') != -1):
+        case (payload.indexOf('UPDATELOCATION_') != -1):
             var location = payload.split("_")[1]
             console.log("eeeee", location)
             SaveLocation(senderID, location)
