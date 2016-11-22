@@ -68,7 +68,7 @@ method.WriteUserLocation = function (_userId, _place) {
         console.log("Snapshot: ", location)
         if (!location) {
             console.log("Location not found then update Firebase with", _place)
-            if (_place) values.location = _place.PlaceSearchResponse.result
+            if (_place) values.location = _place
             if (values) userRef.update(values)
         }
     })
