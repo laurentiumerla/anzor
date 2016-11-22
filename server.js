@@ -44,6 +44,11 @@ var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
 console.log(places)
 
+places.textSearch("Craiova").then((res) => {
+    console.log("Google")
+    console.log(res.body)
+})
+
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
