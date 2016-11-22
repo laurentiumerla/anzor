@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
 var fs = require('fs');
+var GooglePlaces = require('node-googleplaces');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
 var ACWService = require('./app/services/accuweather');
@@ -34,13 +35,14 @@ var FACEBOOK_VERIFY_TOKEN = "AnzorWeatherApp2016";
 var FACEBOOK_PAGE_ACCESS_TOKEN = "EAACiVL482jQBAMNa9choK9xtIZAkwE0iqZC9RFmfOVPhtfCgzfHq0BuJrACDq8ZCvmgXicCjUpVszrSPzUBS6rLZCUsEGRTm45p84T2CxZCQKzdjdTIjV51QPxxZBludTRVURt19ZBOXrhAUrMtpQxaiEgdZC0myNIivkuCRzI61UwZDZD";
 
 //Services
-var acw = new ACWService(rp);
-var luis = new LUISService(rp);
-var cfm = new CFMessage;
-var botmsg = new BotMessage;
-var firebase = new FirebaseService(rp);
+var acw = new ACWService(rp)
+var luis = new LUISService(rp)
+var cfm = new CFMessage
+var botmsg = new BotMessage
+var firebase = new FirebaseService(rp)
+var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
-var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments;
+var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
@@ -157,7 +159,7 @@ function receivedPayload(event) {
                 if (!location) location = 'Nu este setata'
                 sendGenericMessage(senderID, botmsg.AllSettingsGenericMessage(location))
             })
-            
+
             break
 
     }
@@ -185,6 +187,9 @@ function receivedMessage(_event) {
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
+                    places.textSearch(_event.message.text).then((res) => {
+                        console.log(res.body);
+                    });
                     firebase.WriteToUser(senderID, { location: _event.message.text });
                     break
             }
