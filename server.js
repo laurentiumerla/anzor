@@ -221,7 +221,7 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
     if (!_location) {
         //get user location
         snapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
-            _location = snapshot.val();
+            _location = snapshot.val().location;
 
             switch (true) {
                 case (_subjectList.indexOf("vremea") != -1):
