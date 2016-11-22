@@ -280,7 +280,7 @@ method.HelpGenericMessage = function (_location) {
 
 method.AllSettingsGenericMessage = function (_location) {
 
-    var subtitle =
+    var text =
         "Aici sunt setările:\n"
         + "Locația: " + _location
         + "\nNotificări active: Nici una"
@@ -290,23 +290,18 @@ method.AllSettingsGenericMessage = function (_location) {
         "attachment": {
             "type": "template",
             "payload": {
-                "template_type": "generic",
-                "elements": [
+                "template_type": "button",
+                "text": text,
+                "buttons": [
                     {
-                        "title": "Vremea",
-                        "subtitle": subtitle,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Schimbă locația.",
-                                "payload": "SETTINGSLOCATION"
-                            },
-                            {
-                                "type": "postback",
-                                "title": "Notificări",
-                                "payload": "SETTINGSNOTIFICATIONS"
-                            }
-                        ]
+                        "type": "postback",
+                        "title": "Schimbă locația.",
+                        "payload": "SETTINGSLOCATION"
+                    },
+                    {
+                        "type": "postback",
+                        "title": "Notificări",
+                        "payload": "SETTINGSNOTIFICATIONS"
                     }
                 ]
             }
