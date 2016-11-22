@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
 var fs = require('fs');
+var webshot = require('webshot');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
 var ACWService = require('./app/services/accuweather');
@@ -229,6 +230,10 @@ function ProcessGetHelp(_senderID, _location) {
     //         })
     //     )
     //     .pipe(fs.createWriteStream('out.png'))
+    webshot(botmsg.HTMLMessage, 'test.png', { siteType: 'html' }, function (err) {
+        // screenshot now saved to hello_world.png
+        console.log(err);
+    });
 
 }
 
