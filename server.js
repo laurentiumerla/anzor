@@ -192,7 +192,6 @@ function receivedMessage(_event) {
         switch (true) {
             case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
                 var location = _event.message.quick_reply.payload.split("_")[1]
-                console.log("eeeee", location)
                 SaveLocation(senderID, location)
                 break
         }
@@ -416,10 +415,8 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
 }
 
 function SaveLocation(_senderId, _text) {
-    console.log("qqqqqq", _text)
     places.textSearch({ query: _text, language: 'ro' }).then((res) => {
         var location = res.body.results[0]
-        console.log("wwwww", location)
         firebase.WriteUserLocation(_senderId, location)
         sendTextMessage(_senderId, "Super, o să-ți trimit vremea pentru " + location.formatted_address + ".")
     })
