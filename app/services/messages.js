@@ -138,7 +138,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     list.attachment.payload.elements.push(
         {
             // "title": "Prognoza pe ore in " + _location.name,
-            "title": _location.name.toUpperCase(),
+            "title": _location.formatted_address.toUpperCase(),
             "image_url": mainItem_image_url,
             "subtitle": _data.IconPhrase,
         }
