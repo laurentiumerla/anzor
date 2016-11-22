@@ -10,7 +10,6 @@ var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
 var fs = require('fs');
-var webshot = require('webshot');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
 var ACWService = require('./app/services/accuweather');
@@ -217,24 +216,6 @@ function callSendAPI(messageData) {
 function ProcessGetHelp(_senderID, _location) {
     sendTextMessage(_senderID, botmsg.HelpTextMessage());
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
-
-
-
-    console.log("Save Image")
-    // var convert = htmlConvert();
-    // fs.createReadStream('test.html')
-    //     .pipe(convert()
-    //         .on('log', function (log) {
-    //             // {type: 'error', data: {msg: 'ReferenceError: Can\'t find variable: a', trace: [..]}} 
-    //             console.log(log)
-    //         })
-    //     )
-    //     .pipe(fs.createWriteStream('out.png'))
-    webshot(botmsg.HTMLMessage, 'test.png', { siteType: 'html' }, function (err) {
-        // screenshot now saved to hello_world.png
-        console.log("Image saved: ", err);
-    });
-
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {
