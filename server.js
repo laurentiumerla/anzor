@@ -182,8 +182,10 @@ function receivedMessage(_event) {
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp)
 
     //Process last action first
+    var userData = {}
     firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
         lastAction = snapshot.val().lastAction
+        userData = snapshot.val()
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
@@ -204,7 +206,7 @@ function receivedMessage(_event) {
             luis.SetData(data)
             switch (luis.GetIntentFirst().intent) {
                 case ("GetHelp"):
-                    ProcessGetHelp(_event.sender.id, "Bucuresti")
+                    ProcessGetHelp(_event.sender.id, userData.location.formatted_address)
                     break
 
                 case ("GetWeather"):
