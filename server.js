@@ -232,7 +232,7 @@ function ProcessGetHelp(_senderID, _location) {
     //     .pipe(fs.createWriteStream('out.png'))
     webshot(botmsg.HTMLMessage, 'test.png', { siteType: 'html' }, function (err) {
         // screenshot now saved to hello_world.png
-        console.log(err);
+        console.log("Image saved: ", err);
     });
 
 }
