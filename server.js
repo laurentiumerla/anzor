@@ -208,7 +208,7 @@ function receivedMessage(_event) {
                     luis.SetData(data)
                     switch (luis.GetIntentFirst().intent) {
                         case ("GetHelp"):
-                            ProcessGetHelp(_event.sender.id, userData.location.formatted_address)
+                            ProcessGetHelp(_event.sender.id, userData.location.name)
                             break
 
                         case ("GetWeather"):
