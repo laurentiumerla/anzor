@@ -188,7 +188,7 @@ function receivedMessage(_event) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
                     places.textSearch({ query: _event.message.text }).then((res) => {
-                        firebase.WriteUserLocation(senderID, res)
+                        firebase.WriteUserLocation(senderID, res.body)
                     })
                     break
             }
@@ -291,7 +291,7 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
     else {
         console.log("TextSearch: ", _location)
         places.textSearch({ query: _location }).then((res) => {
-            firebase.WriteUserLocation(senderID, res)
+            firebase.WriteUserLocation(senderID, res.body)
         })
         GetWeatherForLocation(_senderID, _subjectList, _location)
     }
