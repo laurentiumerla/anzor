@@ -9,7 +9,7 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
-var rasterizeHTML = require('rasterizehtml');
+var rasterizeHTML = require('node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js');
 var fs = require('fs');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
@@ -219,7 +219,7 @@ function ProcessGetHelp(_senderID, _location) {
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
 
 
-    var canvas
+    var canvas = document.createElement("canvas")
     rasterizeHTML.drawHTML(botmsg.HTMLMessage(), canvas)
 
     fs.writeFile("/tmp/testImage.png", canvas, "binary", function(err){
