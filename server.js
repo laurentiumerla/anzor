@@ -220,7 +220,6 @@ function ProcessGetHelp(_senderID, _location) {
 
 
     var canvas
-    rasterizeHTML.drawHTML(botmsg.HTMLMessage(), canvas)
     console.log("Save Image")
     domtoimage.toPng(botmsg.HTMLMessage())
         .then(function (dataUrl) {
