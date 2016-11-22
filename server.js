@@ -69,7 +69,7 @@ app.post('/webhook', function (req, res) {
             var timeOfEvent = entry.time;
 
             console.log("Entry: ", entry);
-            
+
 
             // Iterate over each messaging event
             entry.messaging.forEach(function (event) {
@@ -104,6 +104,7 @@ app.listen(port);
 console.log('Magic happens on port ' + port);
 
 function receivedAttachment(event) {
+    console.log("Attachment received")
     switch (event.message.attachment.type) {
         case 'location':
             console.log("Location has been received")
@@ -146,6 +147,7 @@ function receivedPayload(event) {
             break;
 
         case (payload.indexOf('SETTINGSLOCATION') != -1):
+            firebase.WriteToUser(senderID, { lastAction: "CHANGELOCATION" });
             sendGenericMessage(senderID, botmsg.ChangeLocationMessage());
             break;
     }
@@ -167,6 +169,21 @@ function receivedMessage(_event) {
     firebase.WriteUserData(_event.sender.id, _event.recipient.id);
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp);
 
+    //Process last action first
+    snapshot = firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
+        lastAction = snapshot.val().lastAction
+        if (lastAction) {
+            switch (lastAction) {
+                case 'CHANGELOCATION':
+                    firebase.WriteToUser(senderID, { location: _event.message.text });
+                    break
+            }
+            firebase.WriteToUser(senderID, { lastAction: "" });
+            return
+        }
+
+    })
+
     // Process message with LUIS
     luis.AskLUIS(_event.message.text.substring(0, 100))
         .then(function (data) {
@@ -178,6 +195,11 @@ function receivedMessage(_event) {
 
                 case ("GetWeather"):
                     ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0]);
+                    break;
+
+                default:
+                    // No Intent found
+                    // We need to check
                     break;
             }
         })
