@@ -390,6 +390,7 @@ function SaveLocation(_text) {
     console.log("qqqqq : ", _text)
     places.textSearch({ query: _text }).then((res) => {
         var location = res.body.results[0]
+        console.log("wwwwww: ", location)
         firebase.WriteUserLocation(_event.sender.id, location) 
         return location       
     })
