@@ -334,17 +334,14 @@ function ACWCurrentConditions(_senderID, _location) {
 }
 
 function ACWForecast12Hours(_senderID, _location, _fromCounter) {
-    console.log('wwwwww')
     acw.CityLookUp(_location)
         .then(function (data) {
             if (data.length > 0) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
-                        console.log('qqqqqq', _location)
                         places.textSearch({ query: _location }).then((res) => {
                             var location = res.body.results[0]
-                            console.log('eeeeee', location.photos[0].photo_reference)
                             sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
                         })
                     })

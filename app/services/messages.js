@@ -132,7 +132,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     // }
 
     mainItem_image_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
-    + _location.photos.O.photo_reference
+    + _location.photos[0].photo_reference
     + "&key=AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do"
 
     list.attachment.payload.elements.push(
