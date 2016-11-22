@@ -184,6 +184,18 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     return list;
 }
 
+method.AskLocationMessage = function () {
+    var text = {
+        "text": "De ce nu-mi spui unde ești? Trebuie să știu pentru putea da prognoza. Dacă ești pe telefon, poți să-mi trimiti locația.",
+        "quick_replies": [
+            {
+                "content_type": "location",
+            }
+        ]
+    }
+    return text;
+}
+
 method.HelpTextMessage = function () {
     var text = "Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:\n\n" +
         "     • Vremea\n" +
