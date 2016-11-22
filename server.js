@@ -219,7 +219,7 @@ function ProcessGetHelp(_senderID, _location) {
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
 
 
-    var canvas = document.createElement("canvas")
+    var canvas
     rasterizeHTML.drawHTML(botmsg.HTMLMessage(), canvas)
 
     domtoimage.toPng(botmsg.HTMLMessage())
