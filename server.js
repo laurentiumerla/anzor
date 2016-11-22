@@ -42,8 +42,11 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
-places.photo({ maxwidth:400, photoreference:'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU' }).then((res) => {
-    console.log(res.body)
+places.photo({
+    maxwidth: 400,
+    photoreference: 'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU'
+}).then((res) => {
+    console.log(res)
 })
 
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
@@ -284,7 +287,7 @@ function ProcessGetHelp(_senderID, _location) {
 function ProcessGetWeather(_senderID, _subjectList, _location) {
     if (!_location) {
         //get user location
-        snapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
+        userSnapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
             _location = snapshot.val().location;
             if (!_location)
                 //Ask for location
@@ -294,7 +297,6 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
         })
     }
     else {
-        console.log("TextSearch: ", _location)
         places.textSearch({ query: _location }).then((res) => {
             firebase.WriteUserLocation(senderID, res.body)
         })
@@ -339,13 +341,18 @@ function ACWCurrentConditions(_senderID, _location) {
 }
 
 function ACWForecast12Hours(_senderID, _location, _fromCounter) {
+
+
     acw.CityLookUp(_location)
         .then(function (data) {
             if (data.length > 0) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
-                        sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, _location, _fromCounter));
+                        places.textSearch({ query: _location }).then((res) => {
+                            var location = res.body.results[0]
+                            sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
+                        })
                     })
             }
             else {
@@ -363,7 +370,10 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
                 // always return current conditions for the first key found
                 acw.GetForecastDays(data[0].Key)
                     .then(function (data) {
-                        sendGenericMessage(_senderID, botmsg.ForecastDaysMessage(data, _senderID, _location, _fromCounter));
+                        places.textSearch({ query: _location }).then((res) => {
+                            var location = res.body.results[0]
+                            sendGenericMessage(_senderID, botmsg.ForecastDaysMessage(data, _senderID, location, _fromCounter));
+                        })
                     })
             }
             else {

@@ -97,7 +97,7 @@ method.ForecastDaysMessage = function (_data, _senderID, _location, _fromCounter
             {
                 "title": "Mai mult",
                 "type": "postback",
-                "payload": "FORECASTDAYSMORE_" + _fromCounter.toString() + "_" + _location
+                "payload": "FORECASTDAYSMORE_" + _fromCounter.toString() + "_" + _location.name
             }
         );
     }
@@ -125,15 +125,19 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
 
     //  Main header Item
     var mainItem_image_url = "";
-    if (_data.WeatherIcon < 10) {
-        mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
-    } else {
-        mainItem_image_url = "http://developer.accuweather.com/sites/default/files/" + _data.WeatherIcon + "-s.png";
-    }
+    // if (_data.WeatherIcon < 10) {
+    //     mainItem_image_url = "http://developer.accuweather.com/sites/default/files/0" + _data.WeatherIcon + "-s.png";
+    // } else {
+    //     mainItem_image_url = "http://developer.accuweather.com/sites/default/files/" + _data.WeatherIcon + "-s.png";
+    // }
+
+    mainItem_image_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+    + _location.photos.O.photo_reference
+    + "&key=AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do"
 
     list.attachment.payload.elements.push(
         {
-            "title": "Prognoza pe ore in " + _location,
+            "title": "Prognoza pe ore in " + _location.name,
             "image_url": mainItem_image_url,
             "subtitle": _data.IconPhrase,
         }
@@ -176,7 +180,7 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
             {
                 "title": "Mai mult",
                 "type": "postback",
-                "payload": "FORECASTHOURSMORE_" + _fromCounter.toString() + "_" + _location
+                "payload": "FORECASTHOURSMORE_" + _fromCounter.toString() + "_" + _location.name
             }
         );
     }
