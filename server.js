@@ -9,6 +9,8 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
+var rasterizeHTML = required('rasterizeHTML');
+var fs = required('fs');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
 var ACWService = require('./app/services/accuweather');
@@ -215,6 +217,19 @@ function callSendAPI(messageData) {
 function ProcessGetHelp(_senderID, _location) {
     sendTextMessage(_senderID, botmsg.HelpTextMessage());
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
+
+
+    var canvas
+    rasterizeHTML.drawHTML(botmsg.HTMLMessage(), canvas)
+
+    fs.writeFile("/tmp/testImage.png", canvas, "binary", function(err){
+        if(err)
+            console.log(err)
+         else 
+            console.log("The image was saved!")
+        
+    })
+    
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {

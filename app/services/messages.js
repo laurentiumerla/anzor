@@ -254,7 +254,7 @@ method.HelpGenericMessage = function (_location) {
     return genericMessage;
 }
 
-method.ImageMessage = function () {
+method.HTMLMessage = function () {
     var htmlTableBegin =
         "<style type='text/css'>"
         + ".tg  {border-collapse:collapse;border-spacing:0;}"
@@ -277,6 +277,19 @@ method.ImageMessage = function () {
 
     return htmlTableBegin + htmlTableRow + htmlTableRow + htmlTableRow + htmlTableClose
 
+}
+
+method.Image = function (_url) {
+    var image = {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url": _url
+            }
+        }
+    }
+
+    return image
 }
 
 
