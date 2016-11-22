@@ -184,6 +184,18 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     return list;
 }
 
+method.ChangeLocationMessage = function () {
+    var text = {
+        "text": "Sigur. Spune-mi care dorești sa fie locația. Un nume de oraș te rog!",
+        "quick_replies": [
+            {
+                "content_type": "location",
+            }
+        ]
+    }
+    return text;
+}
+
 method.AskLocationMessage = function () {
     var text = {
         "text": "De ce nu-mi spui unde ești? Trebuie să știu pentru putea da prognoza. Dacă ești pe telefon, poți să-mi trimiti locația.",
@@ -243,7 +255,7 @@ method.HelpGenericMessage = function (_location) {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "Locație",
+                                "title": "Schimbă locația.",
                                 "payload": "SETTINGSLOCATION"
                             },
                             {

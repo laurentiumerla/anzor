@@ -125,6 +125,10 @@ function receivedPayload(event) {
             // Call function to get more information about the product
             ACWForecast5Days(senderID, location, fromCounter);
             break;
+
+        case (payload.indexOf('SETTINGSLOCATION') != -1):
+            sendGenericMessage(senderID, botmsg.ChangeLocationMessage());
+            break;
     }
 }
 
