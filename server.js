@@ -186,7 +186,7 @@ function receivedMessage(_event) {
     firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
         lastAction = snapshot.val().lastAction
         userData = snapshot.val()
-        
+
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
@@ -221,11 +221,7 @@ function receivedMessage(_event) {
                     console.log(err)
                 });
         }
-
     })
-
-
-
 }
 
 function sendGenericMessage(_recipientId, _messageText) {
