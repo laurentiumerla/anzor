@@ -286,23 +286,41 @@ function ProcessGetHelp(_senderID, _location) {
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {
-    if (!_location) {
-        //get user location
-        userSnapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
-            _location = snapshot.val().location.name;
-            if (!_location)
+
+    userSnapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
+        userlocation = snapshot.val().location.name;
+        if (!_location)
+            //Ask for location
+            if (!userlocation)
                 //Ask for location
                 sendGenericMessage(_senderID, botmsg.AskLocationMessage());
             else
-                GetWeatherForLocation(_senderID, _subjectList, _location)
-        })
-    }
-    else {
-        places.textSearch({ query: _location }).then((res) => {
-            firebase.WriteUserLocation(senderID, res.body)
-        })
-        GetWeatherForLocation(_senderID, _subjectList, _location)
-    }
+                GetWeatherForLocation(_senderID, _subjectList, userlocation)
+        else {
+            places.textSearch({ query: _location }).then((res) => {
+                firebase.WriteUserLocation(senderID, res.body)
+            })
+            GetWeatherForLocation(_senderID, _subjectList, _location)
+        }
+    })
+
+    // if (!_location) {
+    //     //get user location
+    //     userSnapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
+    //         _location = snapshot.val().location.name;
+    //         if (!_location)
+    //             //Ask for location
+    //             sendGenericMessage(_senderID, botmsg.AskLocationMessage());
+    //         else
+    //             GetWeatherForLocation(_senderID, _subjectList, _location)
+    //     })
+    // }
+    // else {
+    //     places.textSearch({ query: _location }).then((res) => {
+    //         firebase.WriteUserLocation(senderID, res.body)
+    //     })
+    //     GetWeatherForLocation(_senderID, _subjectList, _location)
+    // }
 }
 
 function GetWeatherForLocation(_senderID, _subjectList, _location) {
@@ -391,7 +409,7 @@ function SaveLocation(_text) {
     places.textSearch({ query: _text }).then((res) => {
         var location = res.body.results[0]
         console.log("wwwwww: ", location)
-        firebase.WriteUserLocation(_event.sender.id, location) 
-        return location       
+        firebase.WriteUserLocation(_event.sender.id, location)
+        return location
     })
 }
