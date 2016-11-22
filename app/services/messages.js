@@ -225,7 +225,7 @@ method.ConfirmLocationMessage = function (_location) {
             {
                 "content_type": "text",
                 "title": "Nu",
-                "payload": "CHANGELOCATION_" + _location.name
+                "payload": "DO NOT CHANGE LOCATION"
             }
         ]
     }

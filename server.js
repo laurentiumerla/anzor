@@ -203,7 +203,7 @@ function receivedMessage(_event) {
                     console.log('CHANGELOCATION')
                     places.textSearch({ query: _event.message.text, language: 'ro' }).then((res) => {
                         var location = res.body.results[0]
-                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location.name))
+                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location))
                     })
                     break
             }
