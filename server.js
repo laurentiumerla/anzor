@@ -200,10 +200,10 @@ function receivedMessage(_event) {
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
+                    console.log('CHANGELOCATION')
                     places.textSearch({ query: _event.message.text, language: 'ro' }).then((res) => {
                         var location = res.body.results[0]
-                        firebase.WriteUserLocation(_senderId, location)
-                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(_event.message.text))
+                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location.name))
                     })
                     break
             }
