@@ -387,6 +387,7 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
 }
 
 function SaveLocation(_text) {
+    console.log("qqqqq : ", _text)
     places.textSearch({ query: _text }).then((res) => {
         var location = res.body.results[0]
         firebase.WriteUserLocation(_event.sender.id, location) 
