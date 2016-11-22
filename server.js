@@ -105,6 +105,10 @@ app.post('/webhook', function (req, res) {
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
+setInterval(function() {
+    http.get("http://anzor.herokuapp.com");
+}, 1500000); // every 5 minutes (300000)
+
 function receivedAttachment(event) {
     console.log("Attachment received")
     switch (event.message.attachment.type) {
