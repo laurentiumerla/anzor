@@ -297,7 +297,7 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
             else
                 GetWeatherForLocation(_senderID, _subjectList, userlocation)
         else {
-            places.textSearch({ query: _location }).then((res) => {
+            places.textSearch({ query: _location, language: 'ro' }).then((res) => {
                 firebase.WriteUserLocation(senderID, res.body)
             })
             GetWeatherForLocation(_senderID, _subjectList, _location)
@@ -369,7 +369,7 @@ function ACWForecast12Hours(_senderID, _location, _fromCounter) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
-                        places.textSearch({ query: _location }).then((res) => {
+                        places.textSearch({ query: _location, language: 'ro' }).then((res) => {
                             var location = res.body.results[0]
                             sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
                         })
@@ -390,7 +390,7 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
                 // always return current conditions for the first key found
                 acw.GetForecastDays(data[0].Key)
                     .then(function (data) {
-                        places.textSearch({ query: _location }).then((res) => {
+                        places.textSearch({ query: _location, language: 'ro' }).then((res) => {
                             var location = res.body.results[0]
                             sendGenericMessage(_senderID, botmsg.ForecastDaysMessage(data, _senderID, location, _fromCounter));
                         })
@@ -406,7 +406,7 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
 
 function SaveLocation(_senderId, _text) {
     console.log("qqqqq : ", _text)
-    places.textSearch({ query: _text }).then((res) => {
+    places.textSearch({ query: _text, language: 'ro' }).then((res) => {
         var location = res.body.results[0]
         console.log("wwwwww: ", location)
         firebase.WriteUserLocation(_senderId, location)
