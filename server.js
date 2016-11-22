@@ -191,7 +191,7 @@ function receivedMessage(_event) {
     if (_event.message.quick_reply) {
         switch (true) {
             case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
-                var location = payload.split("_")[1]
+                var location = _event.message.quick_reply.payload.split("_")[1]
                 console.log("eeeee", location)
                 SaveLocation(senderID, location)
                 break
