@@ -132,8 +132,8 @@ method.ForecastHoursMessage = function (_data, _senderID, _location, _fromCounte
     // }
 
     mainItem_image_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
-    + _location.photos[0].photo_reference
-    + "&key=AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do"
+        + _location.photos[0].photo_reference
+        + "&key=AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do"
 
     list.attachment.payload.elements.push(
         {
@@ -207,6 +207,25 @@ method.AskLocationMessage = function () {
         "quick_replies": [
             {
                 "content_type": "location",
+            }
+        ]
+    }
+    return text;
+}
+
+method.ConfirmLocationMessage = function (_location) {
+    var text = {
+        "text": "Bine! " + _location.formatted_address + "? Este corect?",
+        "quick_replies": [
+            {
+                "content_type": "text",
+                "title": "Da",
+                "payload": "CHANGELOCATION_" + _location.name
+            },
+            {
+                "content_type": "text",
+                "title": "Nu",
+                "payload": "CHANGELOCATION_" + _location.name
             }
         ]
     }

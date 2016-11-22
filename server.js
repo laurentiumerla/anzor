@@ -163,7 +163,13 @@ function receivedPayload(event) {
 
         case (payload.indexOf('GETWEATHER_') != -1):
             var location = payload.split("_")[1]
-            ProcessGetWeather(senderID, [], location) 
+            ProcessGetWeather(senderID, [], location)
+            break
+
+        case (payload.indexOf('CHANGELOCATION_') != -1):
+            var location = payload.split("_")[1]
+            var savedLocation = SaveLocation(location)
+            sendTextMessage(senderID, "Super, o să-ți trimit vremea pentru " + savedLocation.formatted_address + ".")
             break
 
     }
@@ -194,9 +200,7 @@ function receivedMessage(_event) {
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
-                    places.textSearch({ query: _event.message.text }).then((res) => {
-                        firebase.WriteUserLocation(sende_event.sender.idrID, res.body)
-                    })
+                    SaveLocation(_event.message.text)
                     break
             }
             firebase.WriteToUser(senderID, { lastAction: "" })
@@ -382,3 +386,10 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
         })
 }
 
+function SaveLocation(_text) {
+    places.textSearch({ query: _text }).then((res) => {
+        var location = res.body.results[0]
+        firebase.WriteUserLocation(_event.sender.id, location) 
+        return location       
+    })
+}
