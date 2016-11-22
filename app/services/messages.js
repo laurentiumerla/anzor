@@ -215,7 +215,7 @@ method.AskLocationMessage = function () {
 
 method.ConfirmLocationMessage = function (_location) {
     var text = {
-        "text": "Bine! " + _location.formatted_address + "? Este corect?",
+        "text": "Bine! " + _location.formatted_address + "! Este corect?",
         "quick_replies": [
             {
                 "content_type": "text",
