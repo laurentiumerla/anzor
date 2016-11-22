@@ -42,6 +42,8 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
+console.log(places)
+
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
@@ -166,20 +168,20 @@ function receivedPayload(event) {
 }
 
 function receivedMessage(_event) {
-    senderID = _event.sender.id;
-    recipientID = _event.recipient.id;
-    timeOfMessage = _event.timestamp;
-    message = _event.message;
-    messageId = message.mid;
-    messageText = message.text;
-    messageAttachments = message.attachments;
+    senderID = _event.sender.id
+    recipientID = _event.recipient.id
+    timeOfMessage = _event.timestamp
+    message = _event.message
+    messageId = message.mid
+    messageText = message.text
+    messageAttachments = message.attachments
 
     console.log("Received message for user %d and page %d at %d with message:",
-        _event.sender.id, _event.recipient.id, _event.timestamp);
-    console.log(JSON.stringify(_event.message));
+        _event.sender.id, _event.recipient.id, _event.timestamp)
+    console.log(JSON.stringify(_event.message))
 
-    firebase.WriteUserData(_event.sender.id, _event.recipient.id);
-    firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp);
+    firebase.WriteUserData(_event.sender.id, _event.recipient.id)
+    firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp)
 
     //Process last action first
     firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
@@ -188,12 +190,13 @@ function receivedMessage(_event) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
                     places.textSearch(_event.message.text).then((res) => {
-                        console.log(res.body);
-                    });
-                    firebase.WriteToUser(senderID, { location: _event.message.text });
+                        console.log("Google")
+                        console.log(res.body)
+                    })
+                    firebase.WriteToUser(senderID, { location: _event.message.text })
                     break
             }
-            firebase.WriteToUser(senderID, { lastAction: "" });
+            firebase.WriteToUser(senderID, { lastAction: "" })
             return
         }
 
@@ -202,15 +205,15 @@ function receivedMessage(_event) {
     // Process message with LUIS
     luis.AskLUIS(_event.message.text.substring(0, 100))
         .then(function (data) {
-            luis.SetData(data);
+            luis.SetData(data)
             switch (luis.GetIntentFirst().intent) {
                 case ("GetHelp"):
-                    ProcessGetHelp(_event.sender.id, "Bucuresti");
-                    break;
+                    ProcessGetHelp(_event.sender.id, "Bucuresti")
+                    break
 
                 case ("GetWeather"):
-                    ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0]);
-                    break;
+                    ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0])
+                    break
 
                 default:
                     // No Intent found
@@ -219,7 +222,7 @@ function receivedMessage(_event) {
         })
         .catch(function (err) {
             // API call failed... 
-            console.log(err);
+            console.log(err)
         });
 
 }
