@@ -152,8 +152,8 @@ function receivedPayload(event) {
             break
 
         case (payload.indexOf('SETTINGSALL') != -1):
-            firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
-                location = snapshot.val().location
+            firebase.ReadUserData(senderID).then(function (snapshot) {
+                var location = snapshot.val().location
                 if (!location) location = 'Nu este setata'
                 sendGenericMessage(senderID, botmsg.AllSettingsGenericMessage(location))
             })
