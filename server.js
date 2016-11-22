@@ -44,7 +44,7 @@ var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
 console.log(places)
 
-places.textSearch("Craiova").then((res) => {
+places.textSearch({query: Craiova}).then((res) => {
     console.log("Google")
     console.log(res.body)
 })
