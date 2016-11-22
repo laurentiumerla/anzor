@@ -80,7 +80,7 @@ app.post('/webhook', function (req, res) {
                 } else if (event.postback && event.postback.payload) {
                     receivedPayload(event);
                     // Handle a payload from this sender
-                } else if (event.message && even.message.attachment) {
+                } else if (event.message && event.message.attachment) {
                     receivedAttachment(event);
                     // Handle an attachment from this sender
                 } else {
