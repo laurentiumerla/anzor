@@ -273,7 +273,7 @@ function callSendAPI(messageData) {
 }
 
 function ProcessGetHelp(_senderID, _location) {
-    sendTextMessage(_senderID, botmsg.HelpTextMessage());
+    sendTextMessage(_senderID, botmsg.HelpTextMessage(_location));
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
 }
 

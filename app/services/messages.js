@@ -208,10 +208,10 @@ method.AskLocationMessage = function () {
     return text;
 }
 
-method.HelpTextMessage = function () {
+method.HelpTextMessage = function (_location) {
     var text = "Bună. Eu pot să-ți spun vremea ... printre altele. Spune-mi lucruri cum ar fi următoarele:\n\n" +
         "     • Vremea\n" +
-        "     • Ninge in Bucuresti?\n" +
+        "     • Ninge in " + _location + "?\n" +
         "     • Am nevoie de o umbrelă azi?\n" +
         "     • Care este prognoza pentru urmatoarele 5 zile?\n" +
         "     • Oprește notificările!\n" +
