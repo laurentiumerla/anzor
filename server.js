@@ -42,6 +42,10 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
+var query = { query: "Craiova"}
+places.textSearch(query).then((res) => {
+    console.log(res)
+})
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
@@ -188,7 +192,7 @@ function receivedMessage(_event) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
                     places.textSearch({ query: _event.message.text }).then((res) => {
-                        firebase.WriteUserLocation(senderID, res.body)
+                        firebase.WriteUserLocation(sende_event.sender.idrID, res.body)
                     })
                     break
             }
