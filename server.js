@@ -72,10 +72,10 @@ app.post('/webhook', function (req, res) {
 
             // Iterate over each messaging event
             entry.messaging.forEach(function (event) {
-                if (event.message && event.message.text) {
+                if (event.message && event.message.text && !event.message.payload) {
                     receivedMessage(event);
                     // Handle a text message from this sender
-                } else if (event.postback && event.postback.payload) {
+                } else if (event.postback && event.postback.payload || event.message.payload) {
                     receivedPayload(event);
                     // Handle a payload from this sender
                 } else if (event.message && event.message.attachment) {
