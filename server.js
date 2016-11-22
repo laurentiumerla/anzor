@@ -188,9 +188,9 @@ function receivedMessage(_event) {
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp)
 
     //Process quick reply
-    if (_event.message.quick_replies) {
+    if (_event.message.quick_reply) {
         switch (true) {
-            case (_event.message.quick_replies[0].payload.indexOf('UPDATELOCATION_') != -1):
+            case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
                 var location = payload.split("_")[1]
                 console.log("eeeee", location)
                 SaveLocation(senderID, location)
