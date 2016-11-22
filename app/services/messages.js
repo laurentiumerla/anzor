@@ -220,7 +220,7 @@ method.ConfirmLocationMessage = function (_location) {
             {
                 "content_type": "text",
                 "title": "Da",
-                "payload": "CHANGELOCATION_" + _location.name
+                "payload": "UPDATELOCATION_" + _location.name
             },
             {
                 "content_type": "text",
