@@ -344,7 +344,7 @@ function ACWForecast12Hours(_senderID, _location, _fromCounter) {
                         console.log('qqqqqq', _location)
                         places.textSearch({ query: _location }).then((res) => {
                             var location = res.body.results[0]
-                            console.log('eeeeee')
+                            console.log('eeeeee', location.photos)
                             sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
                         })
                     })
