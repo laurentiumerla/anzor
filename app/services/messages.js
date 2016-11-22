@@ -286,7 +286,7 @@ method.AllSettingsGenericMessage = function (_location) {
 
     var text =
         "Aici sunt setările:\n"
-        + "Locația: " + _location
+        + "Locația: " + _location.name
         + "\nNotificări active: Nici una"
         + "\nNotificări inactive: Prognoze"
 
