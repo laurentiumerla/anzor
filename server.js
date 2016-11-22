@@ -9,7 +9,7 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
-var domtoimage = require('dom-to-image');
+var htmlConvert = require('html-convert');
 var fs = require('fs');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
@@ -219,25 +219,17 @@ function ProcessGetHelp(_senderID, _location) {
     sendGenericMessage(_senderID, botmsg.HelpGenericMessage(_location));
 
 
-    var canvas
+
     console.log("Save Image")
-    domtoimage.toPng(botmsg.HTMLMessage())
-        .then(function (dataUrl) {
-            var img = new Image();
-            img.src = dataUrl;
-            canvas = img;
-        })
-        .catch(function (error) {
-            console.error('oops, something went wrong!', error);
-        });
-
-    fs.writeFile("/tmp/testImage.png", canvas, "binary", function (err) {
-        if (err)
-            console.log(err)
-        else
-            console.log("The image was saved!")
-
-    })
+    var convert = htmlConvert();
+    fs.createReadStream('test.html')
+        .pipe(convert()
+            .on('log', function (log) {
+                // {type: 'error', data: {msg: 'ReferenceError: Can\'t find variable: a', trace: [..]}} 
+                console.log(log)
+            })
+        )
+        .pipe(fs.createWriteStream('out.png'))
 
 }
 
