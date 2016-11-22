@@ -47,7 +47,6 @@ method.WriteUserLocation = function (_userId, _place) {
 
     userRef.once('value').then(function (snapshot) {
         var location = snapshot.val().location
-        console.log("Snapshot: ", location)
 
         if (_place) values.location = _place
         if (values) userRef.update(values)
@@ -70,8 +69,6 @@ method.ReadUserData = function (_userId) {
     if (!_userId) { console.log("Please specify userId to ReadUserData") }
 
     var userRef = firebase.database().ref('/users/' + _userId);
-
-    console.log("userRef:", userRef);
 
     return userRef.once('value');
 }
