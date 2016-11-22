@@ -163,7 +163,7 @@ function receivedPayload(event) {
 
         case (payload.indexOf('GETWEATHER_') != -1):
             var location = payload.split("_")[1]
-            ProcessGetWeather(_senderID, [], location) 
+            ProcessGetWeather(senderID, [], location) 
             break
 
     }
