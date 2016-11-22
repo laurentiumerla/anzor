@@ -119,37 +119,47 @@ function receivedAttachment(event) {
 }
 
 function receivedPayload(event) {
-    senderID = event.sender.id;
-    recipientID = event.recipient.id;
-    timeOfMessage = event.timestamp;
-    payload = event.postback.payload;
+    senderID = event.sender.id
+    recipientID = event.recipient.id
+    timeOfMessage = event.timestamp
+    payload = event.postback.payload
     // var p = JSON.parse(payload);
 
     console.log("Received payload for user %d and page %d at %d with message:",
-        senderID, recipientID, timeOfMessage);
-    console.log(JSON.stringify(payload));
+        senderID, recipientID, timeOfMessage)
+    console.log(JSON.stringify(payload))
 
     switch (true) {
         case (payload.indexOf('FORECASTHOURSMORE_') != -1):
-            var fromCounter = payload.split("_")[1];
-            var location = payload.split("_")[2];
+            var fromCounter = payload.split("_")[1]
+            var location = payload.split("_")[2]
 
             // Call function to get more information about the product
-            ACWForecast12Hours(senderID, location, fromCounter);
-            break;
+            ACWForecast12Hours(senderID, location, fromCounter)
+            break
 
         case (payload.indexOf('FORECASTDAYSMORE_') != -1):
-            var fromCounter = payload.split("_")[1];
-            var location = payload.split("_")[2];
+            var fromCounter = payload.split("_")[1]
+            var location = payload.split("_")[2]
 
             // Call function to get more information about the product
-            ACWForecast5Days(senderID, location, fromCounter);
-            break;
+            ACWForecast5Days(senderID, location, fromCounter)
+            break
 
         case (payload.indexOf('SETTINGSLOCATION') != -1):
-            firebase.WriteToUser(senderID, { lastAction: "CHANGELOCATION" });
-            sendGenericMessage(senderID, botmsg.ChangeLocationMessage());
-            break;
+            firebase.WriteToUser(senderID, { lastAction: "CHANGELOCATION" })
+            sendGenericMessage(senderID, botmsg.ChangeLocationMessage())
+            break
+
+        case (payload.indexOf('SETTINGSALL') != -1):
+            firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
+                location = snapshot.val().location
+                if (!location) location = 'Nu este setata'
+                sendGenericMessage(senderID, botmsg.AllSettingsGenericMessage(location))
+            })
+            
+            break
+
     }
 }
 
@@ -170,7 +180,7 @@ function receivedMessage(_event) {
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp);
 
     //Process last action first
-    snapshot = firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
+    firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
         lastAction = snapshot.val().lastAction
         if (lastAction) {
             switch (lastAction) {
@@ -199,7 +209,6 @@ function receivedMessage(_event) {
 
                 default:
                     // No Intent found
-                    // We need to check
                     break;
             }
         })

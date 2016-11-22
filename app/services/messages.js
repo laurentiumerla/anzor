@@ -278,6 +278,44 @@ method.HelpGenericMessage = function (_location) {
     return genericMessage;
 }
 
+method.AllSettingsGenericMessage = function (_location) {
+
+    var subtitle =
+        "Aici sunt setările:\n"
+        + "Locația: " + _location
+        + "\nNotificări active: Nici una"
+        + "\nNotificări inactive: Prognoze"
+
+    var genericMessage = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "Vremea",
+                        "subtitle": subtitle,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Schimbă locația.",
+                                "payload": "SETTINGSLOCATION"
+                            },
+                            {
+                                "type": "postback",
+                                "title": "Notificări",
+                                "payload": "SETTINGSNOTIFICATIONS"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+
+    return genericMessage;
+}
+
 method.HTMLMessage = function () {
     var htmlTableBegin =
         "<style type='text/css'>"
