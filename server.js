@@ -9,7 +9,6 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
-var htmlConvert = require('html-convert');
 var fs = require('fs');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
@@ -221,15 +220,15 @@ function ProcessGetHelp(_senderID, _location) {
 
 
     console.log("Save Image")
-    var convert = htmlConvert();
-    fs.createReadStream('test.html')
-        .pipe(convert()
-            .on('log', function (log) {
-                // {type: 'error', data: {msg: 'ReferenceError: Can\'t find variable: a', trace: [..]}} 
-                console.log(log)
-            })
-        )
-        .pipe(fs.createWriteStream('out.png'))
+    // var convert = htmlConvert();
+    // fs.createReadStream('test.html')
+    //     .pipe(convert()
+    //         .on('log', function (log) {
+    //             // {type: 'error', data: {msg: 'ReferenceError: Can\'t find variable: a', trace: [..]}} 
+    //             console.log(log)
+    //         })
+    //     )
+    //     .pipe(fs.createWriteStream('out.png'))
 
 }
 
