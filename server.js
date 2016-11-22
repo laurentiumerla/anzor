@@ -78,6 +78,9 @@ app.post('/webhook', function (req, res) {
                 } else if (event.postback && event.postback.payload) {
                     receivedPayload(event);
                     // Handle a payload from this sender
+                } else if (event.message && even.message.attachment) {
+                    receivedAttachment(event);
+                    // Handle an attachment from this sender
                 } else {
                     console.log("Webhook received unknown event: ", event);
                 }
@@ -97,6 +100,20 @@ app.post('/webhook', function (req, res) {
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+function receivedAttachment(event) {
+    switch (event.message.attachment.type) {
+        case 'location':
+            console.log("Location has been received")
+            break
+        case 'image':
+            break
+        case 'audio':
+            break
+        case 'file':
+            break
+    }
+}
 
 function receivedPayload(event) {
     senderID = event.sender.id;
