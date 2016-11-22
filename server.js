@@ -341,9 +341,10 @@ function ACWForecast12Hours(_senderID, _location, _fromCounter) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
                     .then(function (data) {
-                        console.log('qqqqqq')
+                        console.log('qqqqqq', _location)
                         places.textSearch({ query: _location }).then((res) => {
                             var location = res.body.results[0]
+                            console.log('eeeeee')
                             sendGenericMessage(_senderID, botmsg.ForecastHoursMessage(data, _senderID, location, _fromCounter));
                         })
                     })
