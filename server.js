@@ -168,8 +168,8 @@ function receivedPayload(event) {
 
         case (payload.indexOf('CHANGELOCATION_') != -1):
             var location = payload.split("_")[1]
-            var savedLocation = SaveLocation(senderID, location)
-            sendTextMessage(senderID, "Super, o să-ți trimit vremea pentru " + savedLocation.formatted_address + ".")
+            SaveLocation(senderID, location)
+
             break
 
     }
@@ -200,7 +200,11 @@ function receivedMessage(_event) {
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
-                    SaveLocation(_event.sender.id, _event.message.text)
+                    places.textSearch({ query: _event.message.text, language: 'ro' }).then((res) => {
+                        var location = res.body.results[0]
+                        firebase.WriteUserLocation(_senderId, location)
+                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(_event.message.text))
+                    })
                     break
             }
             firebase.WriteToUser(senderID, { lastAction: "" })
@@ -405,11 +409,9 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
 }
 
 function SaveLocation(_senderId, _text) {
-    console.log("qqqqq : ", _text)
     places.textSearch({ query: _text, language: 'ro' }).then((res) => {
         var location = res.body.results[0]
-        console.log("wwwwww: ", location)
         firebase.WriteUserLocation(_senderId, location)
-        return location
+        sendTextMessage(senderID, "Super, o să-ți trimit vremea pentru " + savedLocation.formatted_address + ".")
     })
 }
