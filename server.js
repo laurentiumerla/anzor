@@ -334,6 +334,7 @@ function ACWCurrentConditions(_senderID, _location) {
 }
 
 function ACWForecast12Hours(_senderID, _location, _fromCounter) {
+    console.log('wwwwww')
     acw.CityLookUp(_location)
         .then(function (data) {
             if (data.length > 0) {
