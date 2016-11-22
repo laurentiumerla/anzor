@@ -159,7 +159,11 @@ function receivedPayload(event) {
                 if (!location) location = 'Nu este setata'
                 sendGenericMessage(senderID, botmsg.AllSettingsGenericMessage(location))
             })
+            break
 
+        case (payload.indexOf('GETWEATHER_') != -1):
+            var location = payload.split("_")[1]
+            ProcessGetWeather(_senderID, [], location) 
             break
 
     }
@@ -312,6 +316,9 @@ function GetWeatherForLocation(_senderID, _subjectList, _location) {
                     break;
             }
             break;
+        default:
+            ACWCurrentConditions(_senderID, _location);
+            break
     }
 }
 
