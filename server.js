@@ -9,7 +9,7 @@ var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var rp = require('request-promise');
 var request = require('request');
-var rasterizeHTML = require('node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js');
+var domtoimage = require('dom-to-image');
 var fs = require('fs');
 var CFMessage = require('./app/models/chatfuel/message');
 var CFVariable = require('./app/models/chatfuel/variable');
@@ -222,14 +222,24 @@ function ProcessGetHelp(_senderID, _location) {
     var canvas = document.createElement("canvas")
     rasterizeHTML.drawHTML(botmsg.HTMLMessage(), canvas)
 
-    fs.writeFile("/tmp/testImage.png", canvas, "binary", function(err){
-        if(err)
+    domtoimage.toPng(botmsg.HTMLMessage())
+        .then(function (dataUrl) {
+            var img = new Image();
+            img.src = dataUrl;
+            canvas = img;
+        })
+        .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        });
+
+    fs.writeFile("/tmp/testImage.png", canvas, "binary", function (err) {
+        if (err)
             console.log(err)
-         else 
+        else
             console.log("The image was saved!")
-        
+
     })
-    
+
 }
 
 function ProcessGetWeather(_senderID, _subjectList, _location) {
