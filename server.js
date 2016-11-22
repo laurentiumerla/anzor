@@ -42,9 +42,10 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
-var query = { query: "Craiova" }
+var locatie = "Craiova"
+var query = { query: locatie }
 places.textSearch(query).then((res) => {
-    console.log(res)
+    console.log(res.body)
 })
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
