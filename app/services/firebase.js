@@ -38,20 +38,38 @@ method.WriteUserData = function (_userId, _pageId, _name, _location) {
     if (values) { this.fbs.database().ref('users/' + _userId).update(values); }
 }
 
-method.WriteUserLocation = function (_userId, _location) {
+// method.WriteUserLocation = function (_userId, _location) {
+//     var values = {};
+
+//     if (!_userId) { console.log("Please specify userId to WriteUserLocation") }
+
+//     var userRef = firebase.database().ref('/users/' + _userId);
+
+//     userRef.once('value').then(function (snapshot) {
+//         var location = snapshot.val().location;
+//         console.log("Snapshot: ", location);
+//         if (!location) {
+//             console.log("Location not found then update Firebase with", _location);
+//             if (_location) { values.location = _location; }
+//             if (values) { userRef.update(values); }
+//         }
+//     })
+// }
+
+method.WriteUserLocation = function (_userId, _place) {
     var values = {};
 
     if (!_userId) { console.log("Please specify userId to WriteUserLocation") }
 
-    var userRef = firebase.database().ref('/users/' + _userId);
+    var userRef = firebase.database().ref('/users/' + _userId)
 
     userRef.once('value').then(function (snapshot) {
-        var location = snapshot.val().location;
-        console.log("Snapshot: ", location);
+        var location = snapshot.val().location
+        console.log("Snapshot: ", location)
         if (!location) {
-            console.log("Location not found then update Firebase with", _location);
-            if (_location) { values.location = _location; }
-            if (values) { userRef.update(values); }
+            console.log("Location not found then update Firebase with", _place)
+            if (_place) values.location = _place.PlaceSearchResponse.result
+            if (values) userRef.update(values)
         }
     })
 }

@@ -42,13 +42,6 @@ var botmsg = new BotMessage
 var firebase = new FirebaseService(rp)
 var places = new GooglePlaces('AIzaSyDcCuNGe2w0GgzeVKjjcngxuHRUMuid4do')
 
-console.log(places)
-
-places.textSearch({query: "Craiova"}).then((res) => {
-    console.log("Google")
-    console.log(res.body)
-})
-
 var senderID, recipientID, timeOfMessage, message, messageId, messageText, messageAttachments
 
 // REGISTER OUR ROUTES -------------------------------
@@ -194,11 +187,9 @@ function receivedMessage(_event) {
         if (lastAction) {
             switch (lastAction) {
                 case 'CHANGELOCATION':
-                    places.textSearch(_event.message.text).then((res) => {
-                        console.log("Google")
-                        console.log(res.body)
+                    places.textSearch({ query: _event.message.text }).then((res) => {
+                        firebase.WriteUserLocation(senderID, res)
                     })
-                    firebase.WriteToUser(senderID, { location: _event.message.text })
                     break
             }
             firebase.WriteToUser(senderID, { lastAction: "" })
@@ -298,7 +289,9 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
         })
     }
     else {
-        firebase.WriteUserLocation(_senderID, _location)
+        places.textSearch({ query: _location }).then((res) => {
+            firebase.WriteUserLocation(senderID, res)
+        })
         GetWeatherForLocation(_senderID, _subjectList, _location)
     }
 }
@@ -374,3 +367,4 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
             console.log("ACW Request ERROR => ", err);
         })
 }
+
