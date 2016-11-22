@@ -188,7 +188,7 @@ function receivedMessage(_event) {
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp)
 
     //Process quick reply
-    if (_event.message.quick_replies[0].payload) {
+    if (_event.message.quick_replies) {
         switch (true) {
             case (_event.message.quick_replies[0].payload.indexOf('UPDATELOCATION_') != -1):
                 var location = payload.split("_")[1]
