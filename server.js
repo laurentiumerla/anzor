@@ -289,7 +289,7 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
         })
     }
     else {
-        Console.log("TextSearch: ", _location)
+        console.log("TextSearch: ", _location)
         places.textSearch({ query: _location }).then((res) => {
             firebase.WriteUserLocation(senderID, res)
         })
