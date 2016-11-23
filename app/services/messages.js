@@ -26,9 +26,10 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
                 if (option.active == true) {
                     console.log(option)
                     message.quick_replies.push({
-                        "content_type": "text",
-                        "title": option.name,
-                        "payload": "NOTIFICATIONS_" + option
+                        content_type: "text",
+                        title: option.name,
+                        payload: "NOTIFICATIONS_" + option,
+                        image_url: option.icon
                     });
                 }
             }
