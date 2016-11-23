@@ -27,6 +27,8 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
         message.text = '\n\n adsad'
     }
 
+    console.log(message);
+
     // message.text = 'In ' + _location + ' sunt ' +
     //     _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
     //     ' si este ' + _data[0].WeatherText + '!';

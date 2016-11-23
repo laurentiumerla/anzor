@@ -185,10 +185,10 @@ function receivedPayload(event) {
         case (payload.indexOf('SETTINGSNOTIFICATIONS') != -1):
             firebase.ReadUserData(senderID).then(function (snapshot) {
                 var activeNotifications = snapshot.val().notifications
-                console.log('activeNotifications: ', activeNotifications)
+                // console.log('activeNotifications: ', activeNotifications)
                 firebase.ReadNotifications().then(function (_notifications) {
                     // sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
-                    console.log('_notifications.val(): ', _notifications.val())
+                    // console.log('_notifications.val(): ', _notifications.val())
                     botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications)
                 })
 
