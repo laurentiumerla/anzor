@@ -18,6 +18,10 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
 
 
     if (_notifications) {
+        for (var i = 0, len = _notifications.length; i < len; i++) {
+            console.log(_notifications[i])
+        }
+
         _notifications.forEach(function (notification) {
             console.log(notification)
             notification.options.forEach(function (option) {
