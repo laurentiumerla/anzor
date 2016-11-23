@@ -80,12 +80,9 @@ method.NotificationsMoreMessage = function (_notifications) {
 method.NotificationInfoMessage = function (_notification, _notificationID) {
     var message = { text: '', quick_replies: [] }
 
-    message.text = 'Îmi place să țin prietenii mei la zi despre lucruri cum ar fi când să plouă sau dacă mâine va avea vreme bună pentru alergare. \n\n'
-        + 'Există o notificare despre care doriți să aflați mai multe?'
-
     if (_notification) {
 
-            message.text += _notification.description + '\n\n'
+        message.text = _notification.description + '\n\n'
 
 
         message.quick_replies.push({

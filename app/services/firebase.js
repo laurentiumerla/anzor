@@ -68,9 +68,10 @@ method.ReadUserData = function (_userId) {
 
     if (!_userId) { console.log("Please specify userId to ReadUserData") }
 
-    var userRef = firebase.database().ref('/users/' + _userId);
+    // var userRef = firebase.database().ref('/users/' + _userId);
 
-    return userRef.once('value');
+    // return userRef.once('value');
+    return method.ReadDB('/users/' + _userId)
 }
 
 method.ReadNotifications = function (_notificationGroup) {
