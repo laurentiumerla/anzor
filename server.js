@@ -72,7 +72,7 @@ app.post('/webhook', function (req, res) {
 
             // Iterate over each messaging event
             entry.messaging.forEach(function (event) {
-                if (event.message.quick_reply) {
+                if (event.message && event.message.quick_reply) {
                     receivedQuickReply(event);
                 } else if (event.message && event.message.attachments) {
                     receivedAttachment(event);
