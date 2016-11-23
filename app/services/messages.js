@@ -16,7 +16,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
         })
     } else message.text = 'Toate notificările sunt dezactivate. \n\n Pe care vrei sa le activezi?'
 
-    if (_notifications > 0) {
+    if (_notifications) {
         _notifications.forEach(function(notification){
             notification.options.forEach(function(option){
                 if (option.active == true) {
