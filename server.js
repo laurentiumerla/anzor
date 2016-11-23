@@ -130,6 +130,7 @@ function receivedAttachment(_event) {
             case 'location':
                 console.log("Location has been received")
                 var coordinates = attachment.payload.coordinates.lat + ',' + attachment.payload.coordinates.long
+                console.log(coordinates)
                 places.nearbySearch({ location: coordinates, radius: 1, language: 'ro' }).then((res) => {
                     var location = res.body.results[0].name
                     console.log(location)
