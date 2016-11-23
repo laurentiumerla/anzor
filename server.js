@@ -129,6 +129,13 @@ function receivedAttachment(_event) {
         switch (attachment.type) {
             case 'location':
                 console.log("Location has been received")
+                var coordinates = attachment.payload.coordinates.lat + ',' + attachment.payload.coordinates.long
+                places.nearbySearch({ location: coordinates, radius: 1 }).then((res) => {
+                    var location = res.body.results[0].name
+                    console.log(location)
+                    // firebase.WriteUserLocation(_senderId, location)
+                    // sendTextMessage(_senderId, "Super, o să-ți trimit vremea pentru " + location.formatted_address + ".")
+                })
                 break
             case 'image':
                 break
