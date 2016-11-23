@@ -127,7 +127,6 @@ function receivedQuickReply(_event) {
             firebase.ReadNotifications(notificationID).then(function (_notifications) {
                 sendGenericMessage(senderID, botmsg.NotificationInfoMessage(_notifications.val()))
             })
-            GetNotificationInfo()
             break
         case (payload.indexOf('NOTIFICATIONSMORE_') != -1):
             firebase.ReadNotifications().then(function (_notifications) {
