@@ -72,15 +72,17 @@ app.post('/webhook', function (req, res) {
 
             // Iterate over each messaging event
             entry.messaging.forEach(function (event) {
-                if (event.message && event.message.text) {
+                if (event.message.quick_reply) {
+                    receivedQuickReply(event);
+                } else if (event.message && event.message.attachment) {
+                    receivedAttachment(event);
+                    // Handle an attachment from this sender
+                } else if (event.message && event.message.text) {
                     receivedMessage(event);
                     // Handle a text message from this sender
                 } else if (event.postback && event.postback.payload) {
                     receivedPayload(event);
                     // Handle a payload from this sender
-                } else if (event.message && event.message.attachment) {
-                    receivedAttachment(event);
-                    // Handle an attachment from this sender
                 } else {
                     console.log("Webhook received unknown event: ", event);
                 }
@@ -104,6 +106,22 @@ console.log('Magic happens on port ' + port);
 setInterval(function () {
     http.get("http://anzor.herokuapp.com");
 }, 1500000); // every 5 minutes (300000)
+
+function receivedQuickReply(event) {
+    console.log("Quick Reply received")
+    switch (true) {
+        case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
+            var location = _event.message.quick_reply.payload.split("_")[1]
+            SaveLocation(senderID, location)
+            break
+        case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ORE') != -1):
+            ProcessGetWeather(_event.sender.id, ["Prognoza", "ore"])
+            break
+        case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ZILE') != -1):
+            ProcessGetWeather(_event.sender.id, ["Prognoza", "zile"])
+            break
+    }
+}
 
 function receivedAttachment(event) {
     console.log("Attachment received")
@@ -188,58 +206,58 @@ function receivedMessage(_event) {
     firebase.WriteUserMessage(_event.sender.id, _event.message.text, _event.timestamp)
 
     //Process quick reply
-    if (_event.message.quick_reply) {
-        switch (true) {
-            case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
-                var location = _event.message.quick_reply.payload.split("_")[1]
-                SaveLocation(senderID, location)
-                break
-        }
-    } else {
-        //Process last action first
-        var userData = {}
-        firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
-            lastAction = snapshot.val().lastAction
-            userData = snapshot.val()
+    // if (_event.message.quick_reply) {
+    //     switch (true) {
+    //         case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
+    //             var location = _event.message.quick_reply.payload.split("_")[1]
+    //             SaveLocation(senderID, location)
+    //             break
+    //     }
+    // } else {
+    //Process last action first
+    var userData = {}
+    firebase.ReadUserData(_event.sender.id).then(function (snapshot) {
+        lastAction = snapshot.val().lastAction
+        userData = snapshot.val()
 
-            if (lastAction) {
-                switch (lastAction) {
-                    case 'CHANGELOCATION':
-                        console.log('CHANGELOCATION')
-                        places.textSearch({ query: _event.message.text, language: 'ro' }).then((res) => {
-                            var location = res.body.results[0]
-                            sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location))
-                        })
-                        break
-                }
-                firebase.WriteToUser(senderID, { lastAction: "" })
-                return
-            } else {
-                // Process message with LUIS
-                luis.AskLUIS(_event.message.text.substring(0, 100))
-                    .then(function (data) {
-                        luis.SetData(data)
-                        switch (luis.GetIntentFirst().intent) {
-                            case ("GetHelp"):
-                                ProcessGetHelp(_event.sender.id, userData.location.name)
-                                break
-
-                            case ("GetWeather"):
-                                ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0])
-                                break
-
-                            default:
-                                // No Intent found
-                                break;
-                        }
+        if (lastAction) {
+            switch (lastAction) {
+                case 'CHANGELOCATION':
+                    console.log('CHANGELOCATION')
+                    places.textSearch({ query: _event.message.text, language: 'ro' }).then((res) => {
+                        var location = res.body.results[0]
+                        sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location))
                     })
-                    .catch(function (err) {
-                        // API call failed... 
-                        console.log(err)
-                    });
+                    break
             }
-        })
-    }
+            firebase.WriteToUser(senderID, { lastAction: "" })
+            return
+        } else {
+            // Process message with LUIS
+            luis.AskLUIS(_event.message.text.substring(0, 100))
+                .then(function (data) {
+                    luis.SetData(data)
+                    switch (luis.GetIntentFirst().intent) {
+                        case ("GetHelp"):
+                            ProcessGetHelp(_event.sender.id, userData.location.name)
+                            break
+
+                        case ("GetWeather"):
+                            ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0])
+                            break
+
+                        default:
+                            // No Intent found
+                            break;
+                    }
+                })
+                .catch(function (err) {
+                    // API call failed... 
+                    console.log(err)
+                });
+        }
+    })
+    // }
 }
 
 function sendGenericMessage(_recipientId, _messageText) {
