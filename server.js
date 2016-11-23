@@ -130,12 +130,12 @@ function receivedAttachment(_event) {
             case 'location':
                 console.log("Location has been received")
                 var coordinates = attachment.payload.coordinates.lat + ',' + attachment.payload.coordinates.long
-                places.nearbySearch({ location: coordinates, radius: 1 }).then((res) => {
+                places.nearbySearch({ location: coordinates, radius: 1, language: 'ro' }).then((res) => {
                     var location = res.body.results[0].name
                     console.log(location)
-                    // firebase.WriteUserLocation(_senderId, location)
-                    // sendTextMessage(_senderId, "Super, o să-ți trimit vremea pentru " + location.formatted_address + ".")
+                    sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location))
                 })
+                firebase.WriteToUser(senderID, { lastAction: "" })
                 break
             case 'image':
                 break
