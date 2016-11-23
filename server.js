@@ -184,7 +184,7 @@ function receivedPayload(event) {
 
         case (payload.indexOf('GETWEATHER_') != -1):
             var location = payload.split("_")[1]
-            ProcessGetWeather(senderID, [], location)
+            ProcessGetWeather(senderID, ["vremea"], location)
             break
 
 
@@ -370,10 +370,11 @@ function ACWCurrentConditions(_senderID, _location) {
                     })
             }
             else {
+                console.log("ACW: No location found")
             }
         })
         .catch(function (err) {
-            console.log("ACW Request ERROR => ", err);
+            console.log("ACW: Request ERROR => ", err);
         })
 }
 
