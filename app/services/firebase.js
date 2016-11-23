@@ -75,7 +75,7 @@ method.ReadUserData = function (_userId) {
 
 method.ReadNotifications = function () {
 
-    return ReadDB('/notifications')
+    return method.ReadDB('/notifications')
 }
 
 method.ReadDB = function (_xstring) {
