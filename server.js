@@ -115,10 +115,10 @@ function receivedQuickReply(_event) {
             SaveLocation(_event.sender.id, location)
             break
         case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ORE') != -1):
-            ProcessGetWeather(_event.sender.id, ["Prognoza", "ore"])
+            ProcessGetWeather(_event.sender.id, ["prognoza", "ore"])
             break
         case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ZILE') != -1):
-            ProcessGetWeather(_event.sender.id, ["Prognoza", "zile"])
+            ProcessGetWeather(_event.sender.id, ["prognoza", "zile"])
             break
     }
 }
