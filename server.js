@@ -111,17 +111,17 @@ function receivedQuickReply(_event) {
     console.log("Quick Reply received")
     var payload = _event.message.quick_reply.payload
     console.log(payload)
-    var senderId = _event.sender.id
+    var senderID = _event.sender.id
     switch (true) {
         case (payload.indexOf('UPDATELOCATION_') != -1):
             var location = _event.message.quick_reply.payload.split("_")[1]
-            SaveLocation(senderId, location)
+            SaveLocation(sensenderIDderId, location)
             break
         case (payload.indexOf('PROGNOZA_PE_ORE') != -1):
-            ProcessGetWeather(senderId, ["prognoza", "ore"])
+            ProcessGetWeather(senderID, ["prognoza", "ore"])
             break
         case (payload.indexOf('PROGNOZA_PE_ZILE') != -1):
-            ProcessGetWeather(senderId, ["prognoza", "zile"])
+            ProcessGetWeather(senderID, ["prognoza", "zile"])
             break
         case (payload.indexOf('NOTIFICATIONS_') != -1):
 
