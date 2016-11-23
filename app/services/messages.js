@@ -22,7 +22,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
             var notification = _notifications[n]
             console.log(notification)
 
-            if (notification.active == true) {
+            if (notification.active) {
                 console.log(option)
                 message.quick_replies.push({
                     content_type: "text",
