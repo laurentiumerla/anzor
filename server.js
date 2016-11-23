@@ -322,10 +322,11 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
         userlocation = snapshot.val().location.name;
         if (!_location)
             //Ask for location
-            if (!userlocation)
+            if (!userlocation) {
                 //Ask for location
                 firebase.WriteToUser(senderID, { lastAction: "CHANGELOCATION" })
                 sendGenericMessage(_senderID, botmsg.AskLocationMessage());
+            }
             else
                 GetWeatherForLocation(_senderID, _subjectList, userlocation)
         else {
