@@ -32,7 +32,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
 
         message.quick_replies.push({
             content_type: "text",
-            title: 'Mai mult',
+            title: 'Mai multe detalii',
             payload: "NOTIFICATIONS_MORE"
         });
     }

@@ -110,6 +110,7 @@ setInterval(function () {
 function receivedQuickReply(_event) {
     console.log("Quick Reply received")
     var payload = _event.message.quick_reply.payload
+    console.log(payload)
     var senderId = _event.sender.id
     switch (true) {
         case (payload.indexOf('UPDATELOCATION_') != -1):
