@@ -193,7 +193,7 @@ function receivedPayload(event) {
                 })
 
             })
-            sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage())
+            // sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage())
             break
 
         case (payload.indexOf('SETTINGSALL') != -1):
