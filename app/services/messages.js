@@ -19,18 +19,16 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
 
     if (_notifications) {
         for (var n in _notifications) {
+            var notification = _notifications[n]
             console.log(_notifications[n])
+            for (var o in notification.options) {
+                var option = notification.options[o]
+                if (option.active == true) {
+                    console.log(option)
+                }
+            }
         }
 
-        // _notifications.forEach(function (notification) {
-        //     console.log(notification)
-        //     notification.options.forEach(function (option) {
-        //         if (option.active == true) {
-        //             console.log(option)
-        //         }
-        //     })
-
-        // })
         message.text = '\n\n adsad'
     }
 
