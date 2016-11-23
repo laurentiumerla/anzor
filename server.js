@@ -381,6 +381,7 @@ function ACWCurrentConditions(_senderID, _location) {
 function ACWForecast12Hours(_senderID, _location, _fromCounter) {
     acw.CityLookUp(_location)
         .then(function (data) {
+            console.log(data)
             if (data.length > 0) {
                 // always return current conditions for the first key found
                 acw.GetForecastHours(data[0].Key)
