@@ -21,9 +21,10 @@ method.AskLUIS = function (query) {
         this.LUIS_APP_ID + '?subscription-key=' +
         this.LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
         json: true // Automatically parses the JSON string in the response 
-    };
+    }
 
-    return this.Httprp(LUIS_EXTRACT_OPTIONS);
+    LUIS_EXTRACT_OPTIONS.uri = encodeURIComponent(LUIS_EXTRACT_OPTIONS.uri)
+    return this.Httprp(LUIS_EXTRACT_OPTIONS)
 }
 
 method.Httprp = function (_opt) {

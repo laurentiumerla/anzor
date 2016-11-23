@@ -16,7 +16,7 @@ method.CityLookUp = function (_q) {
         + "&language=" + this.ACCUWEATHER_LANGUAGE
         + "&details=true"
     console.log("ACW Request CALL => ", _uri)
-    return this.rp({ uri: _uri, json: true })
+    return this.rp({ uri: encodeURIComponent(_uri), json: true })
 }
 
 method.GetCurrentConditions = function (_locationKey) {
