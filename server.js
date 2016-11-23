@@ -134,7 +134,7 @@ function receivedAttachment(_event) {
                 places.nearbySearch({ location: coordinates, radius: 1, language: 'ro' }).then((res) => {
                     var location = res.body.results[0].name
                     console.log(location)
-                    sendGenericMessage(senderID, botmsg.ConfirmLocationMessage(location))
+                    sendGenericMessage(senderID, botmsg.ConfirmLocationMessage({ formatted_address: location, name: location }))
                 })
                 firebase.WriteToUser(senderID, { lastAction: "" })
                 break
