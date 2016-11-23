@@ -40,6 +40,43 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
     return message;
 }
 
+method.NotificationsMoreMessage = function (_notifications) {
+
+    var message = { text: '', quick_replies: [] }
+
+    message.text = 'Îmi place să țin prietenii mei la zi despre lucruri cum ar fi când să plouă sau dacă mâine va avea vreme bună pentru alergare. \n\n'
+        + 'Există o notificare despre care doriți să aflați mai multe?'
+
+    if (_notifications) {
+        for (var n in _notifications) {
+            var notification = _notifications[n]
+
+            if (notification.active) {
+                message.quick_replies.push({
+                    content_type: "text",
+                    title: notification.name,
+                    payload: "NOTIFICATIONSINFO_" + n,
+                    image_url: notification.icon
+                });
+            }
+        }
+
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Mai mult',
+            payload: "NOTIFICATIONSINFOALL"
+        });
+
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Nu conteaza',
+            payload: "DONT DO ANYTHING"
+        });
+    }
+
+    return message;
+}
+
 method.CurrentConditionsMessage = function (_data, _location) {
 
     var message = { "text": "", "quick_replies": [] }

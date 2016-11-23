@@ -110,22 +110,25 @@ setInterval(function () {
 function receivedQuickReply(_event) {
     console.log("Quick Reply received")
     var payload = _event.message.quick_reply.payload
+    var senderId = _event.sender.id
     switch (true) {
         case (payload.indexOf('UPDATELOCATION_') != -1):
             var location = _event.message.quick_reply.payload.split("_")[1]
-            SaveLocation(_event.sender.id, location)
+            SaveLocation(senderId, location)
             break
         case (payload.indexOf('PROGNOZA_PE_ORE') != -1):
-            ProcessGetWeather(_event.sender.id, ["prognoza", "ore"])
+            ProcessGetWeather(senderId, ["prognoza", "ore"])
             break
         case (payload.indexOf('PROGNOZA_PE_ZILE') != -1):
-            ProcessGetWeather(_event.sender.id, ["prognoza", "zile"])
+            ProcessGetWeather(senderId, ["prognoza", "zile"])
             break
-        case (payload.indexOf('NOTIFICATIONS') != -1):
+        case (payload.indexOf('NOTIFICATIONS_') != -1):
 
             break
         case (payload.indexOf('NOTIFICATIONS_MORE') != -1):
-        
+            firebase.ReadNotifications().then(function (_notifications) {
+                sendGenericMessage(senderID, botmsg.NotificationsMoreMessage(_notifications.val()))
+            })
             break
     }
 }
@@ -194,11 +197,8 @@ function receivedPayload(event) {
                 var activeNotifications = snapshot.val().notifications
                 firebase.ReadNotifications().then(function (_notifications) {
                     sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
-                    // botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications)
                 })
-
             })
-            // sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage())
             break
 
         case (payload.indexOf('SETTINGSALL') != -1):
