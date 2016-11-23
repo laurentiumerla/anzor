@@ -73,6 +73,15 @@ method.ReadUserData = function (_userId) {
     return userRef.once('value');
 }
 
+method.ReadNotifications = function () {
+
+    return ReadDB('/notifications')
+}
+
+method.ReadDB = function (_xstring) {
+    return firebase.database().ref(_xstring).once('value')
+}
+
 method.WriteUserMessage = function (_userId, _message, _timestamp) {
     var values = {};
 

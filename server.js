@@ -182,6 +182,18 @@ function receivedPayload(event) {
             sendGenericMessage(senderID, botmsg.ChangeLocationMessage())
             break
 
+        case (payload.indexOf('SETTINGSNOTIFICATIONS') != -1):
+            firebase.ReadUserData(senderID).then(function (snapshot) {
+                var activeNotifications = snapshot.val().notifications
+                firebase.ReadNotifications().then(function (_notifications) {
+                    // sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
+                    botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications)
+                })
+
+            })
+            sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage())
+            break
+
         case (payload.indexOf('SETTINGSALL') != -1):
             firebase.ReadUserData(senderID).then(function (snapshot) {
                 var location = snapshot.val().location
@@ -374,7 +386,7 @@ function ACWCurrentConditions(_senderID, _location) {
                 // always return current conditions for the first key found
                 acw.GetCurrentConditions(data[0].Key)
                     .then(function (data) {
-                        sendGenericMessage(_senderID, botmsg.CurrentConditionsMessage(data, _senderID, _location));
+                        sendGenericMessage(_senderID, botmsg.CurrentConditionsMessage(data, _location));
                     })
             }
             else {

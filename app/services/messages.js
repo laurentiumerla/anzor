@@ -5,7 +5,47 @@ function BotMessage() {
     // nothing to do here
 }
 
-method.CurrentConditionsMessage = function (_data, _senderID, _location) {
+method.MainMenuNotificationsMessage = function (_notifications, _activeNotifications) {
+
+    var message = { text: '', quick_replies: [] }
+
+    if (_activeNotifications.length > 0) {
+        message.text = 'Notificări active: \n'
+        _activeNotifications.forEach(function (notification) {
+            message.text += notification.description + '\n'
+        })
+    } else message.text = 'Toate notificările sunt dezactivate. \n\n Pe care vrei sa le activezi?'
+
+    if (_notifications.length > 0) {
+        _notifications.forEach(function(notification){
+            notification.options.forEach(function(option){
+                if (option.active == true) {
+                    console.log(option)
+                }
+            })
+        })
+        message.text = '\n\n '
+    }
+
+    // message.text = 'In ' + _location + ' sunt ' +
+    //     _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
+    //     ' si este ' + _data[0].WeatherText + '!';
+    // message.quick_replies.push({
+    //     "content_type": "text",
+    //     "title": "Prognoza pe ore",
+    //     "payload": "PROGNOZA_PE_ORE"
+    // });
+    // message.quick_replies.push({
+    //     "content_type": "text",
+    //     "title": "Prognoza pe 5 zile",
+    //     "payload": "PROGNOZA_PE_ZILE"
+
+    // });
+
+    return message;
+}
+
+method.CurrentConditionsMessage = function (_data, _location) {
 
     var message = { "text": "", "quick_replies": [] }
 
