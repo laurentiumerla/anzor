@@ -16,13 +16,16 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
         })
     } else message.text = 'Toate notificările sunt dezactivate. \n\n Pe care vrei sa le activezi?'
 
-    console.log(_notifications)
-    if (_notifications) {
-        _notifications.weatherForecasts.options.forEach(function (option) {
 
-            if (option.active == true) {
-                console.log(option)
-            }
+    if (_notifications) {
+        _notifications.forEach(function (notification) {
+            console.log(notification)
+            notification.options.forEach(function (option) {
+                if (option.active == true) {
+                    console.log(option)
+                }
+            })
+
         })
         message.text = '\n\n adsad'
     }
