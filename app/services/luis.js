@@ -19,11 +19,10 @@ method.AskLUIS = function (query) {
     var LUIS_EXTRACT_OPTIONS = {
         uri: 'https://api.projectoxford.ai/luis/v2.0/apps/' +
         this.LUIS_APP_ID + '?subscription-key=' +
-        this.LUIS_SUBSCRIPTION_KEY + '&q=' + query + '&timezoneOffset=0.0',
+        this.LUIS_SUBSCRIPTION_KEY + '&q=' + encodeURIComponent(query) + '&timezoneOffset=0.0',
         json: true // Automatically parses the JSON string in the response 
     }
 
-    LUIS_EXTRACT_OPTIONS.uri = encodeURIComponent(LUIS_EXTRACT_OPTIONS.uri)
     return this.Httprp(LUIS_EXTRACT_OPTIONS)
 }
 

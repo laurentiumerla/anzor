@@ -12,11 +12,11 @@ function ACWService(_rp) {
 
 method.CityLookUp = function (_q) {
     var _uri = "http://dataservice.accuweather.com/locations/v1/search?q=" +
-        _q + "&apikey=" + this.ACCUWEATHER_API_KEY
+        encodeURIComponent(_q) + "&apikey=" + this.ACCUWEATHER_API_KEY
         + "&language=" + this.ACCUWEATHER_LANGUAGE
         + "&details=true"
     console.log("ACW Request CALL => ", _uri)
-    return this.rp({ uri: encodeURIComponent(_uri), json: true })
+    return this.rp({ uri: _uri, json: true })
 }
 
 method.GetCurrentConditions = function (_locationKey) {
