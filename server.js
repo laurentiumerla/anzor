@@ -330,9 +330,9 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
             else
                 GetWeatherForLocation(_senderID, _subjectList, userlocation)
         else {
-            places.textSearch({ query: _location, language: 'ro' }).then((res) => {
-                firebase.WriteUserLocation(senderID, res.body)
-            })
+            // places.textSearch({ query: _location, language: 'ro' }).then((res) => {
+            //     firebase.WriteUserLocation(senderID, res.body)
+            // })
             GetWeatherForLocation(_senderID, _subjectList, _location)
         }
     })
