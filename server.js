@@ -110,7 +110,6 @@ setInterval(function () {
 function receivedQuickReply(_event) {
     console.log("Quick Reply received")
     var payload = _event.message.quick_reply.payload
-    console.log(payload)
     var senderID = _event.sender.id
     switch (true) {
         case (payload.indexOf('UPDATELOCATION_') != -1):
@@ -126,7 +125,7 @@ function receivedQuickReply(_event) {
         case (payload.indexOf('NOTIFICATIONS_') != -1):
 
             break
-        case (payload.indexOf('NOTIFICATIONS_MORE') != -1):
+        case (payload.indexOf('NOTIFICATIONSMORE_') != -1):
             firebase.ReadNotifications().then(function (_notifications) {
                 sendGenericMessage(senderID, botmsg.NotificationsMoreMessage(_notifications.val()))
             })

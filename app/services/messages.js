@@ -33,7 +33,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
         message.quick_replies.push({
             content_type: "text",
             title: 'Mai multe detalii',
-            payload: "NOTIFICATIONS_MORE"
+            payload: "NOTIFICATIONSMORE_"
         });
     }
 
@@ -63,7 +63,7 @@ method.NotificationsMoreMessage = function (_notifications) {
 
         message.quick_replies.push({
             content_type: "text",
-            title: 'Mai mult',
+            title: 'Toate',
             payload: "NOTIFICATIONSINFOALL"
         });
 
