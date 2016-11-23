@@ -188,7 +188,7 @@ function receivedPayload(event) {
                 // console.log('activeNotifications: ', activeNotifications)
                 firebase.ReadNotifications().then(function (_notifications) {
                     // sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
-                    // console.log('_notifications.val(): ', _notifications.val())
+                    console.log('_notifications.val(): ', _notifications)
                     botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications)
                 })
 
