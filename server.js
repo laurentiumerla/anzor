@@ -84,7 +84,7 @@ app.post('/webhook', function (req, res) {
                     receivedPayload(event);
                     // Handle a payload from this sender
                 } else {
-                    console.log("Webhook received unknown event: ", event);
+                    // console.log("Webhook received unknown event: ", event);
                 }
             });
         });
