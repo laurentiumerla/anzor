@@ -20,19 +20,18 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
     if (_notifications) {
         for (var n in _notifications) {
             var notification = _notifications[n]
-            console.log(_notifications[n])
-            for (var o in notification.options) {
-                var option = notification.options[o]
-                if (option.active == true) {
-                    console.log(option)
-                    message.quick_replies.push({
-                        content_type: "text",
-                        title: option.name,
-                        payload: "NOTIFICATIONS_" + option,
-                        image_url: option.icon
-                    });
-                }
+            console.log(notification)
+
+            if (notification.active == true) {
+                console.log(option)
+                message.quick_replies.push({
+                    content_type: "text",
+                    title: notification.name,
+                    payload: "NOTIFICATIONS_" + n,
+                    image_url: notification.icon
+                });
             }
+
         }
 
         // message.text += '\n\n adsad'
