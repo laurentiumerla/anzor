@@ -370,7 +370,7 @@ function ACWCurrentConditions(_senderID, _location) {
                     })
             }
             else {
-                console.log("ACW: No location found")
+                console.log("ACW: No location found ACWCurrentConditions")
             }
         })
         .catch(function (err) {
@@ -392,6 +392,7 @@ function ACWForecast12Hours(_senderID, _location, _fromCounter) {
                     })
             }
             else {
+                console.log("ACW: No location found for ACWForecast12Hours")
             }
         })
         .catch(function (err) {
@@ -413,6 +414,7 @@ function ACWForecast5Days(_senderID, _location, _fromCounter) {
                     })
             }
             else {
+                console.log("ACW: No location found for ACWForecast5Days")
             }
         })
         .catch(function (err) {
