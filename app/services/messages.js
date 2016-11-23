@@ -25,11 +25,16 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
                 var option = notification.options[o]
                 if (option.active == true) {
                     console.log(option)
+                    message.quick_replies.push({
+                        "content_type": "text",
+                        "title": option.name,
+                        "payload": "NOTIFICATIONS_" + option
+                    });
                 }
             }
         }
 
-        message.text = '\n\n adsad'
+        // message.text += '\n\n adsad'
     }
 
     console.log(message);
