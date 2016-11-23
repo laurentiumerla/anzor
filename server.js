@@ -74,7 +74,7 @@ app.post('/webhook', function (req, res) {
             entry.messaging.forEach(function (event) {
                 if (event.message.quick_reply) {
                     receivedQuickReply(event);
-                } else if (event.message && event.message.attachment) {
+                } else if (event.message && event.message.attachments) {
                     receivedAttachment(event);
                     // Handle an attachment from this sender
                 } else if (event.message && event.message.text) {
@@ -107,12 +107,12 @@ setInterval(function () {
     http.get("http://anzor.herokuapp.com");
 }, 1500000); // every 5 minutes (300000)
 
-function receivedQuickReply(event) {
+function receivedQuickReply(_event) {
     console.log("Quick Reply received")
     switch (true) {
         case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
             var location = _event.message.quick_reply.payload.split("_")[1]
-            SaveLocation(senderID, location)
+            SaveLocation(_event.sender.id, location)
             break
         case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ORE') != -1):
             ProcessGetWeather(_event.sender.id, ["Prognoza", "ore"])
@@ -123,19 +123,22 @@ function receivedQuickReply(event) {
     }
 }
 
-function receivedAttachment(event) {
+function receivedAttachment(_event) {
     console.log("Attachment received")
-    switch (event.message.attachment.type) {
-        case 'location':
-            console.log("Location has been received")
-            break
-        case 'image':
-            break
-        case 'audio':
-            break
-        case 'file':
-            break
-    }
+    _event.message.attachments.forEach(function (attachment) {
+        switch (attachment.type) {
+            case 'location':
+                console.log("Location has been received")
+                break
+            case 'image':
+                break
+            case 'audio':
+                break
+            case 'file':
+                break
+        }
+    })
+
 }
 
 function receivedPayload(event) {
