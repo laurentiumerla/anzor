@@ -24,7 +24,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
                 message.quick_replies.push({
                     content_type: "text",
                     title: notification.name,
-                    payload: "NOTIFICATIONS_" + n,
+                    payload: "SETNOTIFICATION_" + n,
                     image_url: notification.icon
                 });
             }
@@ -71,6 +71,39 @@ method.NotificationsMoreMessage = function (_notifications) {
             content_type: "text",
             title: 'Nu conteaza',
             payload: "DONT DO ANYTHING"
+        });
+    }
+
+    return message;
+}
+
+method.NotificationInfoMessage = function (_notification, _notificationID) {
+    var message = { text: '', quick_replies: [] }
+
+    message.text = 'Îmi place să țin prietenii mei la zi despre lucruri cum ar fi când să plouă sau dacă mâine va avea vreme bună pentru alergare. \n\n'
+        + 'Există o notificare despre care doriți să aflați mai multe?'
+
+    if (_notification) {
+
+            message.text += _notification.description + '\n\n'
+
+
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Exemplu',
+            payload: "NOTIFICATIONSEXAMPLE_" + _notificationID
+        });
+
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Modifică',
+            payload: "NOTIFICATIONSCHANGE_" + _notificationID
+        });
+
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Alte notificări',
+            payload: "NOTIFICATIONSMORE_"
         });
     }
 

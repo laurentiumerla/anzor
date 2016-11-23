@@ -113,7 +113,7 @@ function receivedQuickReply(_event) {
     var senderID = _event.sender.id
     switch (true) {
         case (payload.indexOf('UPDATELOCATION_') != -1):
-            var location = _event.message.quick_reply.payload.split("_")[1]
+            var location = payload.split("_")[1]
             SaveLocation(sensenderIDderId, location)
             break
         case (payload.indexOf('PROGNOZA_PE_ORE') != -1):
@@ -122,8 +122,12 @@ function receivedQuickReply(_event) {
         case (payload.indexOf('PROGNOZA_PE_ZILE') != -1):
             ProcessGetWeather(senderID, ["prognoza", "zile"])
             break
-        case (payload.indexOf('NOTIFICATIONS_') != -1):
-
+        case (payload.indexOf('NOTIFICATIONSINFO_') != -1):
+            var notificationID = payload.split("_")[1]
+            firebase.ReadNotifications(notificationID).then(function (_notifications) {
+                sendGenericMessage(senderID, botmsg.NotificationInfoMessage(_notifications.val()))
+            })
+            GetNotificationInfo()
             break
         case (payload.indexOf('NOTIFICATIONSMORE_') != -1):
             firebase.ReadNotifications().then(function (_notifications) {

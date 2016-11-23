@@ -73,9 +73,11 @@ method.ReadUserData = function (_userId) {
     return userRef.once('value');
 }
 
-method.ReadNotifications = function () {
-
-    return method.ReadDB('/notifications')
+method.ReadNotifications = function (_notificationGroup) {
+    if (_notificationGroup)
+        return method.ReadDB('/notifications/' + _notificationGroup)
+    else
+        return method.ReadDB('/notifications/')
 }
 
 method.ReadDB = function (_xstring) {
