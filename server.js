@@ -109,16 +109,23 @@ setInterval(function () {
 
 function receivedQuickReply(_event) {
     console.log("Quick Reply received")
+    var payload = _event.message.quick_reply.payload
     switch (true) {
-        case (_event.message.quick_reply.payload.indexOf('UPDATELOCATION_') != -1):
+        case (payload.indexOf('UPDATELOCATION_') != -1):
             var location = _event.message.quick_reply.payload.split("_")[1]
             SaveLocation(_event.sender.id, location)
             break
-        case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ORE') != -1):
+        case (payload.indexOf('PROGNOZA_PE_ORE') != -1):
             ProcessGetWeather(_event.sender.id, ["prognoza", "ore"])
             break
-        case (_event.message.quick_reply.payload.indexOf('PROGNOZA_PE_ZILE') != -1):
+        case (payload.indexOf('PROGNOZA_PE_ZILE') != -1):
             ProcessGetWeather(_event.sender.id, ["prognoza", "zile"])
+            break
+        case (payload.indexOf('NOTIFICATIONS') != -1):
+
+            break
+        case (payload.indexOf('NOTIFICATIONS_MORE') != -1):
+        
             break
     }
 }

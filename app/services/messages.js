@@ -33,6 +33,12 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
 
         }
 
+        message.quick_replies.push({
+            content_type: "text",
+            title: 'Mai mult',
+            payload: "NOTIFICATIONS_MORE"
+        });
+
         // message.text += '\n\n adsad'
     }
 
