@@ -196,12 +196,7 @@ function receivedPayload(event) {
             break
 
         case (payload.indexOf('SETTINGSNOTIFICATIONS') != -1):
-            firebase.ReadUserData(senderID).then(function (snapshot) {
-                var activeNotifications = snapshot.val().notifications
-                firebase.ReadNotifications().then(function (_notifications) {
-                    sendGenericMessage(senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
-                })
-            })
+            getUserNotifications(senderID)
             break
 
         case (payload.indexOf('SETTINGSALL') != -1):
@@ -277,6 +272,10 @@ function receivedMessage(_event) {
 
                         case ("GetWeather"):
                             ProcessGetWeather(_event.sender.id, luis.GetEntities("Subject"), luis.GetEntities("Location")[0])
+                            break
+
+                        case ("GetNotifications"):
+                            getUserNotifications(_event.sender.id)
                             break
 
                         default:
@@ -457,5 +456,14 @@ function SaveLocation(_senderId, _text) {
         var location = res.body.results[0]
         firebase.WriteUserLocation(_senderId, location)
         sendTextMessage(_senderId, "Super, o să-ți trimit vremea pentru " + location.formatted_address + ".")
+    })
+}
+
+function getUserNotifications(_senderID) {
+    firebase.ReadUserData(_senderID).then(function (snapshot) {
+        var activeNotifications = snapshot.val().notifications
+        firebase.ReadNotifications().then(function (_notifications) {
+            sendGenericMessage(_senderID, botmsg.MainMenuNotificationsMessage(_notifications.val(), activeNotifications))
+        })
     })
 }
