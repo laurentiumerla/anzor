@@ -9,7 +9,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
 
     var message = { text: '', quick_replies: [] }
 
-    if (_activeNotifications.length > 0) {
+    if (_activeNotifications) {
         message.text = 'Notificări active: \n'
         _activeNotifications.forEach(function (notification) {
             message.text += notification.description + '\n'
