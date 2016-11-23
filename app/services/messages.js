@@ -16,11 +16,9 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
         })
     } else message.text = 'Toate notificările sunt dezactivate. \n\n Pe care vrei sa le activezi?'
 
-
     if (_notifications) {
         for (var n in _notifications) {
             var notification = _notifications[n]
-            console.log(notification)
 
             if (notification.active) {
                 message.quick_replies.push({
@@ -30,7 +28,6 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
                     image_url: notification.icon
                 });
             }
-
         }
 
         message.quick_replies.push({
@@ -38,26 +35,7 @@ method.MainMenuNotificationsMessage = function (_notifications, _activeNotificat
             title: 'Mai mult',
             payload: "NOTIFICATIONS_MORE"
         });
-
-        // message.text += '\n\n adsad'
     }
-
-    console.log(message);
-
-    // message.text = 'In ' + _location + ' sunt ' +
-    //     _data[0].Temperature.Metric.Value + _data[0].Temperature.Metric.Unit +
-    //     ' si este ' + _data[0].WeatherText + '!';
-    // message.quick_replies.push({
-    //     "content_type": "text",
-    //     "title": "Prognoza pe ore",
-    //     "payload": "PROGNOZA_PE_ORE"
-    // });
-    // message.quick_replies.push({
-    //     "content_type": "text",
-    //     "title": "Prognoza pe 5 zile",
-    //     "payload": "PROGNOZA_PE_ZILE"
-
-    // });
 
     return message;
 }
