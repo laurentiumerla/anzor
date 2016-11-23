@@ -324,6 +324,7 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
             //Ask for location
             if (!userlocation)
                 //Ask for location
+                firebase.WriteToUser(senderID, { lastAction: "CHANGELOCATION" })
                 sendGenericMessage(_senderID, botmsg.AskLocationMessage());
             else
                 GetWeatherForLocation(_senderID, _subjectList, userlocation)
@@ -334,24 +335,6 @@ function ProcessGetWeather(_senderID, _subjectList, _location) {
             GetWeatherForLocation(_senderID, _subjectList, _location)
         }
     })
-
-    // if (!_location) {
-    //     //get user location
-    //     userSnapshot = firebase.ReadUserData(_senderID).then(function (snapshot) {
-    //         _location = snapshot.val().location.name;
-    //         if (!_location)
-    //             //Ask for location
-    //             sendGenericMessage(_senderID, botmsg.AskLocationMessage());
-    //         else
-    //             GetWeatherForLocation(_senderID, _subjectList, _location)
-    //     })
-    // }
-    // else {
-    //     places.textSearch({ query: _location }).then((res) => {
-    //         firebase.WriteUserLocation(senderID, res.body)
-    //     })
-    //     GetWeatherForLocation(_senderID, _subjectList, _location)
-    // }
 }
 
 function GetWeatherForLocation(_senderID, _subjectList, _location) {
